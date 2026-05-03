@@ -134,21 +134,22 @@
 
     /* HERO — two-column layout */
     .hero {
-      padding: 72px 48px 64px;
+      padding: 72px 0 64px 48px;
       display: grid;
-      grid-template-columns: 1fr 460px;
-      gap: 48px;
+      grid-template-columns: 1fr auto;
+      gap: 0;
       align-items: center;
       position: relative;
-      max-width: 1200px;
+      width: 100%;
+      overflow: hidden;
     }
     .hero::before {
-      content: ''; position: absolute; right: 500px; top: 40px;
+      content: ''; position: absolute; left: 360px; top: 40px;
       width: 180px; height: 180px;
       background-image: radial-gradient(circle, rgba(200,16,46,0.16) 1.5px, transparent 1.5px);
       background-size: 16px 16px; border-radius: 50%; pointer-events: none; z-index: 0;
     }
-    .hero-left { position: relative; z-index: 1; }
+    .hero-left { position: relative; z-index: 1; padding-right: 48px; }
 
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
@@ -193,38 +194,36 @@
       z-index: 1;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 12px;
+      align-items: flex-end;
+      gap: 0;
+      align-self: stretch;
     }
     #gen-canvas-wrap {
       position: relative;
-      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 6px 6px 0 rgba(44,184,122,0.22), 0 20px 40px rgba(26,17,8,0.1);
+      box-shadow: -8px 0 40px rgba(26,17,8,0.1);
       cursor: crosshair;
+      height: 100%;
     }
     #gen-canvas-wrap img.photo-layer {
       display: block;
-      width: 440px;
-      height: 440px;
+      width: 380px;
+      height: 100%;
+      min-height: 520px;
       object-fit: cover;
       object-position: center top;
     }
     #gen-canvas-wrap canvas {
       position: absolute;
       top: 0; left: 0;
-      border-radius: 14px;
+      width: 100% !important;
+      height: 100% !important;
       opacity: 0;
       transition: opacity 0.5s ease;
       pointer-events: none;
     }
     #gen-canvas-wrap:hover canvas {
       opacity: 1;
-    }
-    .gen-hint {
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.3px;
     }
 
     /* SECTIONS */
@@ -411,8 +410,9 @@
     /* RESPONSIVE */
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; padding: 48px 24px; }
-      .hero-right { margin-top: 0; }
-      .hero-right canvas { width: 100% !important; height: auto !important; }
+      .hero-left { padding-right: 0; }
+      .hero-right { align-items: center; }
+      #gen-canvas-wrap img.photo-layer { width: 100%; min-height: 360px; }
     }
     @media (max-width: 720px) {
       nav { padding: 0 24px; }
@@ -471,7 +471,6 @@
       <div id="gen-canvas-wrap">
         <img class="photo-layer" src="connections.jpg" alt="generative portrait" />
       </div>
-      <span class="gen-hint">hover to reveal generative art</span>
     </div>
   </div>
 
@@ -485,7 +484,7 @@
     <div class="about-grid">
       <div class="about-photo">
         <img src="priya.JPG" alt="Priya Bhavikatti" />
-        <span class="about-photo-label">priya in new york!</span>
+        <span class="about-photo-label">me from my nyc vlog!</span>
       </div>
       <div class="about-text">
         <div class="accent-bar"></div>
@@ -627,7 +626,6 @@
       const COLS = 80, ROWS = 80;
       let pixels2d = [];
       let loaded = false;
-      const W = 440, H = 440;
 
       p.preload = function() {
         img = p.loadImage('connections.jpg',
@@ -637,6 +635,10 @@
       };
 
       p.setup = function() {
+        let wrap = document.getElementById('gen-canvas-wrap');
+        let imgEl = wrap.querySelector('img');
+        let W = imgEl.offsetWidth || 380;
+        let H = imgEl.offsetHeight || 520;
         let cnv = p.createCanvas(W, H);
         cnv.parent('gen-canvas-wrap');
         p.pixelDensity(1);
@@ -650,11 +652,9 @@
         img.loadPixels();
         pixels2d = [];
 
-        // Sample from the top portion of the image (to match object-position: center top)
-        // Use the center-top crop: full width, top H/W * img.width worth of height
         let srcW = img.width;
         let srcH = img.width; // square crop from top
-        let srcY0 = 0; // start from top
+        let srcY0 = 0;
 
         for (let gy = 0; gy < ROWS; gy++) {
           for (let gx = 0; gx < COLS; gx++) {
@@ -669,8 +669,8 @@
             let grey = r * 0.222 + g * 0.707 + b * 0.071;
             pixels2d.push({
               r, g, b, grey,
-              posX: p.map(gx, 0, COLS, 0, W),
-              posY: p.map(gy, 0, ROWS, 0, H)
+              posX: p.map(gx, 0, COLS, 0, p.width),
+              posY: p.map(gy, 0, ROWS, 0, p.height)
             });
           }
         }
@@ -684,11 +684,11 @@
           return;
         }
 
-        let mx = p.constrain(p.mouseX / W, 0, 1);
-        let my = p.constrain(p.mouseY / H, 0, 1);
+        let mx = p.constrain(p.mouseX / p.width, 0, 1);
+        let my = p.constrain(p.mouseY / p.height, 0, 1);
         let t = p.frameCount * 0.012;
-        let tileW = W / COLS;
-        let tileH = H / ROWS;
+        let tileW = p.width / COLS;
+        let tileH = p.height / ROWS;
 
         p.background(250, 247, 240);
 
