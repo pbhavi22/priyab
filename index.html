@@ -196,33 +196,31 @@
       align-items: center;
       gap: 12px;
     }
-    .hero-right canvas {
+    #gen-canvas-wrap {
+      position: relative;
       border-radius: 14px;
+      overflow: hidden;
       box-shadow: 6px 6px 0 rgba(44,184,122,0.22), 0 20px 40px rgba(26,17,8,0.1);
       cursor: crosshair;
+    }
+    #gen-canvas-wrap img.photo-layer {
       display: block;
+      width: 440px;
+      height: 440px;
+      object-fit: cover;
+      object-position: center top;
     }
-    .gen-controls {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      justify-content: center;
+    #gen-canvas-wrap canvas {
+      position: absolute;
+      top: 0; left: 0;
+      border-radius: 14px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
     }
-    .gen-btn {
-      font-family: var(--sans);
-      font-size: 11px;
-      font-weight: 500;
-      padding: 4px 12px;
-      border-radius: 20px;
-      border: 1.5px solid rgba(200,16,46,0.3);
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 0.3px;
+    #gen-canvas-wrap:hover canvas {
+      opacity: 1;
     }
-    .gen-btn:hover { background: rgba(200,16,46,0.08); color: var(--black); }
-    .gen-btn.active { background: var(--red); color: #fff; border-color: var(--red); }
     .gen-hint {
       font-size: 11px;
       color: var(--muted);
@@ -470,14 +468,10 @@
 
     <!-- Right: generative portrait canvas -->
     <div class="hero-right fade-in">
-      <div id="gen-canvas-wrap"></div>
-      <div class="gen-controls">
-        <button class="gen-btn active" data-mode="1">Dots</button>
-        <button class="gen-btn" data-mode="2">Waves</button>
-        <button class="gen-btn" data-mode="3">Blocks</button>
-        <button class="gen-btn" data-mode="4">Relief</button>
+      <div id="gen-canvas-wrap">
+        <img class="photo-layer" src="connections.jpg" alt="generative portrait" />
       </div>
-      <span class="gen-hint">move mouse over canvas to interact</span>
+      <span class="gen-hint">hover to reveal generative art</span>
     </div>
   </div>
 
@@ -491,7 +485,7 @@
     <div class="about-grid">
       <div class="about-photo">
         <img src="priya.JPG" alt="Priya Bhavikatti" />
-        <span class="about-photo-label">me from my nyc vlog!</span>
+        <span class="about-photo-label">priya in new york!</span>
       </div>
       <div class="about-text">
         <div class="accent-bar"></div>
@@ -628,23 +622,12 @@
   <!-- p5.js generative portrait -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <script>
-    let genMode = 1;
-
-    // Wire up mode buttons
-    document.querySelectorAll('.gen-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        genMode = parseInt(btn.dataset.mode);
-        document.querySelectorAll('.gen-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-
     new p5(function(p) {
       let img;
       const COLS = 80, ROWS = 80;
       let pixels2d = [];
       let loaded = false;
-      let W, H;
+      const W = 440, H = 440;
 
       p.preload = function() {
         img = p.loadImage('connections.jpg',
@@ -654,10 +637,6 @@
       };
 
       p.setup = function() {
-        // Fit canvas to container width, square
-        let wrap = document.getElementById('gen-canvas-wrap');
-        let size = Math.min(wrap.offsetWidth || 440, 440);
-        W = size; H = size;
         let cnv = p.createCanvas(W, H);
         cnv.parent('gen-canvas-wrap');
         p.pixelDensity(1);
@@ -670,10 +649,17 @@
         if (!img || img.width === 0) return;
         img.loadPixels();
         pixels2d = [];
+
+        // Sample from the top portion of the image (to match object-position: center top)
+        // Use the center-top crop: full width, top H/W * img.width worth of height
+        let srcW = img.width;
+        let srcH = img.width; // square crop from top
+        let srcY0 = 0; // start from top
+
         for (let gy = 0; gy < ROWS; gy++) {
           for (let gx = 0; gx < COLS; gx++) {
-            let sx = p.floor(p.map(gx, 0, COLS, 0, img.width));
-            let sy = p.floor(p.map(gy, 0, ROWS, 0, img.height));
+            let sx = p.floor(p.map(gx, 0, COLS, 0, srcW - 1));
+            let sy = p.floor(p.map(gy, 0, ROWS, srcY0, srcY0 + srcH - 1));
             sx = p.constrain(sx, 0, img.width - 1);
             sy = p.constrain(sy, 0, img.height - 1);
             let idx = (sy * img.width + sx) * 4;
@@ -695,11 +681,6 @@
         if (!loaded || pixels2d.length === 0) {
           if (img && img.width > 0 && pixels2d.length === 0) buildPixelData();
           p.background(250, 247, 240);
-          p.fill(180);
-          p.noStroke();
-          p.textAlign(p.CENTER, p.CENTER);
-          p.textSize(13);
-          p.text('Loading portrait...', W / 2, H / 2);
           return;
         }
 
@@ -715,79 +696,26 @@
           let d = pixels2d[i];
           let { r, g, b, grey, posX, posY } = d;
           let gx = i % COLS;
-          let gy = p.floor(i / COLS);
 
-          if (genMode === 1) {
-            // Colored dots — size driven by brightness + mouse + sine wave
-            let wave = p.sin(gx * 0.3 + t) * 0.5 + 0.5;
-            let base = p.map(grey, 0, 255, 16, 1);
-            let sz = base * (0.5 + mx * 1.0) * (0.6 + wave * 0.5);
-            p.noStroke();
-            p.fill(r, g, b, 210);
-            p.ellipse(posX + tileW / 2, posY + tileH / 2, sz, sz);
-
-          } else if (genMode === 2) {
-            // Wavy lines — displacement by greyscale + mouse
-            let amp = p.map(grey, 0, 255, 0, 18) * (0.3 + my);
-            let freq = 0.15 + mx * 0.2;
-            let dy = p.sin(gx * freq + t * 1.5 + grey * 0.04) * amp;
-            let w = p.map(grey, 0, 255, 2.5, 0.3);
-            p.stroke(r, g, b, 180);
-            p.strokeWeight(w);
-            p.noFill();
-            if (gx < COLS - 1) {
-              let nd = pixels2d[i + 1];
-              let amp2 = p.map(nd.grey, 0, 255, 0, 18) * (0.3 + my);
-              let dy2 = p.sin((gx + 1) * freq + t * 1.5 + nd.grey * 0.04) * amp2;
-              p.line(posX + tileW / 2, posY + tileH / 2 + dy,
-                     posX + tileW + tileW / 2, nd.posY + tileH / 2 + dy2);
-            }
-
-          } else if (genMode === 3) {
-            // Pixel block quads with color shift
-            let sz = p.map(grey, 0, 255, tileW, tileW * 0.2) * (0.5 + mx);
-            let rb = r + (255 - r) * my * 0.4;
-            let bb = b + (255 - b) * mx * 0.3;
-            p.noStroke();
-            p.fill(rb, g, bb, 200);
-            let cx = posX + tileW / 2;
-            let cy = posY + tileH / 2;
-            p.push();
-            p.translate(cx, cy);
-            p.rotate(grey / 255 * p.PI * 0.15 * my);
-            p.rect(-sz / 2, -sz / 2, sz * 0.45, sz * 0.45);
-            p.rect(sz * 0.05, -sz / 2, sz * 0.45, sz * 0.45);
-            p.rect(-sz / 2, sz * 0.05, sz * 0.45, sz * 0.45);
-            p.rect(sz * 0.05, sz * 0.05, sz * 0.45, sz * 0.45);
-            p.pop();
-
-          } else if (genMode === 4) {
-            // Relief — angled strokes sculpt the portrait
-            let ni = p.constrain(i + 1, 0, pixels2d.length - 1);
-            let nd = pixels2d[ni];
-            let h = 40 * (0.3 + mx * 1.2);
-            let d1 = p.map(grey, 0, 255, h, 0);
-            let d2 = p.map(nd.grey, 0, 255, h, 0);
-            let w = p.map(grey, 0, 255, 3.5, 0.2) * (0.4 + my);
-            let wave2 = p.sin(gy * 0.25 + t) * 3 * my;
-            p.stroke(r, g, b, 200);
-            p.strokeWeight(w);
-            p.noFill();
-            p.line(posX - d1, posY + d1 + wave2,
-                   posX + tileW - d2, nd.posY + d2 + wave2);
+          // Waves mode only
+          let amp = p.map(grey, 0, 255, 0, 18) * (0.3 + my);
+          let freq = 0.15 + mx * 0.2;
+          let dy = p.sin(gx * freq + t * 1.5 + grey * 0.04) * amp;
+          let w = p.map(grey, 0, 255, 2.5, 0.3);
+          p.stroke(r, g, b, 200);
+          p.strokeWeight(w);
+          p.noFill();
+          if (gx < COLS - 1) {
+            let nd = pixels2d[i + 1];
+            let amp2 = p.map(nd.grey, 0, 255, 0, 18) * (0.3 + my);
+            let dy2 = p.sin((gx + 1) * freq + t * 1.5 + nd.grey * 0.04) * amp2;
+            p.line(posX + tileW / 2, posY + tileH / 2 + dy,
+                   posX + tileW + tileW / 2, nd.posY + tileH / 2 + dy2);
           }
         }
       };
 
       p.mouseMoved = function() { p.redraw(); };
-      p.mousePressed = function() {
-        if (p.mouseX >= 0 && p.mouseX <= W && p.mouseY >= 0 && p.mouseY <= H) {
-          genMode = (genMode % 4) + 1;
-          document.querySelectorAll('.gen-btn').forEach((b, i) => {
-            b.classList.toggle('active', i === genMode - 1);
-          });
-        }
-      };
     });
   </script>
 </body>
