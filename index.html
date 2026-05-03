@@ -34,7 +34,7 @@
       overflow-x: hidden;
     }
 
-    /* ── RISO: grain overlay ── */
+    /* RISO: grain overlay */
     body::before {
       content: '';
       position: fixed;
@@ -45,7 +45,7 @@
       mix-blend-mode: multiply;
     }
 
-    /* ── RISO: special effect? like a shadow vibe ── */
+    /* RISO: misprint shadow effect */
     .riso-heading {
       position: relative;
       display: inline;
@@ -67,29 +67,30 @@
     }
     .riso-heading.reg-red::before  { color: var(--red);  opacity: 0.3; left: -2px; top: 2px; }
     .riso-heading.reg-teal::before { color: var(--teal); opacity: 0.35; left: 2px; top: -1px; }
-/* ── PROFILE PIC ONE── */
+
+    /* PROFILE PIC */
     .about-photo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.about-photo img {
-  width: 180px;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 14px;
-  border: 2px solid rgba(200,16,46,0.2);
-  box-shadow: 4px 4px 0 rgba(44,184,122,0.3);
-}
-.about-photo-label {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.5px;
-  font-weight: 500;
-}
-    
-    /* ── navigation bar ── */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .about-photo img {
+      width: 180px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 2px solid rgba(200,16,46,0.2);
+      box-shadow: 4px 4px 0 rgba(44,184,122,0.3);
+    }
+    .about-photo-label {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    /* NAVIGATION */
     nav {
       position: sticky; top: 0; z-index: 200;
       background: rgba(250,247,240,0.94);
@@ -116,7 +117,7 @@
     .nav-links a:hover { color: var(--black); }
     .nav-links a:hover::after { width: 100%; }
 
-    /* ── banner ── */
+    /* BANNER */
     .banner-section {
       width: 100%; max-height: 220px; overflow: hidden; position: relative;
     }
@@ -131,18 +132,23 @@
       mix-blend-mode: multiply;
     }
 
-    /* ──hero ── */
+    /* HERO — two-column layout */
     .hero {
-      padding: 72px 48px 64px; max-width: 900px; position: relative;
+      padding: 72px 48px 64px;
+      display: grid;
+      grid-template-columns: 1fr 460px;
+      gap: 48px;
+      align-items: center;
+      position: relative;
+      max-width: 1200px;
     }
-    /* RISO: halftone dot cluster behind hero */
     .hero::before {
-      content: ''; position: absolute; right: 40px; top: 40px;
-      width: 260px; height: 260px;
+      content: ''; position: absolute; right: 500px; top: 40px;
+      width: 180px; height: 180px;
       background-image: radial-gradient(circle, rgba(200,16,46,0.16) 1.5px, transparent 1.5px);
       background-size: 16px 16px; border-radius: 50%; pointer-events: none; z-index: 0;
     }
-    .hero > * { position: relative; z-index: 1; }
+    .hero-left { position: relative; z-index: 1; }
 
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
@@ -162,14 +168,14 @@
 
     .hero h1 {
       font-family: var(--serif);
-      font-size: clamp(48px, 7.5vw, 76px);
+      font-size: clamp(40px, 5.5vw, 68px);
       line-height: 1.06; letter-spacing: -2.5px; margin-bottom: 24px;
     }
     .hero h1 .c-red   { color: var(--red);   font-style: italic; }
     .hero h1 .c-green { color: var(--green); }
 
     .hero-sub {
-      font-size: 17px; color: #5c5040; max-width: 520px; line-height: 1.75;
+      font-size: 16px; color: #5c5040; max-width: 480px; line-height: 1.75;
     }
     .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
     .tag {
@@ -181,7 +187,49 @@
     .tag-yellow { background: #fdf4c4; color: #7a5f00; outline: 1.5px solid rgba(122,95,0,0.2); }
     .tag-black  { background: var(--black); color: var(--paper); }
 
-    /* ── the sections ── */
+    /* GENERATIVE CANVAS PANEL */
+    .hero-right {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-right canvas {
+      border-radius: 14px;
+      box-shadow: 6px 6px 0 rgba(44,184,122,0.22), 0 20px 40px rgba(26,17,8,0.1);
+      cursor: crosshair;
+      display: block;
+    }
+    .gen-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .gen-btn {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1.5px solid rgba(200,16,46,0.3);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .gen-btn:hover { background: rgba(200,16,46,0.08); color: var(--black); }
+    .gen-btn.active { background: var(--red); color: #fff; border-color: var(--red); }
+    .gen-hint {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.3px;
+    }
+
+    /* SECTIONS */
     section { padding: 88px 48px; position: relative; }
     section:nth-child(odd) { background: var(--paper2); }
 
@@ -197,7 +245,6 @@
       font-size: 11px; color: var(--muted);
       font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; flex-shrink: 0;
     }
-    /* RISO: dot strip that fills the rest of the header row */
     .section-dots {
       flex: 1; height: 8px;
       background-image: radial-gradient(circle, rgba(200,16,46,0.28) 1.5px, transparent 1.5px);
@@ -206,7 +253,7 @@
       margin-left: 4px;
     }
 
-    /* ── ABOUT ── */
+    /* ABOUT */
     #about { background: var(--paper); }
     #about::after {
       content: ''; position: absolute; bottom: 0; left: 0;
@@ -214,25 +261,21 @@
       background-image: radial-gradient(circle, rgba(44,184,122,0.22) 1.5px, transparent 1.5px);
       background-size: 14px 14px; pointer-events: none;
     }
-
     .about-grid {
-  display: grid;
-  grid-template-columns: 200px 1.2fr 1fr;  /* was: 1.2fr 1fr */
-  gap: 56px;
-  align-items: start;
-}
-    
+      display: grid;
+      grid-template-columns: 200px 1.2fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
     .about-text p {
       font-size: 16px; color: #4a3f30; line-height: 1.85; margin-bottom: 18px;
     }
     .about-text p:last-child { margin-bottom: 0; }
-
     .accent-bar {
       width: 48px; height: 5px; border-radius: 2px;
       background: var(--red); margin-bottom: 24px;
       box-shadow: 3px 2px 0 rgba(44,184,122,0.5);
     }
-
     .about-aside { display: flex; flex-direction: column; gap: 14px; }
     .about-card {
       background: var(--paper); border: 1.5px solid rgba(26,17,8,0.1);
@@ -250,7 +293,7 @@
     }
     .about-card-value { font-size: 15px; color: var(--black); }
 
-    /* ── the CARDS ── */
+    /* CARDS */
     .cards-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
     }
@@ -261,7 +304,6 @@
       display: flex; flex-direction: column; gap: 12px;
       text-decoration: none; color: inherit; position: relative; overflow: hidden;
     }
-    /* RISO: halftone dot corner on every card */
     .card::after {
       content: ''; position: absolute; bottom: -12px; right: -12px;
       width: 96px; height: 96px;
@@ -274,7 +316,6 @@
     }
     .card.placeholder { border-style: dashed; background: transparent; opacity: 0.55; }
     .card.placeholder:hover { transform: none; box-shadow: none; }
-
     .card-eyebrow {
       display: flex; align-items: center; gap: 6px;
       font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
@@ -285,9 +326,8 @@
     .card-arrow { font-size: 18px; color: #c8bfb0; margin-top: 4px; transition: color 0.2s, transform 0.2s; }
     .card:hover .card-arrow { color: var(--red); transform: translate(3px, -3px); }
 
-    /* ── COLLAGE ── */
+    /* COLLAGE */
     #collage { position: relative; }
-    /* RISO: big yellow dot field behind collage */
     #collage::before {
       content: ''; position: absolute; top: 0; right: 0;
       width: 50%; height: 100%;
@@ -295,7 +335,6 @@
       background-size: 20px 20px; pointer-events: none; z-index: 0;
     }
     #collage > * { position: relative; z-index: 1; }
-
     .collage-note { font-size: 15px; color: #6b5f4f; margin-bottom: 32px; max-width: 560px; }
     .collage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .collage-item {
@@ -317,7 +356,7 @@
       background-size: 12px 12px;
     }
 
-    /* ── FOOTER ── */
+    /* FOOTER */
     footer {
       background: var(--black); color: #e8e0d0;
       padding: 64px 48px; display: flex; flex-direction: column; gap: 40px;
@@ -329,7 +368,6 @@
       background-size: 18px 18px; pointer-events: none; opacity: 0.4;
     }
     footer > * { position: relative; z-index: 1; }
-
     .footer-top {
       display: flex; justify-content: space-between;
       align-items: flex-start; flex-wrap: wrap; gap: 36px;
@@ -340,7 +378,6 @@
     }
     .footer-logo span { color: var(--red); }
     .footer-tagline { font-size: 14px; color: #8a7f6e; margin-top: 8px; max-width: 260px; line-height: 1.6; }
-
     .footer-link-label {
       font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px;
       color: #5a5040; margin-bottom: 12px; font-weight: 600;
@@ -358,7 +395,6 @@
       box-shadow: 3px 3px 0 rgba(44,184,122,0.38);
     }
     .social-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
-
     .footer-bottom {
       border-top: 1px solid #2e2618; padding-top: 24px;
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
@@ -366,7 +402,7 @@
     .footer-bottom p { font-size: 13px; color: #5a5040; }
     .footer-bottom .made-with span { color: var(--red); }
 
-    /* ── FADE IN ── */
+    /* FADE IN */
     .fade-in { opacity: 0; transform: translateY(16px); animation: fadeUp 0.65s ease forwards; }
     .fade-in:nth-child(1) { animation-delay: 0.05s; }
     .fade-in:nth-child(2) { animation-delay: 0.18s; }
@@ -374,12 +410,15 @@
     .fade-in:nth-child(4) { animation-delay: 0.42s; }
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* ── RESPONSIVE ── */
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 48px 24px; }
+      .hero-right { margin-top: 0; }
+      .hero-right canvas { width: 100% !important; height: auto !important; }
+    }
     @media (max-width: 720px) {
       nav { padding: 0 24px; }
       .nav-links { gap: 20px; }
-      .hero { padding: 48px 24px 48px; }
-      .hero::before { width: 140px; height: 140px; right: 12px; top: 24px; }
       section { padding: 60px 24px; }
       .about-grid { grid-template-columns: 1fr; gap: 36px; }
       .collage-grid { grid-template-columns: 1fr 1fr; }
@@ -390,7 +429,7 @@
 </head>
 <body>
 
-  <!-- ── Navigation ── -->
+  <!-- Navigation -->
   <nav>
     <a class="nav-logo" href="#top">priya<span>.</span></a>
     <ul class="nav-links">
@@ -401,33 +440,48 @@
     </ul>
   </nav>
 
-  <!-- ── Banner ── -->
+  <!-- Banner -->
   <div class="banner-section" id="top">
     <img src="youtubr banner.png" alt="photosbypriyab banner">
   </div>
 
-  <!-- ── Hero ── -->
+  <!-- Hero — two column: text left, generative portrait right -->
   <div class="hero">
-    <div class="hero-eyebrow fade-in">
-      <span class="riso-dot"></span>
-      Creative Portfolio · 2026
+    <!-- Left: text -->
+    <div class="hero-left">
+      <div class="hero-eyebrow fade-in">
+        <span class="riso-dot"></span>
+        Creative Portfolio · 2026
+      </div>
+      <h1 class="fade-in">
+        Design//Code<br>
+        <span class="c-red riso-heading reg-red" data-text="Creative Process">Creative Process</span><br>
+      </h1>
+      <p class="hero-sub fade-in">
+        I'm a web/print designer, photographer, and creative explorer. This portfolio documents my journey through web design: projects, experiments, and ideas built with HTML, CSS, and JavaScript.
+      </p>
+      <div class="hero-tags fade-in">
+        <span class="tag tag-red">HTML &amp; CSS</span>
+        <span class="tag tag-green">JavaScript</span>
+        <span class="tag tag-yellow">Photography</span>
+        <span class="tag tag-black">Design</span>
+      </div>
     </div>
-    <h1 class="fade-in">
-      Design//Code<br>
-      <span class="c-red riso-heading reg-red" data-text="Creative Process">Creative Process</span><br>
-    </h1> 
-    <p class="hero-sub fade-in">
-      I'm a web/print designer, photographer, and creative explorer. This portfolio documents my journey through web design: projects, experiments, and ideas built with HTML, CSS, and JavaScript.
-    </p>
-    <div class="hero-tags fade-in">
-      <span class="tag tag-red">HTML &amp; CSS</span>
-      <span class="tag tag-green">JavaScript</span>
-      <span class="tag tag-yellow">Photography</span>
-      <span class="tag tag-black">Design</span>
+
+    <!-- Right: generative portrait canvas -->
+    <div class="hero-right fade-in">
+      <div id="gen-canvas-wrap"></div>
+      <div class="gen-controls">
+        <button class="gen-btn active" data-mode="1">Dots</button>
+        <button class="gen-btn" data-mode="2">Waves</button>
+        <button class="gen-btn" data-mode="3">Blocks</button>
+        <button class="gen-btn" data-mode="4">Relief</button>
+      </div>
+      <span class="gen-hint">move mouse over canvas to interact</span>
     </div>
   </div>
 
-  <!-- ── About ── -->
+  <!-- About -->
   <section id="about">
     <div class="section-header">
       <span class="section-num">01</span>
@@ -435,10 +489,10 @@
       <div class="section-dots"></div>
     </div>
     <div class="about-grid">
- <div class="about-photo">
-    <img src="priya.JPG" alt="Priya Bhavikatti Image" />
-    <span class="about-photo-label">priya in new york!</span>
-  </div>
+      <div class="about-photo">
+        <img src="priya.JPG" alt="Priya Bhavikatti" />
+        <span class="about-photo-label">me from my nyc vlog!</span>
+      </div>
       <div class="about-text">
         <div class="accent-bar"></div>
         <p>Hi! I'm Priya - a student, photographer, and creative who loves finding the intersection between art and technology. I'm currently learning web design and exploring code as a practical, creative medium.</p>
@@ -450,18 +504,18 @@
           <div class="about-card-value">Design &amp; Neuroscience &amp; Economic Policy</div>
         </div>
         <div class="about-card">
-          <div class="about-card-label">Skills </div>
-          <div class="about-card-value">HTML · CSS · JavaScript </div>
+          <div class="about-card-label">Skills</div>
+          <div class="about-card-value">HTML · CSS · JavaScript</div>
         </div>
         <div class="about-card">
           <div class="about-card-label">Approach</div>
-          <div class="about-card-value">Visual storytelling · Psychological insight · Data-driven </div>
+          <div class="about-card-value">Visual storytelling · Psychological insight · Data-driven</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Projects ── -->
+  <!-- Projects -->
   <section id="projects">
     <div class="section-header">
       <span class="section-num">02</span>
@@ -496,7 +550,7 @@
     </div>
   </section>
 
-  <!-- ── Reading Responses ── -->
+  <!-- Reading Responses -->
   <section id="reading">
     <div class="section-header">
       <span class="section-num">03</span>
@@ -523,7 +577,7 @@
     </div>
   </section>
 
-  <!-- ── Collage ── -->
+  <!-- Collage -->
   <section id="collage">
     <div class="section-header">
       <span class="section-num">04</span>
@@ -532,7 +586,6 @@
     </div>
     <p class="collage-note">A visual mood board — photos, textures, and things that inspire my creative work.</p>
     <div class="collage-grid">
-      <!-- Replace collage-placeholder with <img src="..." alt="..."> when ready -->
       <div class="collage-item"><div class="collage-placeholder">Add image →</div></div>
       <div class="collage-item"><div class="collage-placeholder">Add image →</div></div>
       <div class="collage-item"><div class="collage-placeholder">Add image →</div></div>
@@ -541,7 +594,7 @@
     </div>
   </section>
 
-  <!-- ── Footer ── -->
+  <!-- Footer -->
   <footer>
     <div class="footer-top">
       <div>
@@ -572,5 +625,170 @@
     </div>
   </footer>
 
+  <!-- p5.js generative portrait -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script>
+    let genMode = 1;
+
+    // Wire up mode buttons
+    document.querySelectorAll('.gen-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        genMode = parseInt(btn.dataset.mode);
+        document.querySelectorAll('.gen-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    new p5(function(p) {
+      let img;
+      const COLS = 80, ROWS = 80;
+      let pixels2d = [];
+      let loaded = false;
+      let W, H;
+
+      p.preload = function() {
+        img = p.loadImage('connections.jpg',
+          () => { loaded = true; },
+          () => { loaded = false; }
+        );
+      };
+
+      p.setup = function() {
+        // Fit canvas to container width, square
+        let wrap = document.getElementById('gen-canvas-wrap');
+        let size = Math.min(wrap.offsetWidth || 440, 440);
+        W = size; H = size;
+        let cnv = p.createCanvas(W, H);
+        cnv.parent('gen-canvas-wrap');
+        p.pixelDensity(1);
+        p.frameRate(30);
+        if (loaded) buildPixelData();
+        p.loop();
+      };
+
+      function buildPixelData() {
+        if (!img || img.width === 0) return;
+        img.loadPixels();
+        pixels2d = [];
+        for (let gy = 0; gy < ROWS; gy++) {
+          for (let gx = 0; gx < COLS; gx++) {
+            let sx = p.floor(p.map(gx, 0, COLS, 0, img.width));
+            let sy = p.floor(p.map(gy, 0, ROWS, 0, img.height));
+            sx = p.constrain(sx, 0, img.width - 1);
+            sy = p.constrain(sy, 0, img.height - 1);
+            let idx = (sy * img.width + sx) * 4;
+            let r = img.pixels[idx];
+            let g = img.pixels[idx + 1];
+            let b = img.pixels[idx + 2];
+            let grey = r * 0.222 + g * 0.707 + b * 0.071;
+            pixels2d.push({
+              r, g, b, grey,
+              posX: p.map(gx, 0, COLS, 0, W),
+              posY: p.map(gy, 0, ROWS, 0, H)
+            });
+          }
+        }
+        loaded = true;
+      }
+
+      p.draw = function() {
+        if (!loaded || pixels2d.length === 0) {
+          if (img && img.width > 0 && pixels2d.length === 0) buildPixelData();
+          p.background(250, 247, 240);
+          p.fill(180);
+          p.noStroke();
+          p.textAlign(p.CENTER, p.CENTER);
+          p.textSize(13);
+          p.text('Loading portrait...', W / 2, H / 2);
+          return;
+        }
+
+        let mx = p.constrain(p.mouseX / W, 0, 1);
+        let my = p.constrain(p.mouseY / H, 0, 1);
+        let t = p.frameCount * 0.012;
+        let tileW = W / COLS;
+        let tileH = H / ROWS;
+
+        p.background(250, 247, 240);
+
+        for (let i = 0; i < pixels2d.length; i++) {
+          let d = pixels2d[i];
+          let { r, g, b, grey, posX, posY } = d;
+          let gx = i % COLS;
+          let gy = p.floor(i / COLS);
+
+          if (genMode === 1) {
+            // Colored dots — size driven by brightness + mouse + sine wave
+            let wave = p.sin(gx * 0.3 + t) * 0.5 + 0.5;
+            let base = p.map(grey, 0, 255, 16, 1);
+            let sz = base * (0.5 + mx * 1.0) * (0.6 + wave * 0.5);
+            p.noStroke();
+            p.fill(r, g, b, 210);
+            p.ellipse(posX + tileW / 2, posY + tileH / 2, sz, sz);
+
+          } else if (genMode === 2) {
+            // Wavy lines — displacement by greyscale + mouse
+            let amp = p.map(grey, 0, 255, 0, 18) * (0.3 + my);
+            let freq = 0.15 + mx * 0.2;
+            let dy = p.sin(gx * freq + t * 1.5 + grey * 0.04) * amp;
+            let w = p.map(grey, 0, 255, 2.5, 0.3);
+            p.stroke(r, g, b, 180);
+            p.strokeWeight(w);
+            p.noFill();
+            if (gx < COLS - 1) {
+              let nd = pixels2d[i + 1];
+              let amp2 = p.map(nd.grey, 0, 255, 0, 18) * (0.3 + my);
+              let dy2 = p.sin((gx + 1) * freq + t * 1.5 + nd.grey * 0.04) * amp2;
+              p.line(posX + tileW / 2, posY + tileH / 2 + dy,
+                     posX + tileW + tileW / 2, nd.posY + tileH / 2 + dy2);
+            }
+
+          } else if (genMode === 3) {
+            // Pixel block quads with color shift
+            let sz = p.map(grey, 0, 255, tileW, tileW * 0.2) * (0.5 + mx);
+            let rb = r + (255 - r) * my * 0.4;
+            let bb = b + (255 - b) * mx * 0.3;
+            p.noStroke();
+            p.fill(rb, g, bb, 200);
+            let cx = posX + tileW / 2;
+            let cy = posY + tileH / 2;
+            p.push();
+            p.translate(cx, cy);
+            p.rotate(grey / 255 * p.PI * 0.15 * my);
+            p.rect(-sz / 2, -sz / 2, sz * 0.45, sz * 0.45);
+            p.rect(sz * 0.05, -sz / 2, sz * 0.45, sz * 0.45);
+            p.rect(-sz / 2, sz * 0.05, sz * 0.45, sz * 0.45);
+            p.rect(sz * 0.05, sz * 0.05, sz * 0.45, sz * 0.45);
+            p.pop();
+
+          } else if (genMode === 4) {
+            // Relief — angled strokes sculpt the portrait
+            let ni = p.constrain(i + 1, 0, pixels2d.length - 1);
+            let nd = pixels2d[ni];
+            let h = 40 * (0.3 + mx * 1.2);
+            let d1 = p.map(grey, 0, 255, h, 0);
+            let d2 = p.map(nd.grey, 0, 255, h, 0);
+            let w = p.map(grey, 0, 255, 3.5, 0.2) * (0.4 + my);
+            let wave2 = p.sin(gy * 0.25 + t) * 3 * my;
+            p.stroke(r, g, b, 200);
+            p.strokeWeight(w);
+            p.noFill();
+            p.line(posX - d1, posY + d1 + wave2,
+                   posX + tileW - d2, nd.posY + d2 + wave2);
+          }
+        }
+      };
+
+      p.mouseMoved = function() { p.redraw(); };
+      p.mousePressed = function() {
+        if (p.mouseX >= 0 && p.mouseX <= W && p.mouseY >= 0 && p.mouseY <= H) {
+          genMode = (genMode % 4) + 1;
+          document.querySelectorAll('.gen-btn').forEach((b, i) => {
+            b.classList.toggle('active', i === genMode - 1);
+          });
+        }
+      };
+    });
+  </script>
 </body>
 </html>
