@@ -134,14 +134,13 @@
 
     /* HERO — two-column layout */
     .hero {
-      padding: 72px 48px 64px 48px;
+      padding: 72px 80px 64px 48px;
       display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 48px;
+      grid-template-columns: 1fr 380px;
+      gap: 56px;
       align-items: center;
       position: relative;
       width: 100%;
-      overflow: hidden;
     }
     .hero::before {
       content: ''; position: absolute; left: 360px; top: 40px;
@@ -194,22 +193,35 @@
       z-index: 1;
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
+      justify-content: center;
       gap: 0;
-      align-self: stretch;
+    }
+    /* RISO: green offset behind the photo */
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 100%;
+      height: 100%;
+      background: rgba(44,184,122,0.28);
+      border-radius: 16px;
+      z-index: 0;
+      pointer-events: none;
     }
     #gen-canvas-wrap {
       position: relative;
+      z-index: 1;
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: -8px 0 40px rgba(26,17,8,0.1);
+      box-shadow: 6px 6px 0 rgba(44,184,122,0.35), 0 20px 40px rgba(26,17,8,0.12);
       cursor: crosshair;
-      height: 100%;
     }
     #gen-canvas-wrap img.photo-layer {
       display: block;
-      width: 400px;
-      height: 100%;
-      min-height: 520px;
+      width: 340px;
+      height: 460px;
       object-fit: cover;
       object-position: center top;
     }
