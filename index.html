@@ -365,6 +365,35 @@
       background-size: 12px 12px;
     }
 
+.reading-wrap {
+  position: relative;
+}
+.reading-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--serif);
+  font-size: clamp(120px, 20vw, 240px);
+  color: var(--red);
+  opacity: 0.04;
+  letter-spacing: -4px;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+.reading-dump {
+  position: relative;
+  z-index: 1;
+  font-size: 10px;
+  line-height: 1.85;
+  color: var(--muted);
+  column-count: 3;
+  column-gap: 32px;
+  letter-spacing: 0.2px;
+}
+    
     /* FOOTER */
     footer {
       background: var(--black); color: #e8e0d0;
@@ -555,30 +584,18 @@
     </div>
   </section>
 
-  <!-- Reading Responses -->
+ <!-- Reading Responses -->
   <section id="reading">
     <div class="section-header">
       <span class="section-num">03</span>
       <h2 class="riso-heading reg-teal" data-text="Reading Responses">Reading Responses</h2>
       <div class="section-dots"></div>
     </div>
-    <div class="cards-grid">
-      <a class="card placeholder" href="#">
-        <div class="card-eyebrow" style="color:var(--red)">
-          <span class="card-dot" style="background:var(--red)"></span>Reading Response
-        </div>
-        <h3>Response #1</h3>
-        <p>Your reading response will go here once you add it.</p>
-        <div class="card-arrow">↗</div>
-      </a>
-      <a class="card placeholder" href="#">
-        <div class="card-eyebrow" style="color:var(--green)">
-          <span class="card-dot" style="background:var(--green)"></span>Reading Response
-        </div>
-        <h3>Response #2</h3>
-        <p>Your reading response will go here once you add it.</p>
-        <div class="card-arrow">↗</div>
-      </a>
+    <div class="reading-wrap">
+      <div class="reading-watermark">READ</div>
+      <div class="reading-dump">
+        paste all your text here...
+      </div>
     </div>
   </section>
 
