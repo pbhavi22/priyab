@@ -22,7 +22,7 @@
       --serif:  'DM Serif Display', Georgia, serif;
       --sans:   'Figtree', sans-serif;
     }
-
+/*scrolling behavior*/
     html { scroll-behavior: smooth; }
 
     body {
@@ -68,7 +68,7 @@
     .riso-heading.reg-red::before  { color: var(--red);  opacity: 0.3; left: -2px; top: 2px; }
     .riso-heading.reg-teal::before { color: var(--teal); opacity: 0.35; left: 2px; top: -1px; }
 
-    /* PROFILE PIC */
+    /* header pic */
     .about-photo {
       display: flex;
       flex-direction: column;
@@ -90,7 +90,7 @@
       font-weight: 500;
     }
 
-    /* NAVIGATION */
+    /* navigation ability */
     nav {
       position: sticky; top: 0; z-index: 200;
       background: rgba(250,247,240,0.94);
@@ -117,7 +117,7 @@
     .nav-links a:hover { color: var(--black); }
     .nav-links a:hover::after { width: 100%; }
 
-    /* BANNER */
+    /* banner sectioning */
     .banner-section {
       width: 100%; max-height: 220px; overflow: hidden; position: relative;
     }
@@ -132,7 +132,7 @@
       mix-blend-mode: multiply;
     }
 
-    /* HERO — two-column layout */
+    /* hero, — two-column layout */
     .hero {
       padding: 72px 80px 64px 48px;
       display: grid;
@@ -187,7 +187,7 @@
     .tag-yellow { background: #fdf4c4; color: #7a5f00; outline: 1.5px solid rgba(122,95,0,0.2); }
     .tag-black  { background: var(--black); color: var(--paper); }
 
-    /* GENERATIVE CANVAS PANEL */
+    /* generative canvas panel */
     .hero-right {
       position: relative;
       z-index: 1;
@@ -280,7 +280,7 @@
   color: var(--black);
 }
     
-    /* SECTIONS */
+    /* sections */
     section { padding: 88px 48px; position: relative; }
     section:nth-child(odd) { background: var(--paper2); }
 
@@ -304,7 +304,7 @@
       margin-left: 4px;
     }
 
-    /* ABOUT */
+    /* about section */
     #about { background: var(--paper); }
     #about::after {
       content: ''; position: absolute; bottom: 0; left: 0;
@@ -344,7 +344,7 @@
     }
     .about-card-value { font-size: 15px; color: var(--black); }
 
-    /* CARDS */
+    /* cards */
     .cards-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
     }
@@ -377,7 +377,7 @@
     .card-arrow { font-size: 18px; color: #c8bfb0; margin-top: 4px; transition: color 0.2s, transform 0.2s; }
     .card:hover .card-arrow { color: var(--red); transform: translate(3px, -3px); }
 
-    /* COLLAGE */
+    /* collage section */
     #collage { position: relative; }
     #collage::before {
       content: ''; position: absolute; top: 0; right: 0;
@@ -385,6 +385,8 @@
       background-image: radial-gradient(circle, rgba(245,215,78,0.32) 2px, transparent 2px);
       background-size: 20px 20px; pointer-events: none; z-index: 0;
     }
+
+    
     #collage > * { position: relative; z-index: 1; }
     .collage-note { font-size: 15px; color: #6b5f4f; margin-bottom: 32px; max-width: 560px; }
     .collage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -432,7 +434,9 @@
   color: var(--black);
 }
     
-    /* FOOTER */
+    /* ending footer */
+
+    
     footer {
       background: var(--black); color: #e8e0d0;
       padding: 64px 48px; display: flex; flex-direction: column; gap: 40px;
@@ -478,7 +482,7 @@
     .footer-bottom p { font-size: 13px; color: #5a5040; }
     .footer-bottom .made-with span { color: var(--red); }
 
-    /* FADE IN */
+    /* fading in */
     .fade-in { opacity: 0; transform: translateY(16px); animation: fadeUp 0.65s ease forwards; }
     .fade-in:nth-child(1) { animation-delay: 0.05s; }
     .fade-in:nth-child(2) { animation-delay: 0.18s; }
@@ -486,7 +490,7 @@
     .fade-in:nth-child(4) { animation-delay: 0.42s; }
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* RESPONSIVE */
+    /* adaption */
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; padding: 48px 24px; }
       .hero-left { padding-right: 0; }
@@ -506,7 +510,7 @@
 </head>
 <body>
 
-  <!-- Navigation -->
+  <!-- navigation -->
   <nav>
     <a class="nav-logo" href="#top">priya<span>.</span></a>
     <ul class="nav-links">
@@ -517,14 +521,14 @@
     </ul>
   </nav>
 
-  <!-- Banner -->
+  <!-- banner -->
   <div class="banner-section" id="top">
     <img src="youtubr banner.png" alt="photosbypriyab banner">
   </div>
 
-  <!-- Hero — two column: text left, generative portrait right -->
+  <!-- hero — two column: text left, generative portrait right -->
   <div class="hero">
-    <!-- Left: text -->
+    <!-- left: text -->
     <div class="hero-left">
       <div class="hero-eyebrow fade-in">
         <span class="riso-dot"></span>
@@ -545,7 +549,7 @@
       </div>
     </div>
 
-    <!-- Right: generative portrait canvas -->
+    <!-- right: generative portrait canvas -->
     <div class="hero-right fade-in">
       <div id="gen-canvas-wrap">
         <img class="photo-layer" src="connections.jpg" alt="generative portrait" />
@@ -553,7 +557,7 @@
     </div>
   </div>
 
-  <!-- About -->
+  <!-- abt -->
   <section id="about">
     <div class="section-header">
       <span class="section-num">01</span>
@@ -587,7 +591,7 @@
     </div>
   </section>
 
-<!-- Projects -->
+<!-- projects -->
 <section id="projects">
   <div class="section-header">
     <span class="section-num">02</span>
@@ -641,6 +645,8 @@
       <div class="card-arrow">↗</div>
     </a>
 
+
+    
     <a class="card" href="https://smr-ptk.github.io/AotW-S3A2/" target="_blank" rel="noopener">
       <div class="card-eyebrow" style="color:var(--green)">
         <span class="card-dot" style="background:var(--green)"></span>Section 3 · Assignment 2
@@ -662,7 +668,7 @@
   </div>
 </section>
 
- <!-- Reading Responses -->
+ <!-- reading responses -->
 <section id="reading">
   <div class="section-header">
     <span class="section-num">03</span>
@@ -679,7 +685,7 @@
   </div>
 </section>
 
-  <!-- Collage -->
+  <!-- collage -->
   <section id="collage">
     <div class="section-header">
       <span class="section-num">04</span>
@@ -696,7 +702,7 @@
 </div>
   </section>    
 
-  <!-- Footer -->
+  <!-- footer -->
   <footer>
     <div class="footer-top">
       <div>
