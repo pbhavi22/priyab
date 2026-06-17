@@ -1,856 +1,443 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Priya Bhavikatti</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --red:    #c8102e;
-      --green:  #2cb87a;
-      --yellow: #f5d74e;
-      --teal:   #00a99d;
-      --black:  #1a1108;
-      --paper:  #faf7f0;
-      --paper2: #f3efe4;
-      --muted:  #8a7f6e;
-      --serif:  'DM Serif Display', Georgia, serif;
-      --sans:   'Figtree', sans-serif;
+      --ink:    #0d0d0d;
+      --paper:  #f5f0e8;
+      --rose:   #e8a49c;
+      --sage:   #8aab8a;
+      --muted:  rgba(245,240,232,0.45);
+      --serif:  'Cormorant Garamond', Georgia, serif;
+      --sans:   'Inter', sans-serif;
     }
-/*scrolling behavior*/
-    html { scroll-behavior: smooth; }
 
-    body {
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--ink);
+      color: var(--paper);
       font-family: var(--sans);
-      background: var(--paper);
-      color: var(--black);
-      font-size: 16px;
-      line-height: 1.7;
-      overflow-x: hidden;
     }
 
-    /* RISO: grain overlay */
-    body::before {
+    /* ── STAGE ── */
+    #stage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* video layer */
+    #bg-video {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 1;
+      transition: opacity 1.8s ease;
+    }
+    #bg-video.hidden { opacity: 0; }
+
+    /* p5 canvas lives here */
+    #canvas-container {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.8s ease;
+    }
+    #canvas-container.visible { opacity: 1; }
+
+    /* dark vignette over video */
+    #vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center,
+        rgba(13,13,13,0.05) 0%,
+        rgba(13,13,13,0.55) 70%,
+        rgba(13,13,13,0.82) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      color: var(--paper);
+      text-decoration: none;
+      opacity: 0;
+      animation: fadeIn 1s ease 0.5s forwards;
+    }
+    .nav-logo em { font-style: italic; color: var(--rose); }
+    .nav-pages {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      opacity: 0;
+      animation: fadeIn 1s ease 0.8s forwards;
+    }
+    .nav-pages a {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-pages a:hover { color: var(--paper); }
+
+    /* ── HERO TEXT ── */
+    #hero-text {
+      position: fixed;
+      bottom: 80px;
+      left: 48px;
+      z-index: 10;
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(52px, 8vw, 108px);
+      font-weight: 300;
+      line-height: 0.92;
+      letter-spacing: -2px;
+      opacity: 0;
+      animation: slideUp 1.1s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--rose);
+    }
+    .hero-sub {
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 18px;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.1s forwards;
+    }
+
+    /* ── ENTER HINT ── */
+    #morph-hint {
+      position: fixed;
+      bottom: 80px;
+      right: 48px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeIn 1s ease 2s forwards;
+      cursor: pointer;
+    }
+    #morph-hint span {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    #morph-hint:hover span { color: var(--paper); }
+    .hint-line {
+      width: 40px;
+      height: 1px;
+      background: var(--rose);
+      transform-origin: right;
+      animation: lineGrow 1.2s ease 2.2s both;
+    }
+    @keyframes lineGrow {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+
+    /* ── SECTIONS NAV (bottom center, after morph) ── */
+    #section-nav {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: 48px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+    #section-nav.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .section-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .section-link-word {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--paper);
+      transition: color 0.2s;
+    }
+    .section-link:hover .section-link-word { color: var(--rose); }
+    .section-link-label {
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── CURSOR DOT ── */
+    #cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--rose);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.3s, height 0.3s, opacity 0.3s;
+      opacity: 0;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::after {
       content: '';
       position: fixed;
       inset: 0;
-      z-index: 9999;
+      z-index: 9998;
       pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E");
-      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.04'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
     }
 
-    /* RISO: misprint shadow effect */
-    .riso-heading {
-      position: relative;
-      display: inline;
-    }
-    .riso-heading::before {
-      content: attr(data-text);
-      position: absolute;
-      left: 2px; top: 2px;
-      color: var(--green);
-      opacity: 0.4;
-      pointer-events: none;
-      font-family: inherit;
-      font-size: inherit;
-      font-style: inherit;
-      letter-spacing: inherit;
-      line-height: inherit;
-      z-index: -1;
-      white-space: nowrap;
-    }
-    .riso-heading.reg-red::before  { color: var(--red);  opacity: 0.3; left: -2px; top: 2px; }
-    .riso-heading.reg-teal::before { color: var(--teal); opacity: 0.35; left: 2px; top: -1px; }
+    @keyframes fadeIn  { to { opacity: 1; } }
+    @keyframes slideUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
 
-    /* header pic */
-    .about-photo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-    .about-photo img {
-      width: 180px;
-      height: 220px;
-      object-fit: cover;
-      border-radius: 14px;
-      border: 2px solid rgba(200,16,46,0.2);
-      box-shadow: 4px 4px 0 rgba(44,184,122,0.3);
-    }
-    .about-photo-label {
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.5px;
-      font-weight: 500;
-    }
-
-    /* navigation ability */
-    nav {
-      position: sticky; top: 0; z-index: 200;
-      background: rgba(250,247,240,0.94);
-      backdrop-filter: blur(8px);
-      border-bottom: 1.5px solid rgba(26,17,8,0.1);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px; height: 60px;
-    }
-    .nav-logo {
-      font-family: var(--serif); font-size: 20px;
-      color: var(--black); text-decoration: none; letter-spacing: -0.3px;
-    }
-    .nav-logo span { color: var(--red); }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a {
-      font-size: 14px; font-weight: 400; color: var(--muted);
-      text-decoration: none; transition: color 0.2s; position: relative;
-    }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: -2px; left: 0;
-      width: 0; height: 1.5px; background: var(--red);
-      transition: width 0.25s ease;
-    }
-    .nav-links a:hover { color: var(--black); }
-    .nav-links a:hover::after { width: 100%; }
-
-    /* banner sectioning */
-    .banner-section {
-      width: 100%; max-height: 220px; overflow: hidden; position: relative;
-    }
-    .banner-section img {
-      width: 100%; height: 220px; object-fit: cover;
-      object-position: center; display: block;
-    }
-    .banner-section::after {
-      content: ''; position: absolute; inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse at 30% 50%, rgba(200,16,46,0.06) 0%, transparent 60%),
-                  radial-gradient(ellipse at 80% 40%, rgba(44,184,122,0.05) 0%, transparent 55%);
-      mix-blend-mode: multiply;
-    }
-
-    /* hero, — two-column layout */
-    .hero {
-      padding: 72px 80px 64px 48px;
-      display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 56px;
-      align-items: center;
-      position: relative;
-      width: 100%;
-    }
-    .hero::before {
-      content: ''; position: absolute; left: 360px; top: 40px;
-      width: 180px; height: 180px;
-      background-image: radial-gradient(circle, rgba(200,16,46,0.16) 1.5px, transparent 1.5px);
-      background-size: 16px 16px; border-radius: 50%; pointer-events: none; z-index: 0;
-    }
-    .hero-left { position: relative; z-index: 1; padding-right: 48px; }
-
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 12px; font-weight: 500; letter-spacing: 1.4px;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
-    }
-    .riso-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: var(--red);
-      display: inline-block; flex-shrink: 0;
-      box-shadow: -2px 1px 0 rgba(44,184,122,0.55);
-      animation: pulse 2.5s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.55; transform: scale(0.75); }
-    }
-
-    .hero h1 {
-      font-family: var(--serif);
-      font-size: clamp(40px, 5.5vw, 68px);
-      line-height: 1.06; letter-spacing: -2.5px; margin-bottom: 24px;
-    }
-    .hero h1 .c-red   { color: var(--red);   font-style: italic; }
-    .hero h1 .c-green { color: var(--green); }
-
-    .hero-sub {
-      font-size: 16px; color: #5c5040; max-width: 480px; line-height: 1.75;
-    }
-    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
-    .tag {
-      font-size: 12px; font-weight: 500; padding: 5px 14px;
-      border-radius: 20px; letter-spacing: 0.3px;
-    }
-    .tag-red    { background: #fce8ec; color: #9b0c22; outline: 1.5px solid rgba(155,12,34,0.22); }
-    .tag-green  { background: #d8f5e8; color: #1a7a4e; outline: 1.5px solid rgba(26,122,78,0.22); }
-    .tag-yellow { background: #fdf4c4; color: #7a5f00; outline: 1.5px solid rgba(122,95,0,0.2); }
-    .tag-black  { background: var(--black); color: var(--paper); }
-
-    /* generative canvas panel */
-    .hero-right {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-    }
-    /* RISO: green offset behind the photo */
-    .hero-right::before {
-      content: '';
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      width: 100%;
-      height: 100%;
-      background: rgba(44,184,122,0.28);
-      border-radius: 16px;
-      z-index: 0;
-      pointer-events: none;
-    }
-    #gen-canvas-wrap {
-      position: relative;
-      z-index: 1;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 6px 6px 0 rgba(44,184,122,0.35), 0 20px 40px rgba(26,17,8,0.12);
-      cursor: crosshair;
-    }
-    #gen-canvas-wrap img.photo-layer {
-      display: block;
-      width: 340px;
-      height: 460px;
-      object-fit: cover;
-      object-position: center top;
-    }
-    #gen-canvas-wrap canvas {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100% !important;
-      height: 100% !important;
-      opacity: 0.15;
-      transition: opacity 0.5s ease;
-      pointer-events: none;
-    }
-    #gen-canvas-wrap:hover canvas {
-      opacity: 1;
-    }
-
-.reading-wrap {
-  position: relative;
-  min-height: 300px;
-}
-.reading-peek {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  z-index: 2;
-}
-.emoji-field {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-.reading-wrap:hover .reading-peek {
-  opacity: 0;
-}
-.reading-dump {
-  position: relative;
-  z-index: 1;
-  font-size: 10px;
-  line-height: 1.85;
-  color: transparent;
-  column-count: 3;
-  column-gap: 32px;
-  letter-spacing: 0.2px;
-  transition: color 0.6s ease;
-}
-.reading-wrap:hover .reading-dump {
-  color: var(--muted);
-}
-.reading-dump b {
-  color: transparent;
-  font-weight: 700;
-  transition: color 0.6s ease;
-}
-.reading-wrap:hover .reading-dump b {
-  color: var(--black);
-}
-    
-    /* sections */
-    section { padding: 88px 48px; position: relative; }
-    section:nth-child(odd) { background: var(--paper2); }
-
-    .section-header {
-      display: flex; align-items: center; gap: 14px; margin-bottom: 52px;
-    }
-    .section-header h2 {
-      font-family: var(--serif);
-      font-size: clamp(30px, 4vw, 44px);
-      letter-spacing: -1px; line-height: 1.1; flex-shrink: 0;
-    }
-    .section-num {
-      font-size: 11px; color: var(--muted);
-      font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; flex-shrink: 0;
-    }
-    .section-dots {
-      flex: 1; height: 8px;
-      background-image: radial-gradient(circle, rgba(200,16,46,0.28) 1.5px, transparent 1.5px);
-      background-size: 13px 13px;
-      background-repeat: repeat-x; background-position: left center;
-      margin-left: 4px;
-    }
-
-    /* about section */
-    #about { background: var(--paper); }
-    #about::after {
-      content: ''; position: absolute; bottom: 0; left: 0;
-      width: 200px; height: 200px;
-      background-image: radial-gradient(circle, rgba(44,184,122,0.22) 1.5px, transparent 1.5px);
-      background-size: 14px 14px; pointer-events: none;
-    }
-    .about-grid {
-      display: grid;
-      grid-template-columns: 200px 1.2fr 1fr;
-      gap: 56px;
-      align-items: start;
-    }
-    .about-text p {
-      font-size: 16px; color: #4a3f30; line-height: 1.85; margin-bottom: 18px;
-    }
-    .about-text p:last-child { margin-bottom: 0; }
-    .accent-bar {
-      width: 48px; height: 5px; border-radius: 2px;
-      background: var(--red); margin-bottom: 24px;
-      box-shadow: 3px 2px 0 rgba(44,184,122,0.5);
-    }
-    .about-aside { display: flex; flex-direction: column; gap: 14px; }
-    .about-card {
-      background: var(--paper); border: 1.5px solid rgba(26,17,8,0.1);
-      border-radius: 12px; padding: 18px 22px; position: relative; overflow: hidden;
-    }
-    .about-card::before {
-      content: ''; position: absolute; top: 0; right: 0;
-      width: 64px; height: 64px;
-      background-image: radial-gradient(circle, rgba(200,16,46,0.13) 1px, transparent 1px);
-      background-size: 8px 8px; border-radius: 0 12px 0 0; pointer-events: none;
-    }
-    .about-card-label {
-      font-size: 10px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin-bottom: 5px;
-    }
-    .about-card-value { font-size: 15px; color: var(--black); }
-
-    /* cards */
-    .cards-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
-    }
-    .card {
-      background: var(--paper); border: 1.5px solid rgba(26,17,8,0.12);
-      border-radius: 16px; padding: 28px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      display: flex; flex-direction: column; gap: 12px;
-      text-decoration: none; color: inherit; position: relative; overflow: hidden;
-    }
-    .card::after {
-      content: ''; position: absolute; bottom: -12px; right: -12px;
-      width: 96px; height: 96px;
-      background-image: radial-gradient(circle, rgba(200,16,46,0.15) 1.5px, transparent 1.5px);
-      background-size: 10px 10px; border-radius: 50%; pointer-events: none;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 4px 6px 0 rgba(44,184,122,0.22), 0 14px 28px rgba(26,17,8,0.07);
-    }
-    .card.placeholder { border-style: dashed; background: transparent; opacity: 0.55; }
-    .card.placeholder:hover { transform: none; box-shadow: none; }
-    .card-eyebrow {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
-    }
-    .card-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    .card h3 { font-family: var(--serif); font-size: 21px; line-height: 1.2; letter-spacing: -0.3px; }
-    .card p { font-size: 14px; color: #6b5f4f; line-height: 1.65; flex: 1; }
-    .card-arrow { font-size: 18px; color: #c8bfb0; margin-top: 4px; transition: color 0.2s, transform 0.2s; }
-    .card:hover .card-arrow { color: var(--red); transform: translate(3px, -3px); }
-
-    /* collage section */
-    #collage { position: relative; }
-    #collage::before {
-      content: ''; position: absolute; top: 0; right: 0;
-      width: 50%; height: 100%;
-      background-image: radial-gradient(circle, rgba(245,215,78,0.32) 2px, transparent 2px);
-      background-size: 20px 20px; pointer-events: none; z-index: 0;
-    }
-
-    
-    #collage > * { position: relative; z-index: 1; }
-    .collage-note { font-size: 15px; color: #6b5f4f; margin-bottom: 32px; max-width: 560px; }
-    .collage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .collage-item {
-      border-radius: 12px; overflow: hidden;
-      background: #e8e0d0; aspect-ratio: 4/3; position: relative;
-      box-shadow: 2px 3px 0 rgba(200,16,46,0.14);
-    }
-    .collage-item:first-child { grid-column: span 2; aspect-ratio: 16/9; }
-    .collage-item img {
-      width: 100%; height: 100%; object-fit: cover;
-      display: block; transition: transform 0.4s ease;
-    }
-    .collage-item:hover img { transform: scale(1.04); }
-    .collage-placeholder {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; color: #b0a090; font-style: italic;
-      background-image: radial-gradient(circle, rgba(26,17,8,0.08) 1px, transparent 1px);
-      background-size: 12px 12px;
-    }
-
-.reading-wrap {
-  position: relative;
-}
-.reading-dump {
-  position: relative;
-  z-index: 1;
-  font-size: 10px;
-  line-height: 1.85;
-  color: transparent;
-  column-count: 3;
-  column-gap: 32px;
-  letter-spacing: 0.2px;
-  transition: color 0.6s ease;
-}
-.reading-dump:hover {
-  color: var(--muted);
-}
-.reading-dump b {
-  color: transparent;
-  transition: color 0.6s ease;
-}
-.reading-dump:hover b {
-  color: var(--black);
-}
-    
-    /* ending footer */
-
-    
-    footer {
-      background: var(--black); color: #e8e0d0;
-      padding: 64px 48px; display: flex; flex-direction: column; gap: 40px;
-      position: relative; overflow: hidden;
-    }
-    footer::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(200,16,46,0.22) 1px, transparent 1px);
-      background-size: 18px 18px; pointer-events: none; opacity: 0.4;
-    }
-    footer > * { position: relative; z-index: 1; }
-    .footer-top {
-      display: flex; justify-content: space-between;
-      align-items: flex-start; flex-wrap: wrap; gap: 36px;
-    }
-    .footer-logo {
-      font-family: var(--serif); font-size: 32px; letter-spacing: -0.5px;
-      text-shadow: -2px 2px 0 rgba(44,184,122,0.38);
-    }
-    .footer-logo span { color: var(--red); }
-    .footer-tagline { font-size: 14px; color: #8a7f6e; margin-top: 8px; max-width: 260px; line-height: 1.6; }
-    .footer-link-label {
-      font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px;
-      color: #5a5040; margin-bottom: 12px; font-weight: 600;
-    }
-    .social-row { display: flex; flex-wrap: wrap; gap: 10px; }
-    .social-btn {
-      display: inline-flex; align-items: center; gap: 7px;
-      font-size: 13px; font-weight: 500; color: #c8bfb0;
-      text-decoration: none; padding: 8px 16px;
-      border: 1.5px solid #2e2618; border-radius: 24px;
-      transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-    }
-    .social-btn:hover {
-      background: var(--paper); color: var(--black); border-color: var(--paper);
-      box-shadow: 3px 3px 0 rgba(44,184,122,0.38);
-    }
-    .social-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
-    .footer-bottom {
-      border-top: 1px solid #2e2618; padding-top: 24px;
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
-    }
-    .footer-bottom p { font-size: 13px; color: #5a5040; }
-    .footer-bottom .made-with span { color: var(--red); }
-
-    /* fading in */
-    .fade-in { opacity: 0; transform: translateY(16px); animation: fadeUp 0.65s ease forwards; }
-    .fade-in:nth-child(1) { animation-delay: 0.05s; }
-    .fade-in:nth-child(2) { animation-delay: 0.18s; }
-    .fade-in:nth-child(3) { animation-delay: 0.30s; }
-    .fade-in:nth-child(4) { animation-delay: 0.42s; }
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-
-    /* adaption */
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; padding: 48px 24px; }
-      .hero-left { padding-right: 0; }
-      .hero-right { align-items: center; }
-      #gen-canvas-wrap img.photo-layer { width: 100%; min-height: 360px; }
-    }
-    @media (max-width: 720px) {
-      nav { padding: 0 24px; }
-      .nav-links { gap: 20px; }
-      section { padding: 60px 24px; }
-      .about-grid { grid-template-columns: 1fr; gap: 36px; }
-      .collage-grid { grid-template-columns: 1fr 1fr; }
-      .collage-item:first-child { grid-column: span 2; }
-      footer { padding: 48px 24px; }
+    @media (max-width: 640px) {
+      nav { padding: 24px; }
+      .nav-pages { gap: 20px; }
+      #hero-text { left: 24px; bottom: 60px; }
+      #morph-hint { right: 24px; bottom: 60px; }
+      #section-nav { gap: 28px; bottom: 28px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- video background -->
+  <div id="stage">
+    <video id="bg-video" autoplay muted loop playsinline>
+      <source src="Untitled_Artwork.mp4" type="video/mp4">
+    </video>
+    <div id="canvas-container"></div>
+    <div id="vignette"></div>
+  </div>
+
   <!-- navigation -->
   <nav>
-    <a class="nav-logo" href="#top">priya<span>.</span></a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#reading">Readings</a></li>
-      <li><a href="#collage">Collage</a></li>
+    <a class="nav-logo" href="index.html">priya <em>b.</em></a>
+    <ul class="nav-pages">
+      <li><a href="body.html">Body</a></li>
+      <li><a href="mind.html">Mind</a></li>
+      <li><a href="soul.html">Soul</a></li>
     </ul>
   </nav>
 
-  <!-- banner -->
-  <div class="banner-section" id="top">
-    <img src="youtubr banner.png" alt="photosbypriyab banner">
+  <!-- hero text -->
+  <div id="hero-text">
+    <h1 class="hero-name">Priya<br><em>Bhavikatti</em></h1>
+    <p class="hero-sub">Designer · Photographer · New York</p>
   </div>
 
-  <!-- hero — two column: text left, generative portrait right -->
-  <div class="hero">
-    <!-- left: text -->
-    <div class="hero-left">
-      <div class="hero-eyebrow fade-in">
-        <span class="riso-dot"></span>
-        Creative Portfolio · 2026
-      </div>
-      <h1 class="fade-in">
-        Design//Code<br>
-        <span class="c-red riso-heading reg-red" data-text="Creative Process">Creative Process</span><br>
-      </h1>
-      <p class="hero-sub fade-in">
-        I'm a web/print designer, photographer, and creative explorer. This portfolio documents my journey through web design: projects, experiments, and ideas built with HTML, CSS, and JavaScript.
-      </p>
-      <div class="hero-tags fade-in">
-        <span class="tag tag-red">HTML &amp; CSS</span>
-        <span class="tag tag-green">JavaScript</span>
-        <span class="tag tag-yellow">Photography</span>
-        <span class="tag tag-black">Design</span>
-      </div>
-    </div>
-
-    <!-- right: generative portrait canvas -->
-    <div class="hero-right fade-in">
-      <div id="gen-canvas-wrap">
-        <img class="photo-layer" src="connections.jpg" alt="generative portrait" />
-      </div>
-    </div>
+  <!-- morph trigger -->
+  <div id="morph-hint" onclick="triggerMorph()">
+    <span>interact</span>
+    <div class="hint-line"></div>
   </div>
 
-  <!-- abt -->
-  <section id="about">
-    <div class="section-header">
-      <span class="section-num">01</span>
-      <h2 class="riso-heading reg-red" data-text="About Me">About Me</h2>
-      <div class="section-dots"></div>
-    </div>
-    <div class="about-grid">
-      <div class="about-photo">
-        <img src="priya.JPG" alt="Priya Bhavikatti" />
-        <span class="about-photo-label">priya in new york!</span>
-      </div>
-      <div class="about-text">
-        <div class="accent-bar"></div>
-        <p>Hi! I'm Priya - a student, photographer, and creative who loves finding the intersection between art and technology. I'm currently learning web design and exploring code as a practical, creative medium.</p>
-        <p>I run <strong>photosbypriyab</strong>, where I document people, perspectives, and performances. This portfolio is a living document of everything I'm making and learning from reading responses to coding projects and visual experiments.</p>
-      </div>
-      <div class="about-aside">
-        <div class="about-card">
-          <div class="about-card-label">Currently studying</div>
-          <div class="about-card-value">Design &amp; Neuroscience &amp; Economic Policy</div>
-        </div>
-        <div class="about-card">
-          <div class="about-card-label">Skills</div>
-          <div class="about-card-value">HTML · CSS · JavaScript</div>
-        </div>
-        <div class="about-card">
-          <div class="about-card-label">Approach</div>
-          <div class="about-card-value">Visual storytelling · Psychological insight · Data-driven</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-<!-- projects -->
-<section id="projects">
-  <div class="section-header">
-    <span class="section-num">02</span>
-    <h2 class="riso-heading" data-text="Coding Projects">Coding Projects</h2>
-    <div class="section-dots"></div>
+  <!-- post-morph section nav -->
+  <div id="section-nav" id="section-nav">
+    <a class="section-link" href="body.html">
+      <span class="section-link-word">Body</span>
+      <span class="section-link-label">Who I am</span>
+    </a>
+    <a class="section-link" href="mind.html">
+      <span class="section-link-word">Mind</span>
+      <span class="section-link-label">What I do</span>
+    </a>
+    <a class="section-link" href="soul.html">
+      <span class="section-link-word">Soul</span>
+      <span class="section-link-label">My art</span>
+    </a>
   </div>
-  <div class="cards-grid">
 
-    <a class="card" href="https://codepen.io/Priya-Bhavikatti/pen/XJKeejV" target="_blank" rel="noopener">
-      <div class="card-eyebrow" style="color:var(--red)">
-        <span class="card-dot" style="background:var(--red)"></span>Section 1 · Assignment 1
-      </div>
-      <h3>Leaf of Ohm</h3>
-      <p>An interactive visual exploring form and pattern.</p>
-      <div class="card-arrow">↗</div>
-    </a>
+  <!-- cursor -->
+  <div id="cursor"></div>
 
-    <a class="card" href="https://codepen.io/Priya-Bhavikatti/pen/xbOLGrM" target="_blank" rel="noopener">
-      <div class="card-eyebrow" style="color:var(--green)">
-        <span class="card-dot" style="background:var(--green)"></span>Section 1 · Assignment 2
-      </div>
-      <h3>Still Life</h3>
-      <p>A coded still life composition exploring light, shape, and stillness.</p>
-      <div class="card-arrow">↗</div>
-    </a>
-
-    <a class="card" href="https://docs.google.com/document/d/1WZk8sBxNG3hdl5k9ezB9wXdeEFYqWJeARFE-CeJ_Dto/edit?tab=t.0" target="_blank" rel="noopener">
-      <div class="card-eyebrow" style="color:var(--teal)">
-        <span class="card-dot" style="background:var(--teal)"></span>Section 2 · Assignment 1
-      </div>
-      <h3>The Web Ring</h3>
-      <p>An exploration of web rings: community and connection.</p>
-      <div class="card-arrow">↗</div>
-    </a>
-
-    <a class="card" href="https://editor.p5js.org/pbhavi22/sketches/C7khTRiLq" target="_blank" rel="noopener">
-      <div class="card-eyebrow" style="color:#8a6e00">
-        <span class="card-dot" style="background:var(--yellow)"></span>Section 2 · Final Project
-      </div>
-      <h3>What Time Is It?</h3>
-      <p>A p5.js sketch exploring time, rhythm, and visual representation.</p>
-      <div class="card-arrow">↗</div>
-    </a>
-
-    <a class="card" href="https://jasmine-wng.github.io/s3q1/index.html" target="_blank" rel="noopener">
-      <div class="card-eyebrow" style="color:var(--red)">
-        <span class="card-dot" style="background:var(--red)"></span>Section 3 · Assignment 1
-      </div>
-      <h3>"I'm Thrilled to Announce!"</h3>
-      <p>A collaborative project playing with language, announcements, and tone.</p>
-      <div class="card-arrow">↗</div>
-    </a>
-
-
-    
-    <a class="card" href="https://smr-ptk.github.io/AotW-S3A2/" target="_blank" rel="noopener">
-      <div class="card-eyebrow" style="color:var(--green)">
-        <span class="card-dot" style="background:var(--green)"></span>Section 3 · Assignment 2
-      </div>
-      <h3>Hit the Gym</h3>
-      <p>A collaborative professional-spin web project.</p>
-      <div class="card-arrow">↗</div>
-    </a>
-
-    <a class="card" href="https://editor.p5js.org/pbhavi22/sketches/ZhhcV_GuX" target="_blank" rel="noopener">
-      <div class="card-eyebrow" style="color:var(--teal)">
-        <span class="card-dot" style="background:var(--teal)"></span>Section 3 · Final Project
-      </div>
-      <h3>She Was a Fairy...</h3>
-      <p>A p5.js generative art project, for my love of Tinker Bell.</p>
-      <div class="card-arrow">↗</div>
-    </a>
-
-  </div>
-</section>
-
- <!-- reading responses -->
-<section id="reading">
-  <div class="section-header">
-    <span class="section-num">03</span>
-    <h2 class="riso-heading reg-teal" data-text="Reading Responses">Reading Responses</h2>
-    <div class="section-dots"></div>
-  </div>
-  <div class="reading-wrap">
-    <div class="reading-peek">
-      <div class="emoji-field" id="emoji-field"></div>
-    </div>
-    <div class="reading-dump">
-      Something that really stuck with me in Groys's piece is the idea that the internet's architecture is what makes it a surveillance machine, not just the content on it. The medium itself is built on private ownership and ad revenue, with Groys's reminder that the internet is owned privately. I have these ziplock bags at home full of my grandparents' letters, mailing cards, and printed photos that are physical and no corporation has a claim to, but I genuinely cannot say the same about my memories living on Musical.ly (lol), Snapchat, VSCO, Instagram, Google Drive, etc. Groys talks about the archive as something that transports the past into the present and carries it toward the future, but that utopian promise feels shaky when the archive belongs to another entity as well. I saw this really directly during my internship last summer where part of my job was packaging click data and time-on-page metrics into decks, which made the whole reading feel very tangible because I was literally inside the machine he describes. Even when you're creating freely, posting on LinkedIn or building a portfolio, the numbers still shape how you think about the work, and knowing these systems run on finite energy and resources makes me wonder how you even justify what you put out. Do you measure it by analytics and reach, or is there value in just having something exist somewhere in the archive? And whose archive is it? When the universal spectator is online, does the internet collapse the distinction between the sacred and the displayed, and what does that mean for anything we try to make genuinely private? I really like this reading. It wasn't too dense or too narrow, it just landed on the right ideas with an optimistic lens that I wasn't expecting. The concept of the radical monopoly was interesting: the idea that a tool becomes so dominant that you're basically a social outcast if you're not using it. We saw it with the car, and now we're living it with social media. The quote that stuck with me most was "instead of designing and using tools to build a society, our societies change to adapt to the demands of our tools" because that's exactly what happened. What started as access and connection gradually has became cyberstalking, bullying, and an assault on our attention. What I appreciated most was the answer Desroches offers: personal websites, creative ownership, making things for the sake of making them. Posting on YouTube because you love video editing (Me!!!!). Building an HTML page just because you can. Letting ideas grow like a garden without obsessing over analytics. Especially now with AI in the mix, there's actually so much room to create for creation's sake, and that feels radical in the best way. Personally, deleting Instagram made me realize how much of my mental bandwidth it was quietly consuming. Once it was gone, I genuinely forgot it existed. The cleanse was sudden. The hardest part is just breaking the mold, figuring out where you actually want to show up online and how you want to use what's available to you. But the reading made that feel less overwhelming and more like a choice you can actually take back. Desroches frames personal websites as a way to reclaim creative ownership from corporate platforms, but with AI making it easier than ever to generate content, does that change what "authentic" creation means? The radical monopoly idea suggests we reshape our lives around our tools without really choosing to, so at what point does personal responsibility kick in? Is opting out a realistic solution, or does the system make it too hard? (ideas of liberal paternalism from econ class) The author's framing the post as a "residue of performance" and the feed as a "state of pure reaction" gets at something we usually just scroll past. Our online presence isn't just content but it's behavior, and the feed isn't a place we visit so much as something we're constantly doing. What I kept thinking about was how different our relationship with technology was even ten years ago. After-school day care, I remember we would line up behind the one computer to use for five minutes on Cool Math Games then rotating. There was something regulated and communal about it. Now that structure is completely gone and that shift does something to the way we think and engage. That's also where the reading gave me a weird sense of comfort. Recognizing how small you are within all these systems is freeing. It opens up this idea of making things just to make them, because you learned something or you're proud of it, without needing external validation attached. The second metrics come in the feed starts consuming the work rather than letting it have a place. The posting versus reacting dynamic is interesting too. Being an active participant or existing in the background are genuinely different modes of presence, and the timing matters. Reacting with people in a synchronized moment makes the feed feel less like an archive and more like a live environment you can miss. Qs: Does participation require visibility? Is the algorithm our audience then? The article argues screens act as a boundary between presence and absence, and a mask for loss. As I understand of the experiment, the 1974 performance was a way of demonstrating how modern digital systems have these imaginary strings of gesture and action, that make you feel physically connected and present but you are not. There is disconnection and gaps of meaning that impacts our memory as well. Body Missing also shows how archives don't fully preserve the past, and show us what is missing/erased/lost. It's a collection of what remains surrounded by what is missing. I found this viewpoint really helpful in my own project and thought process. Especially surrounding my familial history and their memorabilia, I'm really intrigued by how we make sense of past and futures through the way we document. Written letters, journals, postcards, camcorder/VHS tapes, to Instagram, Snapchat, iMessage. The vast collection of data presents a narrative but it's important to keep in mind that so much more isn't being processed/considered lost. All I have left are things my ancestors deemed valuable and important to keep, so keeping in mind how that 'skews' the data, or in this case, the journey of their lives. Absence and memory coincide this way, and it's sort of comforting to me. The memorabilia I have is based on additional invisible strings to other data points. Is String Games more of an algorithm with conditions like if/else statements rather than a fixed narrative structure? What makes archives credible/valuable then? “Today some twenty years later, not a day goes by without someone wondering if the designer will be made obsolete by artificial intelligence” (p. 179). It’s a topic between great euphoria and pure dystopia. This reminds of the fun quote: “A computer can never be held accountable, therefore a computer must never make a management decision” (IBM Training Manual, 1979). Technology becomes something to fear, and something to master. A worker learns what wage they are willing to sign an offer letter for based on experience. Someone coming out of post-grad develops skills for a resume by making mistakes and learning. AI eliminates the ability for someone to fail, experiment, and discover knowledge for themselves through lived experiences. No algorithm can have managerial responsibility without neural judgment, accountability, and lived understanding. It was interesting talking to an alumni from Penn in Fine Arts, who worked as a freelance designer and now designs AI automation products at Google. She says, at a firm like Google, you as an employee are representative of the very user you are catering to a product too. If anything, the substance of the role is convincing. For example, will this feature hit X% reduced churn and increase Y% retention by Q3 reports? There is an end goal for everything, and that isn’t necessarily how ‘good design’ is created. In a corporate system or any system really, a designer has a flexible role between communications and engineering. Turning knowledge into fixed capital like with Adobe Suite has offered cultural justification to pursue the role of design in a ‘legitimate’ way. Since AI automates many technical design tasks, does the role of the designer shift from creating to making judgments about meaning and context that algorithms cannot replicate? In systems like large tech companies where design decisions are justified through metrics such as retention and churn, how can designers preserve forms of experimentation, failure, and exploration that are essential to meaningful design?Computing presents itself as universal and empowering, yet it is deeply shaped by English language assumptions. Computers are often framed as tools that allow anyone to participate in society and the workforce, but the reading shows that the foundations of programming reflect cultural choices. Even simple coding structures such as words like “def” or “end” reveal how English shapes the logic of programming languages. What seems neutral or purely technical is actually the result of cultural decisions made in the history of computing. Nasser’s attempt to create an Arabic programming language highlights how difficult it is to move outside these assumptions. Even when the language itself is translated, the underlying symbols and structures remain tied to English types. Programming relies heavily on shared libraries and previously written code, which means programmers must use the exact names created by earlier developers. Because most of these systems were built in English, the entire ecosystem reinforces English as the standard. This creates a snowball effect where English dominance continues simply because everything already depends on it. The discussion of naming was very thought-provoking too. Naming procedures or structures may seem like a small detail, but it shapes how programmers think about and use code, and naming is always cultural. His statement that the project is ultimately “doomed to failure” felt honest about the scale of the problem, since programming today is built on decades of infrastructure that cannot easily be separated from the linguistic choices embedded within it. If naming and keywords in programming languages shape how programmers think, how might programming change if those core elements were created in languages other than English for basic elements? Nasser compares programming languages to historical lingua francas like sabir, which emerged organically from interactions between cultures. Could a similar hybrid language realistically emerge in computing, or does the structure of the tech industry make English dominance inevitable? I liked the quote “when describing, think through who you are speaking to” as I feel this is such a universal piece of advice/guiding element to almost anything you do. It brings a sense of structure and uniformity to a potentially overwhelming or confusing situation. It creates an order to how something is discussed and more importantly the purpose or functionality of what you are doing/presenting. In the case of alt-text, I found this interesting: you must become an objective writer for a process that is inherently subjective (as in describing an image). We all describe images differently, and also from a marketing/logistics perspective, understanding what is the importance or worth of even mentioning an image description to alt-text in the first place. Maybe there is an important crime alert pinged to a news update, is describing the image of the key and lock attached on the article worth the extra lines of code to someone? It brings into question a lot of the brevity we digest in a space that is so oversaturated with content and design principles and imagery visually. Breaking that down into formatted lines of code and data sets of text is a whole new world that questions a lot of the necessity of those visual elements. Writing alt-text forces the author to choose what matters. In turn that choice shapes how others understand the content. In a way the use of alt-text is a distribution of power over meaning, and goes back to McLuhan’s Medium is the Message. The relationship to the media is fundamentally altered through the medium, in this case the descriptions of imagery into lines of code. Alt-text shifts priorities to clarity over aesthetics, function over mood, and relevance over artistic nuance. In any case, it doesn’t allow a 1-1 reaction from the user, it goes through the layer of interpretation from someone else, which is why this objectivity is stressed. But keeping to that objectivity isn’t simple, especially when one tends to over-analyze and describe the image. So much of our digital world is mediated through text and code beneath the surface, and alt-text resists the oversaturation nature of the online sphere. Having that clash, its functionality is so vital to inclusivity but brings an interesting layer of mediation that reminds us that accessibility is not just about adding information, but about consciously reshaping. If alt-text requires someone to decide what is “essential” in an image, how do we determine what counts as objective description vs. interpretive framing? In prioritizing accessibility through text-based translation, does alt-text challenge the dominance of visual culture online, or does it simply create another layer of mediation within it? The internet is no longer a novelty but a banality, or unoriginal. It functions like electricity: invisible, assumed, and embedded into everything: shaping how communication and emotion is made, circulated, and understood. Everyone creates content, attention is operating as currency, and there is infinite reproducibility of digital information. Olson’s claim that no observer of a post-epoch can identify when exactly it arrived. The shift into post-internetism feels like a trap, leaving us in an ever-fluid frozen position of constant circulation, posting, remixing, and scrolling. The argument is deeply McLuhan-coded where the conditions of the medium shape meaning more than the content itself: profiting from speed, scale, and repetition over slow looking and sustained attention. This made me think about how intent behind actions becomes harder to read in an oversaturated environment where extended appreciation feels almost impossible. After deleting social media from my phone, I noticed how much it had contributed to brain fog and mental load, and the clarity that followed made me question why constant engagement even felt necessary, like drinking water or eating food. Post-internet culture feels both hopeful and overwhelming, offering accessible tools for creation while simultaneously producing a shallow and overstimulating virtual real estate, where so much has already been done. This tension feels even more urgent when considering that younger generations will never use Google to surf the web, instead receiving information instantly through AI and LLMs, further shifting how intent, curiosity, and authorship will continue to alter. How can artists reclaim slow attention in a post-internet environment and sustain a living at the same time? Does constant accessibility to tools and platforms empower creativity, or does oversaturation result in banality? Is withdrawing or creating smaller digital pockets a form of resistance within post-internet culture, or simply another adaptation to it? Laurel Schwulst’s 'My website is a shifting house next to a river of knowledge' made me think more critically about ownership, agency, and identity on the internet. When platforms like Instagram, Snapchat, and Pinterest prioritize advertising over users’ needs, it becomes clear how much control we give up. While we think we own our accounts, we are really occupying virtual spaces that can be monetized, altered, or taken away. Participation starts to feel like a social pedestal game with no real winner, where users themselves become data points. The line “no one is looking out for you but you” stood out to me because it emphasizes how responsibility online is placed on individuals even as corporations profit from our presence. In this system, people are reduced to metrics that later appear in quarter-end reports. It is unsettling how normalized this has become, especially when these numbers influence decisions around technology and regulation. I was especially drawn to the idea that the website creator becomes both author and architect simultaneously. A personal website is not just content but a space that reflects the energy and identity of its creator. The comparison to nature and weather patterns made digital spaces feel more intentional and playful rather than purely optimized. The question “What happens to websites after death?” stayed with me, especially when thinking about AI. It raises questions about where authorship ends and where input and output are defined, if at all. I also connected with the idea of planting a seed and letting something grow naturally. In a fast-paced culture, constant stimulation takes a mental and physical toll, and allowing things to evolve slowly feels necessary especially when done with a purpose in mind. Finally, I found it interesting that there is now an app for almost everything, from sobriety to skin care to self-improvement. Many of these tools claim to give users back agency, yet the data they collect is often sold to companies. This creates a loop where even attempts to regain control become part of the same system that takes it away. At what point does optimizing AI and technology become innovation for its own sake rather than something that actually benefits humanity? What aspects of human behavior or experience cannot be reduced into an app, metric, or data point today? Before this reading, I genuinely did not know that Geocities was even a thing. After looking through the archives on restorativland.org, I felt both fascinated and slightly unsettled. It almost feels like I should not be seeing these pages, like I am peeking into something private that was never meant to last this long. The experience reminds me of how movies today visually “freeze” technology, showing phones and text messages in rigid, stylized ways that already feel outdated compared to how we actually use them now. The clusters of color, fonts, and layouts are incredibly fun and whimsical. There is something joyful and chaotic about them that feels creatively freeing. One page dedicated to Gwyneth Paltrow stood out to me in particular. It states, “No updates have been made since March, but in the near future that will change. Look back for additions and updates during the next 2 months,” followed by a note that the website was created on December 25, 1999. Seeing that promise of future updates feels almost ghostly now. It reads like a message sent forward in time that never received an answer. These pages feel like abandoned towns on the internet, still standing but no longer inhabited. Despite that eeriness, the typography and experimentation across these sites are incredibly stimulating to look at. They feel like artifacts from a life online that existed before heavy commercialization, SEO-optimization, KPI analyses, and corporate marketing strategies shaped everything. There is something very cute and sincere about them. I spent far longer than I expected clicking through different pages, and honestly, I want to keep exploring. It feels less like scrolling content and more like visiting a museum… Connecting this back to Lialina’s reading, one quote that really stood out to me was about “unsuccessful attempts to set up a page” and how they evoke a special feeling tied to a time when eternal construction was the core of online activity. These sites were not primarily mechanisms to sell products. They were about participating in communities and sharing interests, organized through tabs, labels, and personal categories. The structures were rigid, but the expression within them was fluid and experimental. People used these pages as forums, diaries, and passion projects rather than polished brands that we see today. I was also struck by the moment Lialina describes when people announced they were finally buying their own domain names. It reflects a collective shift in attitude, a kind of exhaustion with one medium and a desire for something new. That impulse is very humanly. It mirrors how we constantly move between platforms today, always chasing a sense of new. I also found it interesting how human qualities are attributed to technology, such as the idea that “most websites don’t survive for that long.” These sites never really age or mature in a traditional sense. They exist as frozen moments, like a neural consciousness trapped in a time capsule. This made me wonder whether the original creators ever return to these pages. Do they feel nostalgia when they see them, or have they completely forgotten they exist? Even abandoned, these sites still occupy virtual real estate, which feels comforting. I also liked Lialina’s discussion of bordered backgrounds and how their size reflected an author’s ability to imagine technological progress. Working within constraints, or intentionally pushing against them, became a way of envisioning the future. One of my favorite quotes from the reading is, “Getting old is something that you don’t do on the web.” The web once felt like a place where age could be betrayed, where something could remain timeless. Today, that feeling feels harder to access. The internet now feels overwhelming in an algorithmic and commercial sense, where so many creators will have multiple ‘rebrands’. Before, almost any life experience or niche interest had a web page with someone’s raw thoughts sitting on it. These Geocities pages feel like relics on a new surface, almost a foreign visual language compared to design norms and ‘rules’ today. Platforms like Instagram and LinkedIn now include “In Remembrance” features to honor deceased users (which I have seen on LinkedIn and Instagram). Why were these features introduced, and how do they relate to the themes of archives and permanence? For the users who felt frustrated with Geocities in the late 1990s and migrated away from it, how do they perceive today’s internet and social media landscape? Has it gone too astray from a personal hub/community space?
-    </div>
-  </div>
-</section>
-
-  <!-- collage -->
-  <section id="collage">
-    <div class="section-header">
-      <span class="section-num">04</span>
-      <h2 class="riso-heading reg-red" data-text="Collage">Collage</h2>
-      <div class="section-dots"></div>
-    </div>
-    <p class="collage-note">Photos, textures, and things: my creative work.</p>
-    <div class="collage-grid">
-  <div class="collage-item"><img src="LinkedInphotosbypriyab-post.jpg" alt="collage of colorful photography" /></div>
-  <div class="collage-item"><img src="taj.jpg" alt="Taj Mahal image" /></div>
-  <div class="collage-item"><img src="IMG_7103.jpg" alt="Montage of beach pictures and horizon lines" /></div>
-  <div class="collage-item"><img src="kiss.jpg" alt="Cyanotype blue image of kiss marks" /></div>
-  <div class="collage-item"><img src="august.jpg" alt="Retro calendar" /></div>
-</div>
-  </section>    
-
-  <!-- footer -->
-  <footer>
-    <div class="footer-top">
-      <div>
-        <div class="footer-logo">priya<span>.</span></div>
-        <p class="footer-tagline">Making something or being horizontal.</p>
-      </div>
-      <div>
-        <div class="footer-link-label">Find me online</div>
-        <div class="social-row">
-          <a class="social-btn" href="https://www.photosbypriyab.com" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9V8h2v9zm4 0h-2V8h2v9z"/></svg>Photography
-          </a>
-          <a class="social-btn" href="https://www.instagram.com/photosbypriyab/" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Instagram
-          </a>
-          <a class="social-btn" href="https://www.linkedin.com/in/priya-bhavikatti-836a47202/" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>LinkedIn
-          </a>
-          <a class="social-btn" href="https://www.youtube.com/@priyabhavikatti222" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>YouTube
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2026 Priya Bhavikatti</p>
-      <p class="made-with">Made with <span>❤︎</span> + HTML &amp; CSS</p>
-    </div>
-  </footer>
-
-  <!-- p5.js generative portrait -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <script>
-    new p5(function(p) {
-      let img;
-      const COLS = 80, ROWS = 80;
-      let pixels2d = [];
-      let loaded = false;
+    // ── cursor ──
+    const cursorEl = document.getElementById('cursor');
+    let cx = window.innerWidth/2, cy = window.innerHeight/2;
+    document.addEventListener('mousemove', e => {
+      cx = e.clientX; cy = e.clientY;
+      cursorEl.style.left = cx + 'px';
+      cursorEl.style.top  = cy + 'px';
+      cursorEl.style.opacity = '1';
+    });
 
-      p.preload = function() {
-        img = p.loadImage('connections.jpg',
-          () => { loaded = true; },
-          () => { loaded = false; }
-        );
-      };
+    // ── morph state ──
+    let morphed = false;
+    let p5instance = null;
 
-      p.setup = function() {
-        let wrap = document.getElementById('gen-canvas-wrap');
-        let imgEl = wrap.querySelector('img');
-        let W = imgEl.offsetWidth || 380;
-        let H = imgEl.offsetHeight || 520;
-        let cnv = p.createCanvas(W, H);
-        cnv.parent('gen-canvas-wrap');
-        p.pixelDensity(1);
-        p.frameRate(30);
-        if (loaded) buildPixelData();
-        p.loop();
-      };
+    function triggerMorph() {
+      if (morphed) return;
+      morphed = true;
 
-      function buildPixelData() {
-        if (!img || img.width === 0) return;
-        img.loadPixels();
-        pixels2d = [];
+      const video  = document.getElementById('bg-video');
+      const container = document.getElementById('canvas-container');
+      const hint   = document.getElementById('morph-hint');
+      const secNav = document.getElementById('section-nav');
 
-        let srcW = img.width;
-        let srcH = img.width; // square crop from top
-        let srcY0 = 0;
+      hint.style.opacity = '0';
+      hint.style.pointerEvents = 'none';
 
-        for (let gy = 0; gy < ROWS; gy++) {
-          for (let gx = 0; gx < COLS; gx++) {
-            let sx = p.floor(p.map(gx, 0, COLS, 0, srcW - 1));
-            let sy = p.floor(p.map(gy, 0, ROWS, srcY0, srcY0 + srcH - 1));
-            sx = p.constrain(sx, 0, img.width - 1);
-            sy = p.constrain(sy, 0, img.height - 1);
-            let idx = (sy * img.width + sx) * 4;
-            let r = img.pixels[idx];
-            let g = img.pixels[idx + 1];
-            let b = img.pixels[idx + 2];
-            let grey = r * 0.222 + g * 0.707 + b * 0.071;
-            pixels2d.push({
-              r, g, b, grey,
-              posX: p.map(gx, 0, COLS, 0, p.width),
-              posY: p.map(gy, 0, ROWS, 0, p.height)
+      // build p5 sketch that samples video pixels
+      p5instance = new p5(function(p) {
+        let particles = [];
+        let videoEl = video;
+        let offscreen;
+        const COUNT = 3200;
+        let morphProgress = 0;
+        let settled = false;
+
+        p.setup = function() {
+          let cnv = p.createCanvas(window.innerWidth, window.innerHeight);
+          cnv.parent('canvas-container');
+          p.pixelDensity(1);
+          offscreen = p.createGraphics(80, 45);
+
+          // seed particles from random screen positions
+          for (let i = 0; i < COUNT; i++) {
+            particles.push({
+              x:  p.random(p.width),
+              y:  p.random(p.height),
+              tx: p.random(p.width),
+              ty: p.random(p.height),
+              r: 255, g: 255, b: 255,
+              size: p.random(1.5, 3.5),
+              speed: p.random(0.018, 0.048),
+              t: p.random(1),
             });
           }
-        }
-        loaded = true;
-      }
+        };
 
-      p.draw = function() {
-        if (!loaded || pixels2d.length === 0) {
-          if (img && img.width > 0 && pixels2d.length === 0) buildPixelData();
-          p.background(250, 247, 240);
-          return;
-        }
+        p.draw = function() {
+          p.clear();
 
-        let mx = p.constrain(p.mouseX / p.width, 0, 1);
-        let my = p.constrain(p.mouseY / p.height, 0, 1);
-        let t = p.frameCount * 0.012;
-        let tileW = p.width / COLS;
-        let tileH = p.height / ROWS;
+          // sample video into tiny offscreen buffer
+          offscreen.drawingContext.drawImage(videoEl, 0, 0, 80, 45);
+          offscreen.loadPixels();
 
-        p.background(250, 247, 240);
+          // ease morph progress
+          if (morphProgress < 1) morphProgress = Math.min(1, morphProgress + 0.008);
 
-        for (let i = 0; i < pixels2d.length; i++) {
-          let d = pixels2d[i];
-          let { r, g, b, grey, posX, posY } = d;
-          let gx = i % COLS;
+          for (let i = 0; i < particles.length; i++) {
+            let pt = particles[i];
 
-          // Waves mode only
-          let amp = p.map(grey, 0, 255, 0, 18) * (0.3 + my);
-          let freq = 0.15 + mx * 0.2;
-          let dy = p.sin(gx * freq + t * 1.5 + grey * 0.04) * amp;
-          let w = p.map(grey, 0, 255, 2.5, 0.3);
-          p.stroke(r, g, b, 200);
-          p.strokeWeight(w);
-          p.noFill();
-          if (gx < COLS - 1) {
-            let nd = pixels2d[i + 1];
-            let amp2 = p.map(nd.grey, 0, 255, 0, 18) * (0.3 + my);
-            let dy2 = p.sin((gx + 1) * freq + t * 1.5 + nd.grey * 0.04) * amp2;
-            p.line(posX + tileW / 2, posY + tileH / 2 + dy,
-                   posX + tileW + tileW / 2, nd.posY + tileH / 2 + dy2);
+            // pick color from video sample
+            let col = i % offscreen.pixels.length/4;
+            let px  = Math.floor((pt.tx / p.width)  * 80);
+            let py  = Math.floor((pt.ty / p.height) * 45);
+            px = Math.max(0, Math.min(79, px));
+            py = Math.max(0, Math.min(44, py));
+            let idx = (py * 80 + px) * 4;
+            pt.r = offscreen.pixels[idx]     || pt.r;
+            pt.g = offscreen.pixels[idx + 1] || pt.g;
+            pt.b = offscreen.pixels[idx + 2] || pt.b;
+
+            // mouse repulsion
+            let dx = pt.x - p.mouseX;
+            let dy = pt.y - p.mouseY;
+            let dist = Math.sqrt(dx*dx + dy*dy);
+            let repel = 0;
+            if (dist < 120) {
+              repel = (120 - dist) / 120;
+              pt.x += (dx/dist) * repel * 14;
+              pt.y += (dy/dist) * repel * 14;
+            }
+
+            // ease toward target
+            pt.t = Math.min(1, pt.t + pt.speed * morphProgress);
+            let ease = pt.t < 0.5 ? 4*pt.t*pt.t*pt.t : 1-Math.pow(-2*pt.t+2,3)/2;
+            pt.x += (pt.tx - pt.x) * 0.04 * morphProgress;
+            pt.y += (pt.ty - pt.y) * 0.04 * morphProgress;
+
+            // draw
+            let alpha = 180 + 75 * morphProgress;
+            p.noStroke();
+            p.fill(pt.r, pt.g, pt.b, alpha);
+            p.ellipse(pt.x, pt.y, pt.size * (1 + repel * 1.5));
           }
-        }
-      };
 
-      p.mouseMoved = function() { p.redraw(); };
-    });
+          // once morphed, set new random targets on click
+        };
+
+        p.mousePressed = function() {
+          if (!morphed) return;
+          for (let pt of particles) {
+            pt.tx = p.random(p.width);
+            pt.ty = p.random(p.height);
+            pt.t  = 0;
+          }
+        };
+
+        p.windowResized = function() {
+          p.resizeCanvas(window.innerWidth, window.innerHeight);
+        };
+      });
+
+      // crossfade: hide video, show canvas
+      setTimeout(() => {
+        video.classList.add('hidden');
+        container.classList.add('visible');
+        setTimeout(() => {
+          secNav.classList.add('visible');
+        }, 1200);
+      }, 200);
+    }
+
+    // also trigger on scroll
+    window.addEventListener('wheel', () => { if (!morphed) triggerMorph(); }, { once: true });
+    window.addEventListener('touchmove', () => { if (!morphed) triggerMorph(); }, { once: true });
   </script>
-  <script>
-  const emojis = ['★', '♡', '◉', '✦', '⊹', '✿', '◈', '⟡', '✶', '⬡'];
-  const field = document.getElementById('emoji-field');
-  
-  for (let i = 0; i < 120; i++) {
-    const span = document.createElement('span');
-    span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    span.style.cssText = `
-      position: absolute;
-      left: ${Math.random() * 100}%;
-      top: ${Math.random() * 100}%;
-      font-size: ${Math.random() * 14 + 8}px;
-      opacity: ${Math.random() * 0.4 + 0.1};
-      color: var(--red);
-      pointer-events: none;
-    `;
-    field.appendChild(span);
-  }
-</script>
 </body>
 </html>
