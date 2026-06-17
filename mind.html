@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mind — Priya Bhavikatti</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink:   #0d0d0d;
+      --paper: #f5f0e8;
+      --rose:  #e8a49c;
+      --sage:  #8aab8a;
+      --muted: #8a8278;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'Inter', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 9999;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 200; padding: 28px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo {
+      font-family: var(--serif); font-size: 20px; font-weight: 300;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav-logo em { font-style: italic; color: var(--rose); }
+    .nav-pages { display: flex; gap: 32px; list-style: none; }
+    .nav-pages a {
+      font-size: 11px; font-weight: 400; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-pages a:hover, .nav-pages a.active { color: var(--ink); }
+
+    /* hero — full width dark */
+    .page-hero {
+      min-height: 100vh;
+      background: var(--ink);
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 120px 56px 80px;
+      position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(138,171,138,0.1) 1px, transparent 1px);
+      background-size: 24px 24px; pointer-events: none;
+    }
+    /* animated lines */
+    .hero-lines {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      overflow: hidden; pointer-events: none;
+    }
+    .hero-line {
+      position: absolute; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to top, rgba(138,171,138,0.3), transparent);
+      animation: lineRise 3s ease-in-out infinite;
+    }
+    @keyframes lineRise {
+      0%   { height: 0; opacity: 0; }
+      30%  { opacity: 1; }
+      100% { height: 60vh; opacity: 0; }
+    }
+
+    .hero-label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--sage); margin-bottom: 20px; font-weight: 500;
+      position: relative; z-index: 2;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(60px, 8vw, 108px);
+      font-weight: 300; line-height: 0.88;
+      letter-spacing: -3px; color: var(--paper);
+      position: relative; z-index: 2;
+    }
+    .hero-title em { font-style: italic; color: var(--sage); display: block; }
+    .hero-desc {
+      font-size: 16px; color: rgba(245,240,232,0.5);
+      max-width: 480px; margin-top: 32px; line-height: 1.8;
+      position: relative; z-index: 2;
+    }
+
+    /* experience timeline */
+    .content-section {
+      padding: 96px 48px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .section-label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--sage); margin-bottom: 16px; font-weight: 500;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after {
+      content: ''; flex: 0 0 32px; height: 1px; background: var(--sage);
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 300; line-height: 1.05;
+      letter-spacing: -1.5px; margin-bottom: 52px;
+    }
+    .section-title em { font-style: italic; }
+
+    /* timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 48px;
+      padding: 36px 0;
+      border-top: 1px solid rgba(26,17,8,0.1);
+      position: relative;
+    }
+    .timeline-item:last-child { border-bottom: 1px solid rgba(26,17,8,0.1); }
+    .timeline-year {
+      font-size: 13px; color: var(--muted);
+      padding-top: 4px; letter-spacing: 0.5px;
+    }
+    .timeline-content {}
+    .timeline-role {
+      font-family: var(--serif);
+      font-size: 24px; font-weight: 400; line-height: 1.2;
+      margin-bottom: 4px; letter-spacing: -0.3px;
+    }
+    .timeline-org {
+      font-size: 13px; color: var(--sage); font-weight: 500;
+      letter-spacing: 0.3px; margin-bottom: 14px;
+    }
+    .timeline-desc {
+      font-size: 14px; color: #5a5040; line-height: 1.75; max-width: 560px;
+    }
+    .timeline-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .timeline-tag {
+      font-size: 11px; letter-spacing: 0.3px;
+      padding: 4px 12px; border-radius: 12px;
+      background: rgba(138,171,138,0.12);
+      color: #4a6e4a; border: 1px solid rgba(138,171,138,0.25);
+    }
+
+    /* skills grid */
+    .skills-dark {
+      background: var(--ink); color: var(--paper);
+      padding: 88px 48px;
+    }
+    .skills-inner { max-width: 1100px; margin: 0 auto; }
+    .skills-dark .section-label { color: var(--sage); }
+    .skills-dark .section-title { color: var(--paper); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      background: rgba(245,240,232,0.08);
+      border: 1px solid rgba(245,240,232,0.08);
+      margin-top: 48px;
+    }
+    .skill-cell {
+      padding: 32px 28px;
+      background: var(--ink);
+      transition: background 0.2s;
+    }
+    .skill-cell:hover { background: #161310; }
+    .skill-name {
+      font-family: var(--serif); font-size: 20px;
+      font-weight: 300; margin-bottom: 6px; color: var(--paper);
+    }
+    .skill-type {
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(245,240,232,0.3);
+    }
+
+    /* education strip */
+    .edu-strip {
+      padding: 64px 48px;
+      background: rgba(138,171,138,0.07);
+      border-top: 1px solid rgba(138,171,138,0.18);
+      border-bottom: 1px solid rgba(138,171,138,0.18);
+    }
+    .edu-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 32px;
+    }
+    .edu-school {
+      font-family: var(--serif); font-size: 36px;
+      font-weight: 300; letter-spacing: -0.8px;
+    }
+    .edu-school em { font-style: italic; color: var(--sage); }
+    .edu-details { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+    .edu-degree { font-size: 15px; color: var(--ink); font-weight: 400; }
+    .edu-year { font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+
+    /* CTA */
+    .cta-section {
+      padding: 88px 48px;
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 32px;
+    }
+    .cta-text {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 300; letter-spacing: -1px; max-width: 500px; line-height: 1.15;
+    }
+    .cta-text em { font-style: italic; color: var(--rose); }
+    .cta-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    .cta-btn {
+      font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+      font-weight: 500; padding: 14px 28px; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .cta-btn.primary {
+      background: var(--ink); color: var(--paper);
+    }
+    .cta-btn.primary:hover { background: #2a1f14; }
+    .cta-btn.secondary {
+      border: 1px solid rgba(26,17,8,0.25); color: var(--ink);
+    }
+    .cta-btn.secondary:hover { border-color: var(--ink); }
+
+    /* footer nav */
+    .page-footer-nav {
+      background: var(--ink); padding: 56px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo {
+      font-family: var(--serif); font-size: 20px; font-weight: 300;
+      color: var(--paper); text-decoration: none;
+    }
+    .footer-logo em { font-style: italic; color: var(--rose); }
+    .next-page { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-decoration: none; }
+    .next-page-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.4); }
+    .next-page-word { font-family: var(--serif); font-size: 32px; font-weight: 300; font-style: italic; color: var(--paper); transition: color 0.2s; }
+    .next-page:hover .next-page-word { color: var(--rose); }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 800px) {
+      nav { padding: 20px 24px; }
+      .page-hero { padding: 100px 24px 56px; }
+      .content-section { padding: 64px 24px; }
+      .timeline-item { grid-template-columns: 1fr; gap: 8px; }
+      .skills-dark { padding: 64px 24px; }
+      .edu-strip { padding: 48px 24px; }
+      .edu-details { align-items: flex-start; }
+      .cta-section { padding: 64px 24px; }
+      .page-footer-nav { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">priya <em>b.</em></a>
+    <ul class="nav-pages">
+      <li><a href="body.html">Body</a></li>
+      <li><a href="mind.html" class="active">Mind</a></li>
+      <li><a href="soul.html">Soul</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="hero-lines" id="hero-lines"></div>
+    <p class="hero-label">02 — Mind</p>
+    <h1 class="hero-title">What<br><em>I do</em></h1>
+    <p class="hero-desc">Client services, research, creative strategy. The professional side of how I think.</p>
+  </div>
+
+  <!-- experience -->
+  <div class="content-section">
+    <div class="reveal">
+      <p class="section-label">Experience</p>
+      <h2 class="section-title">Where I've<br><em>worked</em></h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-year">2026 —<br>present</div>
+        <div class="timeline-content">
+          <div class="timeline-role">Client Service Associate</div>
+          <div class="timeline-org">AlphaSights · New York</div>
+          <div class="timeline-desc">Connecting clients with the right experts and knowledge to drive informed decisions. Starting July 2026.</div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Client Services</span>
+            <span class="timeline-tag">Research</span>
+            <span class="timeline-tag">New York</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add your internship/past experience below — duplicate this block -->
+      <div class="timeline-item reveal">
+        <div class="timeline-year">Add year</div>
+        <div class="timeline-content">
+          <div class="timeline-role">Your Role Here</div>
+          <div class="timeline-org">Company · Location</div>
+          <div class="timeline-desc">Description of what you did and what you learned.</div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Skill</span>
+            <span class="timeline-tag">Skill</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- education -->
+  <div class="edu-strip reveal">
+    <div class="edu-inner">
+      <div class="edu-school">University of<br><em>Pennsylvania</em></div>
+      <div class="edu-details">
+        <div class="edu-degree">Bachelor of Arts</div>
+        <div class="edu-year">Class of 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- skills -->
+  <div class="skills-dark">
+    <div class="skills-inner">
+      <div class="reveal">
+        <p class="section-label">Toolkit</p>
+        <h2 class="section-title" style="color:var(--paper);">Skills &amp;<br><em>tools</em></h2>
+      </div>
+      <div class="skills-grid reveal">
+        <div class="skill-cell"><div class="skill-name">Adobe Suite</div><div class="skill-type">Design</div></div>
+        <div class="skill-cell"><div class="skill-name">Premiere Pro</div><div class="skill-type">Video</div></div>
+        <div class="skill-cell"><div class="skill-name">HTML &amp; CSS</div><div class="skill-type">Code</div></div>
+        <div class="skill-cell"><div class="skill-name">JavaScript</div><div class="skill-type">Code</div></div>
+        <div class="skill-cell"><div class="skill-name">Photography</div><div class="skill-type">Creative</div></div>
+        <div class="skill-cell"><div class="skill-name">Storytelling</div><div class="skill-type">Communication</div></div>
+        <div class="skill-cell"><div class="skill-name">Research</div><div class="skill-type">Analysis</div></div>
+        <div class="skill-cell"><div class="skill-name">Client Relations</div><div class="skill-type">Professional</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section reveal">
+    <p class="cta-text">Want to work together or just <em>say hello?</em></p>
+    <div class="cta-links">
+      <a class="cta-btn primary" href="https://www.linkedin.com/in/priya-bhavikatti-836a47202/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="cta-btn secondary" href="mailto:priya@example.com">Email me</a>
+    </div>
+  </div>
+
+  <div class="page-footer-nav">
+    <a class="footer-logo" href="index.html">priya <em>b.</em></a>
+    <a class="next-page" href="soul.html">
+      <span class="next-page-label">Next</span>
+      <span class="next-page-word">Soul →</span>
+    </a>
+  </div>
+
+  <script>
+    // animated rising lines in hero
+    const linesContainer = document.getElementById('hero-lines');
+    for (let i = 0; i < 12; i++) {
+      const line = document.createElement('div');
+      line.className = 'hero-line';
+      line.style.left = (Math.random() * 100) + '%';
+      line.style.animationDelay = (Math.random() * 4) + 's';
+      line.style.animationDuration = (2.5 + Math.random() * 2.5) + 's';
+      linesContainer.appendChild(line);
+    }
+
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
