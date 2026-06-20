@@ -41,39 +41,42 @@
       z-index: 200;
       padding: 28px 48px;
       display: flex; justify-content: space-between; align-items: center;
-      mix-blend-mode: multiply;
     }
     .nav-logo {
       font-family: var(--serif); font-size: 20px; font-weight: 300;
-      color: var(--ink); text-decoration: none; letter-spacing: 0.3px;
+      color: var(--paper); text-decoration: none; letter-spacing: 0.3px;
     }
     .nav-logo em { font-style: italic; color: var(--rose); }
     .nav-pages { display: flex; gap: 32px; list-style: none; }
     .nav-pages a {
       font-size: 11px; font-weight: 400; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--muted);
+      text-transform: uppercase; color: rgba(245,240,232,0.5);
       text-decoration: none; transition: color 0.2s;
     }
     .nav-pages a:hover,
-    .nav-pages a.active { color: var(--ink); }
+    .nav-pages a.active { color: var(--paper); }
 
-    /* hero */
+    /* hero — full viewport, two columns */
     .page-hero {
-      min-height: 100vh;
+      height: 100vh;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      position: relative;
-    }
-    .hero-left {
       background: var(--ink);
-      display: flex; flex-direction: column;
-      justify-content: center;
-      padding: 120px 56px 72px;
-      position: relative; overflow: hidden;
+      overflow: hidden;
+    }
+
+    /* left: text pinned to bottom like mind.html */
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 120px 56px 80px;
+      position: relative;
+      overflow: hidden;
     }
     .hero-left::before {
       content: '';
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      position: absolute; inset: 0;
       background-image: radial-gradient(circle, rgba(232,164,156,0.12) 1px, transparent 1px);
       background-size: 22px 22px;
       pointer-events: none;
@@ -81,31 +84,39 @@
     .hero-label {
       font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
       color: var(--rose); margin-bottom: 20px; font-weight: 500;
+      position: relative; z-index: 2;
     }
     .hero-title {
       font-family: var(--serif);
-      font-size: clamp(60px, 7vw, 96px);
+      font-size: clamp(60px, 8vw, 108px);
       font-weight: 300; line-height: 0.88;
       letter-spacing: -3px;
       color: var(--paper);
+      position: relative; z-index: 2;
     }
     .hero-title em { font-style: italic; color: var(--rose); display: block; }
+    .hero-desc {
+      font-size: 16px; color: rgba(245,240,232,0.5);
+      max-width: 380px; margin-top: 32px; line-height: 1.8;
+      position: relative; z-index: 2;
+    }
+
+    /* right: photo fills full height */
     .hero-right {
-      position: relative; overflow: hidden;
-      background: #1a1510;
+      position: relative;
+      overflow: hidden;
     }
     .hero-right img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center top;
-      opacity: 0.85;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
       display: block;
     }
     .hero-right-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to right, rgba(13,13,13,0.4) 0%, transparent 40%);
+      background: linear-gradient(to right, rgba(13,13,13,0.5) 0%, transparent 40%);
     }
-
-    /* photo placeholder if no image */
     .hero-photo-placeholder {
       width: 100%; height: 100%;
       background: #1a1510;
@@ -142,7 +153,7 @@
     .body-text p { margin-bottom: 20px; }
     .body-text p:last-child { margin-bottom: 0; }
 
-    /* two-col layout for "now" section */
+    /* two-col layout */
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -164,13 +175,12 @@
 
     /* divider */
     .divider {
-      width: 100%; height: 1px;
+      height: 1px;
       background: rgba(26,17,8,0.1);
       margin: 0 48px;
-      width: calc(100% - 96px);
     }
 
-    /* currently section — dark bg */
+    /* dark section */
     .dark-section {
       background: var(--ink);
       color: var(--paper);
@@ -195,7 +205,7 @@
       color: rgba(245,240,232,0.45);
     }
 
-    /* page nav footer */
+    /* footer nav */
     .page-footer-nav {
       background: var(--ink);
       padding: 56px 48px;
@@ -227,13 +237,14 @@
 
     @media (max-width: 800px) {
       nav { padding: 20px 24px; }
-      .page-hero { grid-template-columns: 1fr; }
-      .hero-right { min-height: 50vw; }
-      .hero-left { padding: 100px 24px 56px; }
+      .page-hero { grid-template-columns: 1fr; height: auto; }
+      .hero-left { padding: 100px 24px 56px; min-height: 60vh; }
+      .hero-right { height: 50vw; }
       .content-section { padding: 64px 24px; }
       .two-col { grid-template-columns: 1fr; gap: 40px; }
       .dark-section { padding: 64px 24px; }
       .page-footer-nav { padding: 40px 24px; }
+      .divider { margin: 0 24px; }
     }
   </style>
 </head>
@@ -248,11 +259,12 @@
     </ul>
   </nav>
 
-  <!-- hero -->
+  <!-- hero: exactly 100vh, split in two -->
   <div class="page-hero">
     <div class="hero-left">
       <p class="hero-label">01 — Body</p>
       <h1 class="hero-title">Who<br><em>I am</em></h1>
+      <p class="hero-desc">Designer, photographer, storyteller. The person behind the work.</p>
     </div>
     <div class="hero-right">
       <img src="6.jpg" alt="Priya Bhavikatti" onerror="this.parentNode.innerHTML='<div class=\'hero-photo-placeholder\'>priya.</div>'"/>
@@ -335,7 +347,6 @@
   </div>
 
   <script>
-    // scroll reveal
     const reveals = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
