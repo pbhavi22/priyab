@@ -392,6 +392,8 @@
       .divider { margin: 0 24px; }
       .chips { justify-content: flex-start; flex-direction: column; align-items: flex-start; gap: 8px; }
       .chip { width: 200px; }
+      #pixelCanvas { display: none; }
+      .intro-grid { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
@@ -419,20 +421,27 @@
   </div>
 
   <!-- intro -->
-  <div class="content-section reveal riso-layer">
+  <div class="content-section reveal riso-layer" style="max-width:100%; padding: 96px 48px;">
     <div class="riso-blob" style="width:320px;height:220px;background:rgba(232,164,156,0.13);top:-40px;right:-60px;"></div>
     <div class="riso-blob" style="width:180px;height:180px;background:rgba(138,171,138,0.1);bottom:0;left:40%;"></div>
-    <h2 class="section-title">Hi, I'm <em>Priya</em></h2>
-    <div class="body-text">
-      <p>I'm a Penn grad living in New York, working at the intersection of people, creativity, and strategy. My background spans entrepreneurship, commercial real estate, and nonprofit marketing. I've grown social conversions by 38% and automated workflows across 50+ asset analyses.</p>
-      <p>I'm also a photographer and artist. My work spans portraiture, theater, editorial, and commercial photography, rooted in a curiosity about memory, presence, and what gets documented. Recognized through the Scholastic Art and Writing Awards and exhibited at Carnegie Hall and Penn.</p>
-    </div>
-    <div class="chips">
-      <span class="chip filled">New York City</span>
-      <span class="chip filled">Penn '26</span>
-      <span class="chip filled">Photographer</span>
-      <span class="chip filled">Videographer</span>
-      <span class="chip filled">Designer</span>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; max-width: 1100px; margin: 0 auto;">
+      <div>
+        <h2 class="section-title">Hi, I'm <em>Priya</em></h2>
+        <div class="body-text">
+          <p>I'm a Penn grad living in New York, working at the intersection of people, creativity, and strategy. My background spans entrepreneurship, commercial real estate, and nonprofit marketing. I've grown social conversions by 38% and automated workflows across 50+ asset analyses.</p>
+          <p>I'm also a photographer and artist. My work spans portraiture, theater, editorial, and commercial photography, rooted in a curiosity about memory, presence, and what gets documented. Recognized through the Scholastic Art and Writing Awards and exhibited at Carnegie Hall and Penn.</p>
+        </div>
+        <div class="chips">
+          <span class="chip filled">New York City</span>
+          <span class="chip filled">Penn '26</span>
+          <span class="chip filled">Photographer</span>
+          <span class="chip filled">Videographer</span>
+          <span class="chip filled">Designer</span>
+        </div>
+      </div>
+      <div style="position:relative;">
+        <canvas id="pixelCanvas" style="width:100%; height:480px; display:block; image-rendering:pixelated;"></canvas>
+      </div>
     </div>
   </div>
 
@@ -520,6 +529,75 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
     reveals.forEach(el => io.observe(el));
+
+    // pixel dissolve
+    const canvas = document.getElementById('pixelCanvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = 'LinkedInphotosbypriyab_post.jpg';
+
+    let W, H, pixelSize, cols, rows, imageData;
+    let phase = 0;
+    let animFrame;
+
+    function setup() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      W = canvas.width  = rect.width  * devicePixelRatio;
+      H = canvas.height = 480        * devicePixelRatio;
+      canvas.style.height = '480px';
+      pixelSize = Math.max(4, Math.round(W / 80));
+      cols = Math.ceil(W / pixelSize);
+      rows = Math.ceil(H / pixelSize);
+
+      // draw image to offscreen to sample colors
+      const off = document.createElement('canvas');
+      off.width = W; off.height = H;
+      const octx = off.getContext('2d');
+      octx.drawImage(img, 0, 0, W, H);
+      imageData = octx.getImageData(0, 0, W, H).data;
+    }
+
+    function getColor(col, row, size) {
+      const px = Math.floor((col * size + size / 2));
+      const py = Math.floor((row * size + size / 2));
+      const i = (py * W + px) * 4;
+      return [imageData[i], imageData[i+1], imageData[i+2], imageData[i+3]];
+    }
+
+    function draw(ts) {
+      phase = ts * 0.0008;
+      ctx.clearRect(0, 0, W, H);
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const noise = Math.sin(c * 0.3 + phase) * Math.cos(r * 0.3 - phase * 0.7);
+          const dissolve = (Math.sin(phase * 0.5 + c * 0.15 + r * 0.1) + 1) / 2;
+
+          // pixel size pulses between small and large
+          const ps = pixelSize * (0.4 + dissolve * 0.8 + noise * 0.2);
+          const ox = (c * pixelSize + pixelSize / 2) - ps / 2;
+          const oy = (r * pixelSize + pixelSize / 2) - ps / 2;
+
+          const [rr, g, b, a] = getColor(c, r, pixelSize);
+          const alpha = (a / 255) * (0.5 + dissolve * 0.5);
+          ctx.fillStyle = `rgba(${rr},${g},${b},${alpha})`;
+          ctx.fillRect(ox, oy, ps, ps);
+        }
+      }
+      animFrame = requestAnimationFrame(draw);
+    }
+
+    img.onload = () => {
+      setup();
+      requestAnimationFrame(draw);
+    };
+
+    window.addEventListener('resize', () => {
+      cancelAnimationFrame(animFrame);
+      setup();
+      requestAnimationFrame(draw);
+    });
   </script>
 </body>
 </html>
