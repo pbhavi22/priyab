@@ -170,17 +170,22 @@
     }
 
     /* interest chips */
-    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
     .chip {
-      font-size: 12px; font-weight: 400; letter-spacing: 0.5px;
+      font-size: 11px; font-weight: 400; letter-spacing: 2px;
+      text-transform: uppercase;
       font-family: var(--sans);
-      padding: 7px 18px; border-radius: 24px;
-      border: 1px solid rgba(26,17,8,0.2);
+      padding: 9px 20px;
+      border-bottom: 1px solid rgba(26,17,8,0.2);
       color: var(--muted);
-      transition: border-color 0.2s, color 0.2s;
+      transition: border-color 0.25s, color 0.25s;
     }
     .chip:hover { border-color: var(--rose); color: var(--ink); }
-    .chip.filled { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .chip.filled {
+      color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+      font-weight: 500;
+    }
 
     /* divider */
     .divider {
@@ -318,11 +323,10 @@
     </div>
     <div class="chips">
       <span class="chip filled">New York City</span>
-      <span class="chip">University of Pennsylvania '26</span>
-      <span class="chip">Photographer</span>
-      <span class="chip">Videographer</span>
-      <span class="chip">Designer</span>
-      <span class="chip">Beginner potter</span>
+      <span class="chip filled">Penn '26</span>
+      <span class="chip filled">Photographer</span>
+      <span class="chip filled">Videographer</span>
+      <span class="chip filled">Designer</span>
     </div>
   </div>
 
