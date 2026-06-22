@@ -392,8 +392,8 @@
       .divider { margin: 0 24px; }
       .chips { justify-content: flex-start; flex-direction: column; align-items: flex-start; gap: 8px; }
       .chip { width: 200px; }
-      #pixelCanvas { display: none; }
-      .intro-grid { grid-template-columns: 1fr !important; }
+      .intro-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+      #pixelCanvas { display: block; height: 260px !important; width: 100% !important; }
     }
   </style>
 </head>
@@ -424,7 +424,7 @@
   <div class="content-section reveal riso-layer" style="max-width:100%; padding: 96px 48px;">
     <div class="riso-blob" style="width:320px;height:220px;background:rgba(232,164,156,0.13);top:-40px;right:-60px;"></div>
     <div class="riso-blob" style="width:180px;height:180px;background:rgba(138,171,138,0.1);bottom:0;left:40%;"></div>
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; max-width: 1100px; margin: 0 auto;">
+    <div class="intro-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; max-width: 1100px; margin: 0 auto;">
       <div>
         <h2 class="section-title">Hi, I'm <em>Priya</em></h2>
         <div class="body-text">
@@ -530,71 +530,92 @@
     }, { threshold: 0.12 });
     reveals.forEach(el => io.observe(el));
 
-    // static noise -> image -> static loop
+    // pixel scatter -> full image -> scatter out -> loop
     const canvas = document.getElementById('pixelCanvas');
     const ctx = canvas.getContext('2d');
     const img = new Image();
     img.src = 'LinkedInphotosbypriyab_post.jpg';
 
-    let W, H, imageData, animFrame;
-    const LOOP_MS = 5200; // total loop duration
+    let W, H, imageData, pixels, animFrame;
+    const PIXEL_SIZE = 6;
+    const LOOP_MS = 5200;
 
     function setup() {
       const rect = canvas.parentElement.getBoundingClientRect();
+      const isMobile = window.innerWidth <= 800;
+      const canvasH = isMobile ? 260 : 480;
       W = canvas.width  = rect.width * devicePixelRatio;
-      H = canvas.height = 480 * devicePixelRatio;
-      canvas.style.height = '480px';
+      H = canvas.height = canvasH * devicePixelRatio;
+      canvas.style.height = canvasH + 'px';
 
       const off = document.createElement('canvas');
       off.width = W; off.height = H;
       const octx = off.getContext('2d');
       octx.drawImage(img, 0, 0, W, H);
       imageData = octx.getImageData(0, 0, W, H);
-    }
 
-    function drawNoise(amount) {
-      const out = ctx.createImageData(W, H);
-      const src = imageData.data;
-      const dst = out.data;
-      for (let i = 0; i < dst.length; i += 4) {
-        const n = Math.random();
-        if (n < amount) {
-          // pure static
-          const v = Math.random() * 255;
-          dst[i]   = v;
-          dst[i+1] = v;
-          dst[i+2] = v;
-          dst[i+3] = 255;
-        } else {
-          // real image pixel
-          dst[i]   = src[i];
-          dst[i+1] = src[i+1];
-          dst[i+2] = src[i+2];
-          dst[i+3] = src[i+3];
+      const cols = Math.ceil(W / PIXEL_SIZE);
+      const rows = Math.ceil(H / PIXEL_SIZE);
+      pixels = [];
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const px = Math.floor(c * PIXEL_SIZE + PIXEL_SIZE / 2);
+          const py = Math.floor(r * PIXEL_SIZE + PIXEL_SIZE / 2);
+          const i = (Math.min(py, H-1) * W + Math.min(px, W-1)) * 4;
+          const d = imageData.data;
+          pixels.push({
+            tx: c * PIXEL_SIZE, // target x
+            ty: r * PIXEL_SIZE, // target y
+            sx: Math.random() * W, // scatter x
+            sy: Math.random() * H, // scatter y
+            r: d[i], g: d[i+1], b: d[i+2],
+            delay: Math.random(), // stagger
+          });
         }
       }
-      ctx.putImageData(out, 0, 0);
     }
 
-    function loop(ts) {
-      const t = (ts % LOOP_MS) / LOOP_MS; // 0 -> 1
+    function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
 
-      let noise;
+    function loop(ts) {
+      const t = (ts % LOOP_MS) / LOOP_MS;
+
+      ctx.clearRect(0, 0, W, H);
+
+      let gatherT, scatterT;
       if (t < 0.19) {
-        // static to clear (~1s)
-        noise = 1 - (t / 0.19);
+        // scatter -> gather (~1s)
+        gatherT = t / 0.19;
+        scatterT = 0;
       } else if (t < 0.77) {
-        // hold on full image (~3s)
-        noise = 0;
+        // hold full image (~3s)
+        gatherT = 1;
+        scatterT = 0;
       } else {
-        // clear back to static (~1s)
-        noise = (t - 0.77) / 0.23;
+        // scatter out (~1s)
+        gatherT = 1;
+        scatterT = (t - 0.77) / 0.23;
       }
 
-      // ease the transition
-      noise = noise * noise * (3 - 2 * noise);
+      for (const p of pixels) {
+        const pg = Math.min(1, Math.max(0, (gatherT - p.delay * 0.4) / 0.6));
+        const ps = Math.min(1, Math.max(0, (scatterT - p.delay * 0.4) / 0.6));
+        const ge = ease(pg);
+        const se = ease(ps);
 
-      drawNoise(noise);
+        const x = p.sx + (p.tx - p.sx) * ge + (Math.random() * 40 - 20) * (1 - ge) * 0.3;
+        const y = p.sy + (p.ty - p.sy) * ge + (Math.random() * 40 - 20) * (1 - ge) * 0.3;
+
+        // scatter out goes to new random pos
+        const fx = x + (Math.random() * W - x) * se;
+        const fy = y + (Math.random() * H - y) * se;
+
+        const alpha = ge * (1 - se * 0.9);
+        ctx.fillStyle = `rgba(${p.r},${p.g},${p.b},${alpha})`;
+        ctx.fillRect(fx, fy, PIXEL_SIZE, PIXEL_SIZE);
+      }
+
       animFrame = requestAnimationFrame(loop);
     }
 
