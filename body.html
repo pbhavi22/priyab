@@ -6,7 +6,7 @@
   <title>Body — Priya Bhavikatti</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -16,13 +16,14 @@
       --sage:  #8aab8a;
       --muted: #8a8278;
       --serif: 'Cormorant Garamond', Georgia, serif;
+      --body-serif: 'Lora', Georgia, serif;
       --sans:  'Inter', sans-serif;
     }
     html { scroll-behavior: smooth; }
     body {
       background: var(--paper);
       color: var(--ink);
-      font-family: var(--sans);
+      font-family: var(--body-serif);
       font-size: 16px;
       line-height: 1.7;
       overflow-x: hidden;
@@ -52,6 +53,7 @@
       font-size: 11px; font-weight: 400; letter-spacing: 2px;
       text-transform: uppercase; color: rgba(245,240,232,0.5);
       text-decoration: none; transition: color 0.2s;
+      font-family: var(--sans);
     }
     .nav-pages a:hover,
     .nav-pages a.active { color: var(--paper); }
@@ -65,7 +67,7 @@
       overflow: hidden;
     }
 
-    /* left: text pinned to bottom like mind.html */
+    /* left: text pinned to bottom */
     .hero-left {
       display: flex;
       flex-direction: column;
@@ -84,6 +86,7 @@
     .hero-label {
       font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
       color: var(--rose); margin-bottom: 20px; font-weight: 500;
+      font-family: var(--sans);
       position: relative; z-index: 2;
     }
     .hero-title {
@@ -96,8 +99,10 @@
     }
     .hero-title em { font-style: italic; color: var(--rose); display: block; }
     .hero-desc {
+      font-family: var(--body-serif);
       font-size: 16px; color: rgba(245,240,232,0.5);
       max-width: 380px; margin-top: 32px; line-height: 1.8;
+      font-style: italic;
       position: relative; z-index: 2;
     }
 
@@ -134,6 +139,7 @@
     .section-label {
       font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
       color: var(--rose); margin-bottom: 16px; font-weight: 500;
+      font-family: var(--sans);
       display: flex; align-items: center; gap: 12px;
     }
     .section-label::after {
@@ -147,6 +153,7 @@
     }
     .section-title em { font-style: italic; }
     .body-text {
+      font-family: var(--body-serif);
       font-size: 17px; color: #3a3228; line-height: 1.85;
       max-width: 640px;
     }
@@ -165,6 +172,7 @@
     .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
     .chip {
       font-size: 12px; font-weight: 400; letter-spacing: 0.5px;
+      font-family: var(--sans);
       padding: 7px 18px; border-radius: 24px;
       border: 1px solid rgba(26,17,8,0.2);
       color: var(--muted);
@@ -202,6 +210,7 @@
     }
     .stat-label {
       font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      font-family: var(--sans);
       color: rgba(245,240,232,0.45);
     }
 
@@ -222,6 +231,7 @@
     }
     .next-page-label {
       font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      font-family: var(--sans);
       color: rgba(245,240,232,0.4);
     }
     .next-page-word {
@@ -264,7 +274,7 @@
     <div class="hero-left">
       <p class="hero-label">01 — Body</p>
       <h1 class="hero-title">Who<br><em>I am</em></h1>
-      <p class="hero-desc">Designer, photographer, storyteller. The person behind the work.</p>
+      <p class="hero-desc">Designer. Photographer. Storyteller.</p>
     </div>
     <div class="hero-right">
       <img src="6.jpg" alt="Priya Bhavikatti" onerror="this.parentNode.innerHTML='<div class=\'hero-photo-placeholder\'>priya.</div>'"/>
