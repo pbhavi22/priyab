@@ -247,6 +247,106 @@
     }
     .next-page:hover .next-page-word { color: var(--rose); }
 
+    /* risograph texture layer */
+    .riso-layer {
+      position: relative;
+      overflow: hidden;
+    }
+    .riso-layer::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle, rgba(232,164,156,0.18) 1px, transparent 1px),
+        radial-gradient(circle, rgba(138,171,138,0.12) 1px, transparent 1px);
+      background-size: 18px 18px, 31px 31px;
+      background-position: 0 0, 9px 9px;
+      mix-blend-mode: multiply;
+      z-index: 0;
+    }
+    .riso-layer > * { position: relative; z-index: 1; }
+
+    /* halftone strip between sections */
+    .riso-strip {
+      width: 100%;
+      height: 64px;
+      position: relative;
+      overflow: hidden;
+      background: var(--paper);
+    }
+    .riso-strip::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(232,164,156,0.35) 1.5px, transparent 1.5px),
+        radial-gradient(circle, rgba(138,171,138,0.2) 1px, transparent 1px);
+      background-size: 12px 12px, 20px 20px;
+      background-position: 0 0, 6px 6px;
+    }
+    .riso-strip::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        var(--paper) 0%,
+        transparent 30%,
+        transparent 70%,
+        var(--paper) 100%
+      );
+    }
+
+    /* dark riso strip */
+    .riso-strip-dark {
+      width: 100%;
+      height: 64px;
+      position: relative;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    .riso-strip-dark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(232,164,156,0.25) 1.5px, transparent 1.5px),
+        radial-gradient(circle, rgba(138,171,138,0.15) 1px, transparent 1px);
+      background-size: 14px 14px, 22px 22px;
+      background-position: 0 0, 7px 7px;
+    }
+    .riso-strip-dark::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        var(--ink) 0%,
+        transparent 30%,
+        transparent 70%,
+        var(--ink) 100%
+      );
+    }
+
+    /* corner accent marks */
+    .riso-corner {
+      position: absolute;
+      width: 48px; height: 48px;
+      pointer-events: none;
+    }
+    .riso-corner-tl { top: 24px; left: 24px; border-top: 1px solid rgba(232,164,156,0.4); border-left: 1px solid rgba(232,164,156,0.4); }
+    .riso-corner-br { bottom: 24px; right: 24px; border-bottom: 1px solid rgba(232,164,156,0.4); border-right: 1px solid rgba(232,164,156,0.4); }
+
+    /* glitch offset blob */
+    .riso-blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      filter: blur(40px);
+    }
+
     /* fade-in on scroll */
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: none; }
@@ -315,7 +415,9 @@
   </div>
 
   <!-- intro -->
-  <div class="content-section reveal">
+  <div class="content-section reveal riso-layer">
+    <div class="riso-blob" style="width:320px;height:220px;background:rgba(232,164,156,0.13);top:-40px;right:-60px;"></div>
+    <div class="riso-blob" style="width:180px;height:180px;background:rgba(138,171,138,0.1);bottom:0;left:40%;"></div>
     <h2 class="section-title">Hi, I'm <em>Priya</em></h2>
     <div class="body-text">
       <p>I'm a Penn grad living in New York, working at the intersection of people, creativity, and strategy. My background spans entrepreneurship, commercial real estate, and nonprofit marketing. I've grown social conversions by 38% and automated workflows across 50+ asset analyses.</p>
@@ -330,10 +432,16 @@
     </div>
   </div>
 
+  <div class="riso-strip"></div>
   <div class="divider"></div>
+  <div class="riso-strip-dark"></div>
 
   <!-- currently -->
-  <div class="dark-section">
+  <div class="dark-section" style="position:relative; overflow:hidden;">
+    <div class="riso-blob" style="width:400px;height:300px;background:rgba(232,164,156,0.07);top:-80px;right:-80px;mix-blend-mode:screen;filter:blur(50px);"></div>
+    <div class="riso-blob" style="width:200px;height:200px;background:rgba(138,171,138,0.06);bottom:0;left:20%;mix-blend-mode:screen;filter:blur(40px);"></div>
+    <div class="riso-corner riso-corner-tl" style="border-color:rgba(232,164,156,0.2);"></div>
+    <div class="riso-corner riso-corner-br" style="border-color:rgba(232,164,156,0.2);"></div>
     <div style="max-width:1100px; margin:0 auto;">
       <div class="two-col">
         <div class="reveal">
@@ -372,8 +480,12 @@
     </div>
   </div>
 
+  <div class="riso-strip"></div>
+
   <!-- values -->
-  <div class="content-section reveal">
+  <div class="content-section reveal riso-layer">
+    <div class="riso-blob" style="width:260px;height:260px;background:rgba(138,171,138,0.12);top:20px;right:10%;"></div>
+    <div class="riso-blob" style="width:180px;height:140px;background:rgba(232,164,156,0.1);bottom:0;left:-30px;"></div>
     <h2 class="section-title">Things that<br><em>matter to me</em></h2>
     <div class="two-col">
       <div class="body-text">
