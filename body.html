@@ -530,73 +530,82 @@
     }, { threshold: 0.12 });
     reveals.forEach(el => io.observe(el));
 
-    // pixel dissolve
+    // static noise -> image -> static loop
     const canvas = document.getElementById('pixelCanvas');
     const ctx = canvas.getContext('2d');
     const img = new Image();
-    img.crossOrigin = 'anonymous';
     img.src = 'LinkedInphotosbypriyab_post.jpg';
 
-    let W, H, pixelSize, cols, rows, imageData;
-    let phase = 0;
-    let animFrame;
+    let W, H, imageData, animFrame;
+    const LOOP_MS = 5200; // total loop duration
 
     function setup() {
       const rect = canvas.parentElement.getBoundingClientRect();
-      W = canvas.width  = rect.width  * devicePixelRatio;
-      H = canvas.height = 480        * devicePixelRatio;
+      W = canvas.width  = rect.width * devicePixelRatio;
+      H = canvas.height = 480 * devicePixelRatio;
       canvas.style.height = '480px';
-      pixelSize = Math.max(4, Math.round(W / 80));
-      cols = Math.ceil(W / pixelSize);
-      rows = Math.ceil(H / pixelSize);
 
-      // draw image to offscreen to sample colors
       const off = document.createElement('canvas');
       off.width = W; off.height = H;
       const octx = off.getContext('2d');
       octx.drawImage(img, 0, 0, W, H);
-      imageData = octx.getImageData(0, 0, W, H).data;
+      imageData = octx.getImageData(0, 0, W, H);
     }
 
-    function getColor(col, row, size) {
-      const px = Math.floor((col * size + size / 2));
-      const py = Math.floor((row * size + size / 2));
-      const i = (py * W + px) * 4;
-      return [imageData[i], imageData[i+1], imageData[i+2], imageData[i+3]];
-    }
-
-    function draw(ts) {
-      phase = ts * 0.0008;
-      ctx.clearRect(0, 0, W, H);
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const noise = Math.sin(c * 0.3 + phase) * Math.cos(r * 0.3 - phase * 0.7);
-          const dissolve = (Math.sin(phase * 0.5 + c * 0.15 + r * 0.1) + 1) / 2;
-
-          // pixel size pulses between small and large
-          const ps = pixelSize * (0.4 + dissolve * 0.8 + noise * 0.2);
-          const ox = (c * pixelSize + pixelSize / 2) - ps / 2;
-          const oy = (r * pixelSize + pixelSize / 2) - ps / 2;
-
-          const [rr, g, b, a] = getColor(c, r, pixelSize);
-          const alpha = (a / 255) * (0.5 + dissolve * 0.5);
-          ctx.fillStyle = `rgba(${rr},${g},${b},${alpha})`;
-          ctx.fillRect(ox, oy, ps, ps);
+    function drawNoise(amount) {
+      const out = ctx.createImageData(W, H);
+      const src = imageData.data;
+      const dst = out.data;
+      for (let i = 0; i < dst.length; i += 4) {
+        const n = Math.random();
+        if (n < amount) {
+          // pure static
+          const v = Math.random() * 255;
+          dst[i]   = v;
+          dst[i+1] = v;
+          dst[i+2] = v;
+          dst[i+3] = 255;
+        } else {
+          // real image pixel
+          dst[i]   = src[i];
+          dst[i+1] = src[i+1];
+          dst[i+2] = src[i+2];
+          dst[i+3] = src[i+3];
         }
       }
-      animFrame = requestAnimationFrame(draw);
+      ctx.putImageData(out, 0, 0);
+    }
+
+    function loop(ts) {
+      const t = (ts % LOOP_MS) / LOOP_MS; // 0 -> 1
+
+      let noise;
+      if (t < 0.19) {
+        // static to clear (~1s)
+        noise = 1 - (t / 0.19);
+      } else if (t < 0.77) {
+        // hold on full image (~3s)
+        noise = 0;
+      } else {
+        // clear back to static (~1s)
+        noise = (t - 0.77) / 0.23;
+      }
+
+      // ease the transition
+      noise = noise * noise * (3 - 2 * noise);
+
+      drawNoise(noise);
+      animFrame = requestAnimationFrame(loop);
     }
 
     img.onload = () => {
       setup();
-      requestAnimationFrame(draw);
+      requestAnimationFrame(loop);
     };
 
     window.addEventListener('resize', () => {
       cancelAnimationFrame(animFrame);
       setup();
-      requestAnimationFrame(draw);
     });
   </script>
 </body>
