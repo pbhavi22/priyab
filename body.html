@@ -116,7 +116,7 @@
       height: 100%;
       object-fit: cover;
       object-position: center 20%;
-      transform: scale(1.2);
+      transform: scale(1.4);
       display: block;
     }
     .hero-right-overlay {
@@ -248,9 +248,36 @@
 
     @media (max-width: 800px) {
       nav { padding: 20px 24px; }
-      .page-hero { grid-template-columns: 1fr; height: auto; }
-      .hero-left { padding: 100px 24px 56px; min-height: 60vh; }
-      .hero-right { height: 50vw; }
+
+      /* hero: photo on top half, text on bottom half, full viewport */
+      .page-hero {
+        grid-template-columns: 1fr;
+        grid-template-rows: 52vh 48vh;
+        height: 100vh;
+      }
+      .hero-right {
+        order: -1;
+        height: 100%;
+      }
+      .hero-right img {
+        object-position: center 15%;
+        transform: scale(1.4);
+        transform-origin: center 15%;
+      }
+      .hero-left {
+        padding: 28px 24px 36px;
+        justify-content: center;
+        min-height: unset;
+      }
+      .hero-title {
+        font-size: clamp(48px, 13vw, 72px);
+        letter-spacing: -2px;
+      }
+      .hero-desc {
+        margin-top: 16px;
+        font-size: 15px;
+      }
+
       .content-section { padding: 64px 24px; }
       .two-col { grid-template-columns: 1fr; gap: 40px; }
       .dark-section { padding: 64px 24px; }
