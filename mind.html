@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -278,6 +279,7 @@
       .edu-details { align-items: flex-start; }
       .cta-section { padding: 64px 24px; }
       .page-footer-nav { padding: 40px 24px; }
+      .dark-section > div[style*="grid"] { grid-template-columns: 1fr !important; gap: 40px !important; }
     }
   </style>
 </head>
@@ -306,7 +308,7 @@
 
     <!-- right: image fills full height -->
     <div style="position:relative; overflow:hidden; height:100%;">
-      <img src="linkedin2.png" alt="LinkedIn" style="
+      <img src="linkedin.png" alt="LinkedIn" style="
         width:100%; height:100%;
         object-fit:cover;
         object-position:center top;
@@ -454,6 +456,33 @@
         <div class="skill-cell"><div class="skill-name">Storytelling</div><div class="skill-type">Communication</div></div>
         <div class="skill-cell"><div class="skill-name">Research</div><div class="skill-type">Analysis</div></div>
         <div class="skill-cell"><div class="skill-name">Client Relations</div><div class="skill-type">Professional</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="riso-strip"></div>
+
+  <!-- networking -->
+  <div class="dark-section" style="background:var(--ink); padding:88px 48px; position:relative; overflow:hidden;">
+    <div class="riso-blob" style="width:400px;height:300px;background:rgba(232,164,156,0.07);top:-80px;right:-80px;mix-blend-mode:screen;filter:blur(50px);"></div>
+    <div class="riso-corner riso-corner-tl" style="border-color:rgba(232,164,156,0.2);"></div>
+    <div class="riso-corner riso-corner-br" style="border-color:rgba(232,164,156,0.2);"></div>
+    <div style="max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; position:relative; z-index:1;">
+      <div class="reveal">
+        <h2 style="font-family:var(--serif); font-size:clamp(32px,4vw,48px); font-weight:300; letter-spacing:-1.5px; color:var(--paper); line-height:1.05; margin-bottom:20px;">Out in<br><em style="font-style:italic; color:var(--rose);">the world</em></h2>
+        <p style="font-family:var(--body-serif); font-size:15px; color:rgba(245,240,232,0.55); line-height:1.8; max-width:380px;">Filmed at a Penn Alumni event in New York for the book launch of Dr. Jaime Knopman, Penn Alumni and fertility doctor, and her book "Own Your Fertility."</p>
+      </div>
+      <div class="reveal" style="display:flex; flex-direction:column; gap:32px; align-items:flex-start;">
+        <a href="https://www.instagram.com/reel/DZvXBIlTku-/" target="_blank" rel="noopener noreferrer" style="
+          display: inline-flex; flex-direction: column; gap: 8px;
+          text-decoration: none;
+          border-bottom: 1px solid rgba(245,240,232,0.25);
+          padding-bottom: 12px;
+          transition: border-color 0.2s;
+        " onmouseover="this.style.borderColor='var(--rose)'" onmouseout="this.style.borderColor='rgba(245,240,232,0.25)'">
+          <span style="font-size:10px; letter-spacing:2.5px; text-transform:uppercase; font-family:var(--sans); color:rgba(245,240,232,0.4);">Networking event</span>
+          <span style="font-family:var(--serif); font-size:22px; font-weight:300; font-style:italic; color:var(--paper);">Watch -></span>
+        </a>
       </div>
     </div>
   </div>
