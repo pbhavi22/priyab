@@ -340,6 +340,21 @@
 
     <!-- left: text pinned to bottom -->
     <div style="display:flex; flex-direction:column; justify-content:flex-end; padding:120px 56px 80px; position:relative; z-index:2;">
+      <!-- riso dot overlay -->
+      <div style="position:absolute; inset:0; pointer-events:none;
+        background-image:
+          radial-gradient(circle, rgba(232,164,156,0.22) 1px, transparent 1px),
+          radial-gradient(circle, rgba(138,171,138,0.14) 1px, transparent 1px);
+        background-size: 18px 18px, 31px 31px;
+        background-position: 0 0, 9px 9px;
+        mix-blend-mode: screen;"></div>
+      <!-- riso color bleeds -->
+      <div style="position:absolute; top:-60px; left:-40px; width:280px; height:280px; border-radius:50%; background:rgba(232,164,156,0.08); filter:blur(50px); pointer-events:none; mix-blend-mode:screen;"></div>
+      <div style="position:absolute; bottom:120px; right:-20px; width:200px; height:200px; border-radius:50%; background:rgba(138,171,138,0.07); filter:blur(40px); pointer-events:none; mix-blend-mode:screen;"></div>
+      <div style="position:absolute; top:35%; left:20%; width:160px; height:160px; border-radius:50%; background:rgba(232,164,156,0.05); filter:blur(35px); pointer-events:none; mix-blend-mode:screen;"></div>
+      <!-- corner marks -->
+      <div style="position:absolute; top:24px; left:24px; width:48px; height:48px; border-top:1px solid rgba(232,164,156,0.3); border-left:1px solid rgba(232,164,156,0.3); pointer-events:none;"></div>
+      <div style="position:absolute; bottom:24px; right:24px; width:48px; height:48px; border-bottom:1px solid rgba(138,171,138,0.25); border-right:1px solid rgba(138,171,138,0.25); pointer-events:none;"></div>
       <h1 class="hero-title">My<br><em>art</em></h1>
       <p class="hero-desc">Photography, video, design, code.</p>
     </div>
