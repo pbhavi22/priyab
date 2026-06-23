@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Soul — Priya Bhavikatti</title>
+  <title>Soul | Priya Bhavikatti</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -16,13 +16,14 @@
       --sage:  #8aab8a;
       --muted: #8a8278;
       --serif: 'Cormorant Garamond', Georgia, serif;
+      --body-serif: 'Lora', Georgia, serif;
       --sans:  'Inter', sans-serif;
     }
     html { scroll-behavior: smooth; }
     body {
       background: var(--ink);
       color: var(--paper);
-      font-family: var(--sans);
+      font-family: var(--body-serif);
       font-size: 16px; line-height: 1.7;
       overflow-x: hidden;
     }
@@ -34,27 +35,30 @@
       mix-blend-mode: screen;
     }
 
+    /* nav */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
-      z-index: 200; padding: 28px 48px;
+      z-index: 200; padding: 32px 48px;
       display: flex; justify-content: space-between; align-items: center;
     }
     .nav-logo {
-      font-family: var(--serif); font-size: 20px; font-weight: 300;
+      font-family: var(--serif); font-size: 22px; font-weight: 300;
+      letter-spacing: 0.5px;
       color: var(--paper); text-decoration: none;
     }
     .nav-logo em { font-style: italic; color: var(--rose); }
-    .nav-pages { display: flex; gap: 32px; list-style: none; }
+    .nav-pages { display: flex; gap: 36px; list-style: none; }
     .nav-pages a {
-      font-size: 11px; font-weight: 400; letter-spacing: 2px;
-      text-transform: uppercase; color: rgba(245,240,232,0.4);
+      font-size: 12px; font-weight: 400; letter-spacing: 2px;
+      text-transform: uppercase; color: rgba(245,240,232,0.5);
       text-decoration: none; transition: color 0.2s;
+      font-family: var(--sans);
     }
     .nav-pages a:hover, .nav-pages a.active { color: var(--paper); }
 
     /* hero */
     .page-hero {
-      min-height: 100vh;
+      height: 100vh;
       display: flex; flex-direction: column;
       justify-content: flex-end;
       padding: 120px 56px 80px;
@@ -80,11 +84,31 @@
       from { transform: translate(0,0) scale(1); }
       to   { transform: translate(40px, 30px) scale(1.08); }
     }
-    .hero-label {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--rose); margin-bottom: 20px; font-weight: 500;
-      position: relative; z-index: 2;
+
+    /* riso effects */
+    .riso-strip-dark {
+      width: 100%; height: 64px; position: relative; overflow: hidden; background: var(--ink);
     }
+    .riso-strip-dark::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(232,164,156,0.25) 1.5px, transparent 1.5px),
+        radial-gradient(circle, rgba(138,171,138,0.15) 1px, transparent 1px);
+      background-size: 14px 14px, 22px 22px;
+      background-position: 0 0, 7px 7px;
+    }
+    .riso-strip-dark::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, var(--ink) 0%, transparent 30%, transparent 70%, var(--ink) 100%);
+    }
+    .riso-blob {
+      position: absolute; border-radius: 50%;
+      pointer-events: none; mix-blend-mode: screen; filter: blur(50px);
+    }
+    .riso-corner { position: absolute; width: 48px; height: 48px; pointer-events: none; }
+    .riso-corner-tl { top: 24px; left: 24px; border-top: 1px solid rgba(232,164,156,0.3); border-left: 1px solid rgba(232,164,156,0.3); }
+    .riso-corner-br { bottom: 24px; right: 24px; border-bottom: 1px solid rgba(232,164,156,0.3); border-right: 1px solid rgba(232,164,156,0.3); }
+
     .hero-title {
       font-family: var(--serif);
       font-size: clamp(60px, 9vw, 120px);
@@ -94,17 +118,13 @@
     }
     .hero-title em { font-style: italic; color: var(--rose); display: block; }
     .hero-desc {
+      font-family: var(--body-serif);
       font-size: 16px; color: rgba(245,240,232,0.45);
       max-width: 480px; margin-top: 32px; line-height: 1.8;
+      font-style: italic;
       position: relative; z-index: 2;
     }
 
-    .section-label {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--rose); margin-bottom: 16px; font-weight: 500;
-      display: flex; align-items: center; gap: 12px;
-    }
-    .section-label::after { content: ''; flex: 0 0 32px; height: 1px; background: var(--rose); }
     .section-title {
       font-family: var(--serif);
       font-size: clamp(36px, 4vw, 52px);
@@ -117,6 +137,7 @@
     .photo-section {
       padding: 96px 48px;
       max-width: 1200px; margin: 0 auto;
+      position: relative;
     }
     .photo-grid {
       display: grid;
@@ -141,6 +162,7 @@
       padding: 12px 14px;
       background: linear-gradient(to top, rgba(13,13,13,0.8) 0%, transparent 100%);
       font-size: 11px; letter-spacing: 0.5px; color: rgba(245,240,232,0.7);
+      font-family: var(--sans);
       opacity: 0; transition: opacity 0.3s;
     }
     .photo-item:hover .caption { opacity: 1; }
@@ -156,8 +178,10 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; font-style: italic;
       color: rgba(245,240,232,0.15);
-      background-image: radial-gradient(circle, rgba(245,240,232,0.04) 1px, transparent 1px);
-      background-size: 14px 14px;
+      background-image: radial-gradient(circle, rgba(232,164,156,0.08) 1px, transparent 1px),
+                        radial-gradient(circle, rgba(138,171,138,0.06) 1px, transparent 1px);
+      background-size: 18px 18px, 31px 31px;
+      background-position: 0 0, 9px 9px;
     }
 
     /* video section */
@@ -165,8 +189,9 @@
       padding: 88px 48px;
       background: #080808;
       border-top: 1px solid rgba(245,240,232,0.06);
+      position: relative; overflow: hidden;
     }
-    .video-inner { max-width: 1100px; margin: 0 auto; }
+    .video-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
     .video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -195,23 +220,19 @@
     }
     .video-card:hover .video-play-btn { transform: scale(1.1); background: var(--rose); }
     .video-play-btn svg { width: 16px; height: 16px; fill: var(--ink); margin-left: 3px; }
-    .video-title {
-      font-family: var(--serif); font-size: 20px;
-      font-weight: 300; letter-spacing: -0.3px; color: var(--paper);
-    }
-    .video-meta { font-size: 12px; color: rgba(245,240,232,0.35); letter-spacing: 0.5px; }
+    .video-title { font-family: var(--serif); font-size: 20px; font-weight: 300; letter-spacing: -0.3px; color: var(--paper); }
+    .video-meta { font-size: 12px; color: rgba(245,240,232,0.35); letter-spacing: 0.5px; font-family: var(--sans); }
 
     /* coding projects */
     .projects-section {
       padding: 88px 48px;
       max-width: 1100px; margin: 0 auto;
+      position: relative;
     }
     .projects-list { display: flex; flex-direction: column; }
     .project-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      gap: 32px;
+      display: grid; grid-template-columns: 1fr auto;
+      align-items: center; gap: 32px;
       padding: 28px 0;
       border-top: 1px solid rgba(245,240,232,0.08);
       text-decoration: none; color: inherit;
@@ -220,33 +241,25 @@
     .project-row:last-child { border-bottom: 1px solid rgba(245,240,232,0.08); }
     .project-row:hover { padding-left: 12px; }
     .project-name {
-      font-family: var(--serif);
-      font-size: 26px; font-weight: 300;
-      letter-spacing: -0.5px; color: var(--paper);
+      font-family: var(--serif); font-size: 26px;
+      font-weight: 300; letter-spacing: -0.5px; color: var(--paper);
       transition: color 0.2s;
     }
     .project-row:hover .project-name { color: var(--rose); }
-    .project-type {
-      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-      color: rgba(245,240,232,0.3); margin-top: 4px;
-    }
-    .project-arrow {
-      font-size: 20px; color: rgba(245,240,232,0.2);
-      transition: color 0.2s, transform 0.2s;
-    }
+    .project-type { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,240,232,0.3); margin-top: 4px; font-family: var(--sans); }
+    .project-arrow { font-size: 20px; color: rgba(245,240,232,0.2); transition: color 0.2s, transform 0.2s; }
     .project-row:hover .project-arrow { color: var(--rose); transform: translate(4px,-4px); }
 
-    /* instagram/photography banner section */
+    /* instagram section */
     .instagram-section {
       padding: 88px 48px;
       border-top: 1px solid rgba(245,240,232,0.06);
+      position: relative; overflow: hidden;
     }
-    .instagram-inner { max-width: 1100px; margin: 0 auto; }
+    .instagram-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
     .ig-banner-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
     }
     .ig-cta {
       display: inline-flex; align-items: center; gap: 12px;
@@ -257,18 +270,10 @@
       transition: color 0.2s, border-color 0.2s;
     }
     .ig-cta:hover { color: var(--rose); border-color: var(--rose); }
-    .ig-handle {
-      font-size: 13px; letter-spacing: 1px; color: var(--muted);
-      margin-top: 12px; font-style: normal; font-family: var(--sans);
-    }
-    .ig-banner-img {
-      display: block; border-radius: 6px; overflow: hidden;
-      opacity: 0.85; transition: opacity 0.3s;
-    }
+    .ig-handle { font-size: 13px; letter-spacing: 1px; color: var(--muted); margin-top: 12px; font-style: normal; font-family: var(--sans); }
+    .ig-banner-img { display: block; border-radius: 6px; overflow: hidden; opacity: 0.85; transition: opacity 0.3s; }
     .ig-banner-img:hover { opacity: 1; }
-    .ig-banner-img img {
-      width: 100%; display: block; border-radius: 6px;
-    }
+    .ig-banner-img img { width: 100%; display: block; border-radius: 6px; }
 
     /* footer nav */
     .page-footer-nav {
@@ -276,23 +281,18 @@
       border-top: 1px solid rgba(245,240,232,0.06);
       display: flex; justify-content: space-between; align-items: center;
     }
-    .footer-logo {
-      font-family: var(--serif); font-size: 20px; font-weight: 300;
-      color: var(--paper); text-decoration: none;
-    }
+    .footer-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; color: var(--paper); text-decoration: none; }
     .footer-logo em { font-style: italic; color: var(--rose); }
-    .back-link {
-      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-      color: rgba(245,240,232,0.35); text-decoration: none; transition: color 0.2s;
-    }
+    .back-link { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.35); text-decoration: none; transition: color 0.2s; font-family: var(--sans); }
     .back-link:hover { color: var(--paper); }
 
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: none; }
 
     @media (max-width: 800px) {
-      nav { padding: 20px 24px; }
-      .page-hero { padding: 100px 24px 56px; }
+      nav { padding: 24px; }
+      .nav-pages { gap: 20px; }
+      .page-hero { padding: 100px 24px 56px; height: auto; min-height: 100vh; }
       .photo-section { padding: 64px 24px; }
       .photo-grid { grid-template-columns: 1fr 1fr; }
       .span-8, .span-4, .span-5, .span-7, .span-6, .span-4r, .span-8r {
@@ -317,18 +317,21 @@
     </ul>
   </nav>
 
+  <!-- hero -->
   <div class="page-hero">
     <div class="hero-orb hero-orb-1"></div>
     <div class="hero-orb hero-orb-2"></div>
-    <p class="hero-label">03 — Soul</p>
+    <div class="riso-blob" style="width:300px;height:300px;background:rgba(232,164,156,0.06);bottom:100px;right:10%;"></div>
     <h1 class="hero-title">My<br><em>art</em></h1>
-    <p class="hero-desc">Photography, video, design, code. The things I make because I have to.</p>
+    <p class="hero-desc">Photography, video, design, code.</p>
   </div>
+
+  <div class="riso-strip-dark"></div>
 
   <!-- photography -->
   <div class="photo-section">
+    <div class="riso-blob" style="width:300px;height:200px;background:rgba(232,164,156,0.07);top:-40px;right:-40px;"></div>
     <div class="reveal">
-      <p class="section-label">Photography</p>
       <h2 class="section-title">Through<br><em>the lens</em></h2>
     </div>
     <div class="photo-grid reveal">
@@ -352,17 +355,20 @@
         <img src="august.jpg" alt="" onerror="this.outerHTML='<div class=\'photo-placeholder\'>your photo here</div>'"/>
       </div>
       <div class="photo-item span-6">
-        <div class="photo-placeholder">add more →</div>
+        <div class="photo-placeholder">add more -></div>
       </div>
     </div>
   </div>
 
+  <div class="riso-strip-dark"></div>
+
   <!-- video -->
   <div class="video-section">
+    <div class="riso-blob" style="width:400px;height:300px;background:rgba(138,171,138,0.06);top:-80px;right:-80px;"></div>
+    <div class="riso-corner riso-corner-tl" style="border-color:rgba(138,171,138,0.2);"></div>
     <div class="video-inner">
       <div class="reveal">
-        <p class="section-label" style="color:var(--sage);">Video</p>
-        <h2 class="section-title">Moving<br><em>image</em></h2>
+        <h2 class="section-title" style="color:var(--sage);">Moving<br><em style="color:var(--paper);">image</em></h2>
       </div>
       <div class="video-grid reveal">
         <a class="video-card" href="https://www.youtube.com/@priyabhavikatti222" target="_blank" rel="noopener">
@@ -379,7 +385,7 @@
         </a>
         <div class="video-card" style="cursor:default;">
           <div class="video-thumb">
-            <div class="photo-placeholder" style="background:#111; font-style:italic;">add a video →</div>
+            <div class="photo-placeholder" style="background:#111; font-style:italic;">add a video -></div>
           </div>
           <div class="video-title" style="color:rgba(245,240,232,0.2);">Coming soon</div>
           <div class="video-meta">Drop in your next project</div>
@@ -388,10 +394,12 @@
     </div>
   </div>
 
+  <div class="riso-strip-dark"></div>
+
   <!-- coding projects -->
   <div class="projects-section">
+    <div class="riso-blob" style="width:260px;height:260px;background:rgba(232,164,156,0.06);top:0;right:5%;"></div>
     <div class="reveal">
-      <p class="section-label">Code</p>
       <h2 class="section-title">Creative<br><em>projects</em></h2>
     </div>
     <div class="projects-list reveal">
@@ -412,7 +420,7 @@
       <a class="project-row" href="https://editor.p5js.org/pbhavi22/sketches/C7khTRiLq" target="_blank" rel="noopener">
         <div>
           <div class="project-name">What Time Is It?</div>
-          <div class="project-type">p5.js · Time &amp; rhythm</div>
+          <div class="project-type">p5.js · Time and rhythm</div>
         </div>
         <span class="project-arrow">↗</span>
       </a>
@@ -426,12 +434,15 @@
     </div>
   </div>
 
-  <!-- instagram + banner -->
+  <div class="riso-strip-dark"></div>
+
+  <!-- instagram -->
   <div class="instagram-section">
+    <div class="riso-blob" style="width:350px;height:250px;background:rgba(232,164,156,0.07);top:-60px;left:-60px;"></div>
+    <div class="riso-corner riso-corner-br" style="border-color:rgba(232,164,156,0.2);"></div>
     <div class="instagram-inner reveal">
       <div class="ig-banner-grid">
         <div>
-          <p class="section-label">Photography</p>
           <a class="ig-cta" href="https://www.instagram.com/photosbypriyab/" target="_blank" rel="noopener">
             photosbypriyab ↗
           </a>
@@ -446,7 +457,7 @@
 
   <div class="page-footer-nav">
     <a class="footer-logo" href="index.html">priya <em>b.</em></a>
-    <a class="back-link" href="index.html">← Back to home</a>
+    <a class="back-link" href="index.html">Back to home</a>
   </div>
 
   <script>
