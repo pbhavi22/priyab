@@ -42,7 +42,6 @@
       mix-blend-mode: screen;
     }
 
-    /* nav */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 200; padding: 32px 48px;
@@ -63,7 +62,6 @@
     }
     .nav-pages a:hover, .nav-pages a.active { color: var(--paper); }
 
-    /* hero */
     .page-hero {
       background: var(--ink);
       position: relative; overflow: hidden;
@@ -89,7 +87,6 @@
       to   { transform: translate(40px, 30px) scale(1.08); }
     }
 
-    /* riso effects */
     .riso-strip-dark {
       width: 100%; height: 64px; position: relative; overflow: hidden; background: var(--ink);
     }
@@ -137,7 +134,6 @@
     }
     .section-title em { font-style: italic; }
 
-    /* photography grid */
     .photo-section {
       padding: 96px 48px;
       max-width: 1200px; margin: 0 auto;
@@ -188,7 +184,6 @@
       background-position: 0 0, 9px 9px;
     }
 
-    /* video section */
     .video-section {
       padding: 88px 48px;
       background: #080808;
@@ -213,22 +208,9 @@
     .video-thumb iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
     .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.75; transition: opacity 0.3s; }
     .video-card:hover .video-thumb img { opacity: 1; }
-    .video-play {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .video-play-btn {
-      width: 48px; height: 48px; border-radius: 50%;
-      background: rgba(232,164,156,0.9);
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.2s, background 0.2s;
-    }
-    .video-card:hover .video-play-btn { transform: scale(1.1); background: var(--rose); }
-    .video-play-btn svg { width: 16px; height: 16px; fill: var(--ink); margin-left: 3px; }
     .video-title { font-family: var(--serif); font-size: 20px; font-weight: 300; letter-spacing: -0.3px; color: var(--paper); }
     .video-meta { font-size: 12px; color: rgba(245,240,232,0.35); letter-spacing: 0.5px; font-family: var(--sans); }
 
-    /* coding projects */
     .projects-section {
       padding: 88px 48px;
       max-width: 1100px; margin: 0 auto;
@@ -255,7 +237,6 @@
     .project-arrow { font-size: 20px; color: rgba(245,240,232,0.2); transition: color 0.2s, transform 0.2s; }
     .project-row:hover .project-arrow { color: var(--rose); transform: translate(4px,-4px); }
 
-    /* instagram section */
     .instagram-section {
       padding: 88px 48px;
       border-top: 1px solid rgba(245,240,232,0.06);
@@ -280,7 +261,6 @@
     .ig-banner-img:hover { opacity: 1; }
     .ig-banner-img img { width: 100%; display: block; border-radius: 6px; }
 
-    /* footer nav */
     .page-footer-nav {
       padding: 56px 48px;
       border-top: 1px solid rgba(245,240,232,0.06);
@@ -395,7 +375,7 @@
         <img src="august.jpg" alt="" onerror="this.outerHTML='<div class=\'photo-placeholder\'>your photo here</div>'"/>
       </div>
       <div class="photo-item span-6">
-        <div class="photo-placeholder">add more -></div>
+        <div class="photo-placeholder">add more →</div>
       </div>
     </div>
   </div>
@@ -413,32 +393,32 @@
       <div class="video-grid reveal">
         <div class="video-card">
           <div class="video-thumb">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/eoQWUCb2tsM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+            <iframe src="https://www.youtube.com/embed/eoQWUCb2tsM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
         <div class="video-card">
           <div class="video-thumb">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/bJMydByxnsM?start=236" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+            <iframe src="https://www.youtube.com/embed/bJMydByxnsM?start=236" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
         <div class="video-card">
           <div class="video-thumb">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Zwaubllbek0?start=28" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+            <iframe src="https://www.youtube.com/embed/Zwaubllbek0?start=28" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
         <div class="video-card">
           <div class="video-thumb">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/bT8eJChYLho?start=271" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+            <iframe src="https://www.youtube.com/embed/bT8eJChYLho?start=271" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
         <div class="video-card">
           <div class="video-thumb">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/tjq_Qv1K_hA?start=277" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+            <iframe src="https://www.youtube.com/embed/tjq_Qv1K_hA?start=277" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
         <div class="video-card">
           <div class="video-thumb">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/cD8vGZ8ughs?start=118" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+            <iframe src="https://www.youtube.com/embed/cD8vGZ8ughs?start=118" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
       </div>
@@ -459,21 +439,21 @@
           <div class="project-name">She Was a Fairy...</div>
           <div class="project-type">p5.js · Generative art</div>
         </div>
-        <span class="project-arrow">↗</span>
+        <span class="project-arrow">→</span>
       </a>
       <a class="project-row" href="https://editor.p5js.org/pbhavi22/sketches/C7khTRiLq" target="_blank" rel="noopener">
         <div>
           <div class="project-name">What Time Is It?</div>
           <div class="project-type">p5.js · Time and rhythm</div>
         </div>
-        <span class="project-arrow">↗</span>
+        <span class="project-arrow">→</span>
       </a>
       <a class="project-row" href="https://codepen.io/Priya-Bhavikatti/pen/xbOLGrM" target="_blank" rel="noopener">
         <div>
           <div class="project-name">Still Life</div>
           <div class="project-type">Coded composition · CodePen</div>
         </div>
-        <span class="project-arrow">↗</span>
+        <span class="project-arrow">→</span>
       </a>
     </div>
   </div>
@@ -488,7 +468,7 @@
       <div class="ig-banner-grid">
         <div>
           <a class="ig-cta" href="https://www.instagram.com/photosbypriyab/" target="_blank" rel="noopener">
-            photosbypriyab ↗
+            photosbypriyab →
           </a>
           <p class="ig-handle">@photosbypriyab on Instagram</p>
         </div>
