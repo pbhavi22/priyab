@@ -71,9 +71,15 @@
 
     /* photo section */
     .photo-section { padding: 96px 48px; position: relative; }
-    .photo-scroll { max-width: 680px; margin: 0 auto; }
-    .photo-scroll { display: flex; flex-direction: column; gap: 16px; }
-    .photo-scroll img { width: 100%; display: block; border-radius: 4px; opacity: 0.9; transition: opacity 0.3s; }
+    .photo-scroll { 
+      columns: 3; column-gap: 12px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .photo-scroll img { 
+      width: 100%; display: block; border-radius: 4px; 
+      opacity: 0.9; transition: opacity 0.3s;
+      margin-bottom: 12px; break-inside: avoid;
+    }
     .photo-scroll img:hover { opacity: 1; }
 
     .video-section { padding: 88px 48px; background: #080808; border-top: 1px solid rgba(245,240,232,0.06); position: relative; overflow: hidden; }
@@ -121,6 +127,7 @@
       .hero-title { font-size: clamp(48px, 13vw, 72px); letter-spacing: -2px; }
       .hero-desc { margin-top: 16px; font-size: 15px; }
       .photo-section { padding: 64px 24px; }
+      .photo-scroll { columns: 1; }
       .video-section { padding: 64px 24px; }
       .projects-section { padding: 64px 24px; }
       .instagram-section { padding: 64px 24px; }
@@ -178,11 +185,13 @@
       <img src="c3.PNG" alt=""/>
       <img src="c4.JPG" alt=""/>
       <img src="c5.jpg" alt=""/>
+      <img src="c6.jpg" alt=""/>
       <img src="c8.JPG" alt=""/>
       <img src="c9.JPG" alt=""/>
       <img src="c10.JPG" alt=""/>
       <img src="c11.jpg" alt=""/>
       <img src="c13.jpg" alt=""/>
+      <img src="c14.JPEG" alt=""/>
       <img src="c15.png" alt=""/>
       <img src="c16.jpg" alt=""/>
       <img src="c18.PNG" alt=""/>
