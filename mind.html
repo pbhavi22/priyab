@@ -21,224 +21,93 @@
     }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--body-serif);
-      font-size: 16px;
-      line-height: 1.7;
-      overflow-x: hidden;
+      background: var(--paper); color: var(--ink);
+      font-family: var(--body-serif); font-size: 16px; line-height: 1.7; overflow-x: hidden;
     }
     body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 9999;
-      pointer-events: none;
+      content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
       mix-blend-mode: multiply;
     }
 
     nav {
       position: fixed; top: 0; left: 0; right: 0;
-      z-index: 200;
-      padding: 32px 48px;
+      z-index: 200; padding: 32px 48px;
       display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(to bottom, rgba(13,13,13,0.75) 0%, transparent 100%);
     }
-    .nav-logo {
-      font-family: var(--serif); font-size: 22px; font-weight: 300;
-      letter-spacing: 0.5px;
-      color: var(--paper); text-decoration: none;
-    }
+    .nav-logo { font-family: var(--serif); font-size: 22px; font-weight: 300; letter-spacing: 0.5px; color: var(--paper); text-decoration: none; }
     .nav-logo em { font-style: italic; color: var(--rose); }
     .nav-pages { display: flex; gap: 36px; list-style: none; }
-    .nav-pages a {
-      font-size: 12px; font-weight: 400; letter-spacing: 2px;
-      text-transform: uppercase; color: rgba(245,240,232,0.5);
-      text-decoration: none; transition: color 0.2s;
-      font-family: var(--sans);
-    }
+    .nav-pages a { font-size: 12px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.5); text-decoration: none; transition: color 0.2s; font-family: var(--sans); }
     .nav-pages a:hover, .nav-pages a.active { color: var(--paper); }
 
-    .page-hero {
-      background: var(--ink);
-      position: relative; overflow: hidden;
-    }
-    .page-hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(138,171,138,0.1) 1px, transparent 1px);
-      background-size: 24px 24px; pointer-events: none;
-    }
-    .hero-blob {
-      position: absolute; border-radius: 50%;
-      pointer-events: none; mix-blend-mode: screen; filter: blur(60px);
-    }
+    .page-hero { background: var(--ink); position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(138,171,138,0.1) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none; }
+    .hero-blob { position: absolute; border-radius: 50%; pointer-events: none; mix-blend-mode: screen; filter: blur(60px); }
     .hero-lines { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; pointer-events: none; }
-    .hero-line {
-      position: absolute; bottom: 0; width: 1px;
-      background: linear-gradient(to top, rgba(138,171,138,0.3), transparent);
-      animation: lineRise 3s ease-in-out infinite;
-    }
-    @keyframes lineRise {
-      0%   { height: 0; opacity: 0; }
-      30%  { opacity: 1; }
-      100% { height: 60vh; opacity: 0; }
-    }
-    .hero-title {
-      font-family: var(--serif);
-      font-size: clamp(60px, 8vw, 108px);
-      font-weight: 300; line-height: 0.88;
-      letter-spacing: -3px; color: var(--paper);
-      position: relative; z-index: 2;
-    }
+    .hero-line { position: absolute; bottom: 0; width: 1px; background: linear-gradient(to top, rgba(138,171,138,0.3), transparent); animation: lineRise 3s ease-in-out infinite; }
+    @keyframes lineRise { 0% { height: 0; opacity: 0; } 30% { opacity: 1; } 100% { height: 60vh; opacity: 0; } }
+    .hero-title { font-family: var(--serif); font-size: clamp(60px, 8vw, 108px); font-weight: 300; line-height: 0.88; letter-spacing: -3px; color: var(--paper); position: relative; z-index: 2; }
     .hero-title em { font-style: italic; color: var(--sage); display: block; }
-    .hero-desc {
-      font-family: var(--body-serif);
-      font-size: 16px; color: rgba(245,240,232,0.5);
-      max-width: 480px; margin-top: 32px; line-height: 1.8;
-      font-style: italic;
-      position: relative; z-index: 2;
-    }
+    .hero-desc { font-family: var(--body-serif); font-size: 16px; color: rgba(245,240,232,0.5); max-width: 480px; margin-top: 32px; line-height: 1.8; font-style: italic; position: relative; z-index: 2; }
 
     .riso-layer { position: relative; overflow: hidden; }
-    .riso-layer::after {
-      content: '';
-      position: absolute; inset: 0; pointer-events: none;
-      background-image:
-        radial-gradient(circle, rgba(232,164,156,0.18) 1px, transparent 1px),
-        radial-gradient(circle, rgba(138,171,138,0.12) 1px, transparent 1px);
-      background-size: 18px 18px, 31px 31px;
-      background-position: 0 0, 9px 9px;
-      mix-blend-mode: multiply; z-index: 0;
-    }
+    .riso-layer::after { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(circle, rgba(232,164,156,0.18) 1px, transparent 1px), radial-gradient(circle, rgba(138,171,138,0.12) 1px, transparent 1px); background-size: 18px 18px, 31px 31px; background-position: 0 0, 9px 9px; mix-blend-mode: multiply; z-index: 0; }
     .riso-layer > * { position: relative; z-index: 1; }
-    .riso-strip {
-      width: 100%; height: 64px; position: relative; overflow: hidden; background: var(--paper);
-    }
-    .riso-strip::before {
-      content: ''; position: absolute; inset: 0;
-      background-image:
-        radial-gradient(circle, rgba(232,164,156,0.35) 1.5px, transparent 1.5px),
-        radial-gradient(circle, rgba(138,171,138,0.2) 1px, transparent 1px);
-      background-size: 12px 12px, 20px 20px;
-      background-position: 0 0, 6px 6px;
-    }
-    .riso-strip::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom, var(--paper) 0%, transparent 30%, transparent 70%, var(--paper) 100%);
-    }
-    .riso-strip-dark {
-      width: 100%; height: 64px; position: relative; overflow: hidden; background: var(--ink);
-    }
-    .riso-strip-dark::before {
-      content: ''; position: absolute; inset: 0;
-      background-image:
-        radial-gradient(circle, rgba(232,164,156,0.25) 1.5px, transparent 1.5px),
-        radial-gradient(circle, rgba(138,171,138,0.15) 1px, transparent 1px);
-      background-size: 14px 14px, 22px 22px;
-      background-position: 0 0, 7px 7px;
-    }
-    .riso-strip-dark::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(to bottom, var(--ink) 0%, transparent 30%, transparent 70%, var(--ink) 100%);
-    }
-    .riso-blob {
-      position: absolute; border-radius: 50%;
-      pointer-events: none; mix-blend-mode: multiply; filter: blur(40px);
-    }
+    .riso-strip { width: 100%; height: 64px; position: relative; overflow: hidden; background: var(--paper); }
+    .riso-strip::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(232,164,156,0.35) 1.5px, transparent 1.5px), radial-gradient(circle, rgba(138,171,138,0.2) 1px, transparent 1px); background-size: 12px 12px, 20px 20px; background-position: 0 0, 6px 6px; }
+    .riso-strip::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, var(--paper) 0%, transparent 30%, transparent 70%, var(--paper) 100%); }
+    .riso-strip-dark { width: 100%; height: 64px; position: relative; overflow: hidden; background: var(--ink); }
+    .riso-strip-dark::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(232,164,156,0.25) 1.5px, transparent 1.5px), radial-gradient(circle, rgba(138,171,138,0.15) 1px, transparent 1px); background-size: 14px 14px, 22px 22px; background-position: 0 0, 7px 7px; }
+    .riso-strip-dark::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, var(--ink) 0%, transparent 30%, transparent 70%, var(--ink) 100%); }
+    .riso-blob { position: absolute; border-radius: 50%; pointer-events: none; mix-blend-mode: multiply; filter: blur(40px); }
     .riso-corner { position: absolute; width: 48px; height: 48px; pointer-events: none; }
     .riso-corner-tl { top: 24px; left: 24px; border-top: 1px solid rgba(232,164,156,0.4); border-left: 1px solid rgba(232,164,156,0.4); }
     .riso-corner-br { bottom: 24px; right: 24px; border-bottom: 1px solid rgba(232,164,156,0.4); border-right: 1px solid rgba(232,164,156,0.4); }
 
-    .content-section {
-      padding: 96px 48px;
-      max-width: 1100px; margin: 0 auto;
-    }
-    .section-title {
-      font-family: var(--serif);
-      font-size: clamp(36px, 4vw, 52px);
-      font-weight: 300; line-height: 1.05;
-      letter-spacing: -1.5px; margin-bottom: 52px;
-    }
+    .content-section { padding: 96px 48px; max-width: 1100px; margin: 0 auto; }
+    .section-title { font-family: var(--serif); font-size: clamp(36px, 4vw, 52px); font-weight: 300; line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 52px; }
     .section-title em { font-style: italic; }
 
     .timeline { display: flex; flex-direction: column; }
-    .timeline-item {
-      display: grid; grid-template-columns: 180px 1fr;
-      gap: 48px; padding: 36px 0;
-      border-top: 1px solid rgba(26,17,8,0.1);
-    }
+    .timeline-item { display: grid; grid-template-columns: 180px 1fr; gap: 48px; padding: 36px 0; border-top: 1px solid rgba(26,17,8,0.1); }
     .timeline-item:last-child { border-bottom: 1px solid rgba(26,17,8,0.1); }
     .timeline-year { font-size: 13px; color: var(--muted); padding-top: 4px; letter-spacing: 0.5px; font-family: var(--sans); }
     .timeline-role { font-family: var(--serif); font-size: 24px; font-weight: 400; line-height: 1.2; margin-bottom: 4px; letter-spacing: -0.3px; }
     .timeline-org { font-size: 13px; color: var(--sage); font-weight: 500; letter-spacing: 0.3px; margin-bottom: 14px; font-family: var(--sans); }
     .timeline-desc { font-family: var(--body-serif); font-size: 14px; color: #5a5040; line-height: 1.75; max-width: 560px; }
     .timeline-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
-    .timeline-tag {
-      font-size: 11px; letter-spacing: 0.3px; font-family: var(--sans);
-      padding: 4px 12px; border-radius: 12px;
-      background: rgba(138,171,138,0.12);
-      color: #4a6e4a; border: 1px solid rgba(138,171,138,0.25);
-    }
+    .timeline-tag { font-size: 11px; letter-spacing: 0.3px; font-family: var(--sans); padding: 4px 12px; border-radius: 12px; background: rgba(138,171,138,0.12); color: #4a6e4a; border: 1px solid rgba(138,171,138,0.25); }
 
-    .skills-dark {
-      background: var(--ink); color: var(--paper);
-      padding: 88px 48px; position: relative; overflow: hidden;
-    }
+    .skills-dark { background: var(--ink); color: var(--paper); padding: 88px 48px; position: relative; overflow: hidden; }
     .skills-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
     .skills-dark .section-title { color: var(--paper); }
-    .skills-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1px; background: rgba(245,240,232,0.08);
-      border: 1px solid rgba(245,240,232,0.08); margin-top: 48px;
-    }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: rgba(245,240,232,0.08); border: 1px solid rgba(245,240,232,0.08); margin-top: 48px; }
     .skill-cell { padding: 32px 28px; background: var(--ink); transition: background 0.2s; }
     .skill-cell:hover { background: #161310; }
     .skill-name { font-family: var(--serif); font-size: 20px; font-weight: 300; margin-bottom: 6px; color: var(--paper); }
     .skill-type { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(245,240,232,0.3); font-family: var(--sans); }
 
-    .edu-strip {
-      padding: 64px 48px;
-      background: rgba(138,171,138,0.07);
-      border-top: 1px solid rgba(138,171,138,0.18);
-      border-bottom: 1px solid rgba(138,171,138,0.18);
-      position: relative; overflow: hidden;
-    }
-    .edu-inner {
-      max-width: 1100px; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 32px; position: relative; z-index: 1;
-    }
+    .edu-strip { padding: 64px 48px; background: rgba(138,171,138,0.07); border-top: 1px solid rgba(138,171,138,0.18); border-bottom: 1px solid rgba(138,171,138,0.18); position: relative; overflow: hidden; }
+    .edu-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 32px; position: relative; z-index: 1; }
     .edu-school { font-family: var(--serif); font-size: 36px; font-weight: 300; letter-spacing: -0.8px; }
     .edu-school em { font-style: italic; color: var(--sage); }
     .edu-details { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
     .edu-degree { font-size: 15px; color: var(--ink); font-weight: 400; font-family: var(--body-serif); }
     .edu-year { font-size: 12px; color: var(--muted); letter-spacing: 1px; font-family: var(--sans); }
 
-    .cta-section {
-      padding: 88px 48px; max-width: 1100px; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 32px; position: relative;
-    }
-    .cta-text {
-      font-family: var(--serif);
-      font-size: clamp(28px, 3.5vw, 44px);
-      font-weight: 300; letter-spacing: -1px; max-width: 500px; line-height: 1.15;
-    }
+    .cta-section { padding: 88px 48px; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 32px; position: relative; }
+    .cta-text { font-family: var(--serif); font-size: clamp(28px, 3.5vw, 44px); font-weight: 300; letter-spacing: -1px; max-width: 500px; line-height: 1.15; }
     .cta-text em { font-style: italic; color: var(--rose); }
     .cta-links { display: flex; gap: 16px; flex-wrap: wrap; }
-    .cta-btn {
-      font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
-      font-weight: 500; padding: 14px 28px; text-decoration: none;
-      font-family: var(--sans); transition: all 0.2s;
-    }
+    .cta-btn { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding: 14px 28px; text-decoration: none; font-family: var(--sans); transition: all 0.2s; }
     .cta-btn.primary { background: var(--ink); color: var(--paper); }
     .cta-btn.primary:hover { background: #2a1f14; }
     .cta-btn.secondary { border: 1px solid rgba(26,17,8,0.25); color: var(--ink); }
     .cta-btn.secondary:hover { border-color: var(--ink); }
 
-    .page-footer-nav {
-      background: var(--ink); padding: 56px 48px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    .page-footer-nav { background: var(--ink); padding: 56px 48px; display: flex; justify-content: space-between; align-items: center; }
     .footer-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; color: var(--paper); text-decoration: none; }
     .footer-logo em { font-style: italic; color: var(--rose); }
     .next-page { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-decoration: none; }
@@ -252,12 +121,7 @@
     @media (max-width: 800px) {
       nav { padding: 24px; }
       .nav-pages { gap: 20px; }
-      .page-hero {
-        grid-template-columns: 1fr !important;
-        grid-template-rows: 52vh 48vh;
-        height: 100vh;
-        min-height: unset;
-      }
+      .page-hero { grid-template-columns: 1fr !important; grid-template-rows: 52vh 48vh; height: 100vh; min-height: unset; }
       .page-hero > div:last-child { order: -1; height: 100%; width: 100%; }
       .page-hero > div:last-child img { width: 100%; height: 100%; object-fit: contain; object-position: center center; background: var(--ink); }
       .page-hero > div:first-child { padding: 28px 24px 36px; justify-content: center; }
@@ -270,7 +134,6 @@
       .edu-details { align-items: flex-start; }
       .cta-section { padding: 64px 24px; }
       .page-footer-nav { padding: 40px 24px; }
-      .dark-section > div[style*="grid"] { grid-template-columns: 1fr !important; gap: 40px !important; }
     }
   </style>
 </head>
@@ -285,124 +148,85 @@
     </ul>
   </nav>
 
-  <!-- hero -->
   <div class="page-hero" style="display:grid; grid-template-columns:1fr 1fr; padding:0; height:100vh; overflow:hidden;">
     <div class="hero-blob" style="width:400px;height:300px;background:rgba(138,171,138,0.08);top:-80px;left:10%;position:absolute;"></div>
     <div class="hero-blob" style="width:250px;height:250px;background:rgba(232,164,156,0.06);bottom:80px;left:30%;position:absolute;"></div>
     <div class="hero-lines" id="hero-lines"></div>
-
-    <!-- left: text pinned to bottom -->
     <div style="display:flex; flex-direction:column; justify-content:flex-end; padding:120px 56px 80px; position:relative; z-index:2;">
       <h1 class="hero-title">What<br><em>I do</em></h1>
       <p class="hero-desc">Client services, research, creative strategy.</p>
     </div>
-
-    <!-- right: image fills full height -->
     <div style="position:relative; overflow:hidden; height:100%;">
       <img src="linkedin3.png" alt="LinkedIn" style="width:100%; height:100%; object-fit:cover; object-position:center top; display:block;"/>
       <div style="position:absolute;inset:0;background:linear-gradient(to right, rgba(13,13,13,0.5) 0%, transparent 40%);"></div>
     </div>
   </div>
 
-  <!-- experience -->
   <div class="content-section riso-layer">
     <div class="riso-blob" style="width:300px;height:200px;background:rgba(232,164,156,0.12);top:-40px;right:-40px;"></div>
     <div class="reveal">
       <h2 class="section-title">Where I've<br><em>worked</em></h2>
     </div>
     <div class="timeline">
-
       <div class="timeline-item reveal">
         <div class="timeline-year">2022 — present</div>
         <div class="timeline-content">
           <div class="timeline-role">Owner and Photographer</div>
           <div class="timeline-org"><a href="https://www.instagram.com/photosbypriyab/" target="_blank" rel="noopener" style="color:var(--sage);text-decoration:none;border-bottom:1px solid rgba(138,171,138,0.3);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--sage)'" onmouseout="this.style.borderColor='rgba(138,171,138,0.3)'">photosbypriyab</a> · Open to travel</div>
           <div class="timeline-desc">Scaling a solo photography business with $10K+ in profit, managing pricing, client acquisition, and project execution. Studio and commercial photography, engagements, theater, editorial, and portraiture.</div>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Photography</span>
-            <span class="timeline-tag">Business</span>
-            <span class="timeline-tag">Adobe Suite</span>
-          </div>
+          <div class="timeline-tags"><span class="timeline-tag">Photography</span><span class="timeline-tag">Business</span><span class="timeline-tag">Adobe Suite</span></div>
         </div>
       </div>
-
       <div class="timeline-item reveal">
         <div class="timeline-year">2026 — present</div>
         <div class="timeline-content">
           <div class="timeline-role">Client Service Associate</div>
           <div class="timeline-org"><a href="https://www.alphasights.com/company/" target="_blank" rel="noopener" style="color:var(--sage);text-decoration:none;border-bottom:1px solid rgba(138,171,138,0.3);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--sage)'" onmouseout="this.style.borderColor='rgba(138,171,138,0.3)'">AlphaSights</a> · New York</div>
           <div class="timeline-desc">Serving as liaison between Fortune 500 clients and top industry experts across global markets, synthesizing client needs to deliver time-sensitive research solutions. Conducting early-stage due diligence and industry research spanning multiple sectors.</div>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Client Services</span>
-            <span class="timeline-tag">Research</span>
-            <span class="timeline-tag">Due Diligence</span>
-          </div>
+          <div class="timeline-tags"><span class="timeline-tag">Client Services</span><span class="timeline-tag">Research</span><span class="timeline-tag">Due Diligence</span></div>
         </div>
       </div>
-
       <div class="timeline-item reveal">
         <div class="timeline-year">2025 — 2026</div>
         <div class="timeline-content">
           <div class="timeline-role">Capital Markets Analyst, Data and Insights</div>
           <div class="timeline-org"><a href="https://www.centersquare.com/our-firm/" target="_blank" rel="noopener" style="color:var(--sage);text-decoration:none;border-bottom:1px solid rgba(138,171,138,0.3);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--sage)'" onmouseout="this.style.borderColor='rgba(138,171,138,0.3)'">CenterSquare Investment Management</a> · Conshohocken, PA</div>
           <div class="timeline-desc">Evaluated MuleSoft automation workflows on 50+ page lease comps and rent rolls for the Private Equity team. Pitched and evaluated AI automation tools including Alteryx and n8n.io to lead SEO-optimized copy generation and thought leadership sourcing.</div>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Python</span>
-            <span class="timeline-tag">Power BI</span>
-            <span class="timeline-tag">Salesforce</span>
-            <span class="timeline-tag">AI Automation</span>
-          </div>
+          <div class="timeline-tags"><span class="timeline-tag">Python</span><span class="timeline-tag">Power BI</span><span class="timeline-tag">Salesforce</span><span class="timeline-tag">AI Automation</span></div>
         </div>
       </div>
-
       <div class="timeline-item reveal">
         <div class="timeline-year">2025</div>
         <div class="timeline-content">
           <div class="timeline-role">Technology and Marketing Intern</div>
           <div class="timeline-org"><a href="https://www.centersquare.com/our-firm/" target="_blank" rel="noopener" style="color:var(--sage);text-decoration:none;border-bottom:1px solid rgba(138,171,138,0.3);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--sage)'" onmouseout="this.style.borderColor='rgba(138,171,138,0.3)'">CenterSquare Investment Management</a> · Conshohocken, PA</div>
           <div class="timeline-desc">Developed an automated marketing analytics dashboard using Python and Power BI, visualizing Google, Spotify, and LinkedIn Analytics for CEO and CMO. Automated Salesforce CRM account matching using VLOOKUP with Python Fuzzy Matching, scripting 33% of a 294-name list.</div>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Python</span>
-            <span class="timeline-tag">Power BI</span>
-            <span class="timeline-tag">Analytics</span>
-          </div>
+          <div class="timeline-tags"><span class="timeline-tag">Python</span><span class="timeline-tag">Power BI</span><span class="timeline-tag">Analytics</span></div>
         </div>
       </div>
-
       <div class="timeline-item reveal">
         <div class="timeline-year">2023 — 2024</div>
         <div class="timeline-content">
           <div class="timeline-role">Finance and Strategy Intern</div>
           <div class="timeline-org"><a href="https://neighborhoodland.org" target="_blank" rel="noopener" style="color:var(--sage);text-decoration:none;border-bottom:1px solid rgba(138,171,138,0.3);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--sage)'" onmouseout="this.style.borderColor='rgba(138,171,138,0.3)'">Neighborhood Land Power Project</a> · Philadelphia, PA</div>
           <div class="timeline-desc">Managed a collaboration between branding consultants on a $40,000 rebranding initiative within a 9-month timeline.</div>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Finance</span>
-            <span class="timeline-tag">Strategy</span>
-            <span class="timeline-tag">Branding</span>
-          </div>
+          <div class="timeline-tags"><span class="timeline-tag">Finance</span><span class="timeline-tag">Strategy</span><span class="timeline-tag">Branding</span></div>
         </div>
       </div>
-
       <div class="timeline-item reveal">
         <div class="timeline-year">2023</div>
         <div class="timeline-content">
           <div class="timeline-role">Marketing and Key Performance Insights Intern</div>
           <div class="timeline-org"><a href="https://www.elixhealing.com/" target="_blank" rel="noopener" style="color:var(--sage);text-decoration:none;border-bottom:1px solid rgba(138,171,138,0.3);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--sage)'" onmouseout="this.style.borderColor='rgba(138,171,138,0.3)'">Elix Healing</a> · New York, NY</div>
           <div class="timeline-desc">Achieved a 38% increase in organic social media conversions and a 14% rise in paid social conversions through KPI-driven strategy.</div>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Marketing</span>
-            <span class="timeline-tag">Social Media</span>
-            <span class="timeline-tag">Analytics</span>
-          </div>
+          <div class="timeline-tags"><span class="timeline-tag">Marketing</span><span class="timeline-tag">Social Media</span><span class="timeline-tag">Analytics</span></div>
         </div>
       </div>
-
     </div>
   </div>
 
   <div class="riso-strip"></div>
 
-  <!-- education -->
   <div class="edu-strip reveal">
     <div class="riso-blob" style="width:300px;height:200px;background:rgba(138,171,138,0.15);top:-40px;right:10%;filter:blur(50px);mix-blend-mode:multiply;"></div>
     <div class="edu-inner">
@@ -416,16 +240,13 @@
 
   <div class="riso-strip-dark"></div>
 
-  <!-- skills -->
   <div class="skills-dark">
     <div class="riso-blob" style="width:400px;height:300px;background:rgba(232,164,156,0.07);top:-80px;right:-80px;mix-blend-mode:screen;filter:blur(50px);"></div>
     <div class="riso-blob" style="width:200px;height:200px;background:rgba(138,171,138,0.06);bottom:0;left:20%;mix-blend-mode:screen;filter:blur(40px);"></div>
     <div class="riso-corner riso-corner-tl" style="border-color:rgba(232,164,156,0.2);"></div>
     <div class="riso-corner riso-corner-br" style="border-color:rgba(232,164,156,0.2);"></div>
     <div class="skills-inner">
-      <div class="reveal">
-        <h2 class="section-title" style="color:var(--paper);">Skills and<br><em>tools</em></h2>
-      </div>
+      <div class="reveal"><h2 class="section-title" style="color:var(--paper);">Skills and<br><em>tools</em></h2></div>
       <div class="skills-grid reveal">
         <div class="skill-cell"><div class="skill-name">Adobe Suite</div><div class="skill-type">Design</div></div>
         <div class="skill-cell"><div class="skill-name">Premiere Pro</div><div class="skill-type">Video</div></div>
@@ -448,8 +269,7 @@
 
   <div class="riso-strip"></div>
 
-  <!-- networking -->
-  <div class="dark-section" style="background:var(--ink); padding:88px 48px; position:relative; overflow:hidden;">
+  <div style="background:var(--ink); padding:88px 48px; position:relative; overflow:hidden;">
     <div class="riso-blob" style="width:400px;height:300px;background:rgba(232,164,156,0.07);top:-80px;right:-80px;mix-blend-mode:screen;filter:blur(50px);"></div>
     <div class="riso-corner riso-corner-tl" style="border-color:rgba(232,164,156,0.2);"></div>
     <div class="riso-corner riso-corner-br" style="border-color:rgba(232,164,156,0.2);"></div>
@@ -459,13 +279,7 @@
         <p style="font-family:var(--body-serif); font-size:15px; color:rgba(245,240,232,0.55); line-height:1.8; max-width:380px;">Filmed at a Penn Alumni event in New York for the book launch of Dr. Jaime Knopman, Penn Alumni and fertility doctor, and her book "Own Your Fertility."</p>
       </div>
       <div class="reveal" style="display:flex; flex-direction:column; gap:32px; align-items:flex-start;">
-        <a href="https://www.instagram.com/reel/DZvXBIlTku-/" target="_blank" rel="noopener noreferrer" style="
-          display: inline-flex; flex-direction: column; gap: 8px;
-          text-decoration: none;
-          border-bottom: 1px solid rgba(245,240,232,0.25);
-          padding-bottom: 12px;
-          transition: border-color 0.2s;
-        " onmouseover="this.style.borderColor='var(--rose)'" onmouseout="this.style.borderColor='rgba(245,240,232,0.25)'">
+        <a href="https://www.instagram.com/reel/DZvXBIlTku-/" target="_blank" rel="noopener noreferrer" style="display: inline-flex; flex-direction: column; gap: 8px; text-decoration: none; border-bottom: 1px solid rgba(245,240,232,0.25); padding-bottom: 12px; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--rose)'" onmouseout="this.style.borderColor='rgba(245,240,232,0.25)'">
           <span style="font-size:10px; letter-spacing:2.5px; text-transform:uppercase; font-family:var(--sans); color:rgba(245,240,232,0.4);">Networking event</span>
           <span style="font-family:var(--serif); font-size:22px; font-weight:300; font-style:italic; color:var(--paper);">Watch →</span>
         </a>
@@ -475,7 +289,6 @@
 
   <div class="riso-strip"></div>
 
-  <!-- CTA -->
   <div class="cta-section reveal riso-layer">
     <div class="riso-blob" style="width:260px;height:260px;background:rgba(232,164,156,0.1);top:0;right:10%;"></div>
     <p class="cta-text"><em>Let's collaborate!</em></p>
