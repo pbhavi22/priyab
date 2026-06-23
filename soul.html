@@ -206,6 +206,7 @@
       background: #1a1510; border-radius: 4px;
       overflow: hidden; position: relative;
     }
+    .video-thumb iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
     .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.75; transition: opacity 0.3s; }
     .video-card:hover .video-thumb img { opacity: 1; }
     .video-play {
@@ -371,24 +372,35 @@
         <h2 class="section-title" style="color:var(--sage);">Video<em style="color:var(--paper);">graphy</em></h2>
       </div>
       <div class="video-grid reveal">
-        <a class="video-card" href="https://www.youtube.com/@priyabhavikatti222" target="_blank" rel="noopener">
+        <div class="video-card">
           <div class="video-thumb">
-            <div class="photo-placeholder" style="background:#111;">YouTube channel</div>
-            <div class="video-play">
-              <div class="video-play-btn">
-                <svg viewBox="0 0 16 16"><path d="M3 2l11 6-11 6V2z"/></svg>
-              </div>
-            </div>
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/eoQWUCb2tsM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
           </div>
-          <div class="video-title">@priyabhavikatti222</div>
-          <div class="video-meta">YouTube · Creative videos</div>
-        </a>
-        <div class="video-card" style="cursor:default;">
+        </div>
+        <div class="video-card">
           <div class="video-thumb">
-            <div class="photo-placeholder" style="background:#111; font-style:italic;">add a video -></div>
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/bJMydByxnsM?start=236" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
           </div>
-          <div class="video-title" style="color:rgba(245,240,232,0.2);">Coming soon</div>
-          <div class="video-meta">Drop in your next project</div>
+        </div>
+        <div class="video-card">
+          <div class="video-thumb">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Zwaubllbek0?start=28" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-thumb">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/bT8eJChYLho?start=271" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-thumb">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/tjq_Qv1K_hA?start=277" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-thumb">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/cD8vGZ8ughs?start=118" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;"></iframe>
+          </div>
         </div>
       </div>
     </div>
