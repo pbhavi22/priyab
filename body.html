@@ -393,7 +393,6 @@
       .chips { justify-content: flex-start; flex-direction: column; align-items: flex-start; gap: 8px; }
       .chip { width: 200px; }
       .intro-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
-      #pixelCanvas { display: block; height: 260px !important; width: 100% !important; }
     }
   </style>
 </head>
@@ -439,8 +438,11 @@
           <span class="chip filled">Designer</span>
         </div>
       </div>
-      <div style="position:relative;">
-        <canvas id="pixelCanvas" style="width:100%; height:480px; display:block; image-rendering:pixelated;"></canvas>
+      <div style="position:relative; padding: 12px 12px 12px 12px;">
+        <!-- risograph shadow layers -->
+        <div style="position:absolute; inset:0; transform: translate(8px, 8px); background: var(--rose); opacity: 0.4; border-radius: 2px;"></div>
+        <div style="position:absolute; inset:0; transform: translate(16px, 16px); background: var(--sage); opacity: 0.25; border-radius: 2px;"></div>
+        <img src="LinkedInphotosbypriyab_post.jpg" alt="Priya's work" style="position:relative; width:100%; display:block; border-radius: 2px; z-index:1;"/>
       </div>
     </div>
   </div>
@@ -529,105 +531,6 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
     reveals.forEach(el => io.observe(el));
-
-    // pixel scatter -> full image -> scatter out -> loop
-    const canvas = document.getElementById('pixelCanvas');
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    img.src = 'LinkedInphotosbypriyab_post.jpg';
-
-    let W, H, imageData, pixels, animFrame;
-    const PIXEL_SIZE = 2;
-    const LOOP_MS = 5200;
-
-    function setup() {
-      const rect = canvas.parentElement.getBoundingClientRect();
-      const isMobile = window.innerWidth <= 800;
-      const canvasH = isMobile ? 260 : 480;
-      W = canvas.width  = rect.width * devicePixelRatio;
-      H = canvas.height = canvasH * devicePixelRatio;
-      canvas.style.height = canvasH + 'px';
-
-      const off = document.createElement('canvas');
-      off.width = W; off.height = H;
-      const octx = off.getContext('2d');
-      octx.drawImage(img, 0, 0, W, H);
-      imageData = octx.getImageData(0, 0, W, H);
-
-      const cols = Math.ceil(W / PIXEL_SIZE);
-      const rows = Math.ceil(H / PIXEL_SIZE);
-      pixels = [];
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const px = Math.floor(c * PIXEL_SIZE + PIXEL_SIZE / 2);
-          const py = Math.floor(r * PIXEL_SIZE + PIXEL_SIZE / 2);
-          const i = (Math.min(py, H-1) * W + Math.min(px, W-1)) * 4;
-          const d = imageData.data;
-          pixels.push({
-            tx: c * PIXEL_SIZE, // target x
-            ty: r * PIXEL_SIZE, // target y
-            sx: Math.random() * W, // scatter x
-            sy: Math.random() * H, // scatter y
-            r: d[i], g: d[i+1], b: d[i+2],
-            delay: Math.random(), // stagger
-          });
-        }
-      }
-    }
-
-    function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
-
-    function loop(ts) {
-      const t = (ts % LOOP_MS) / LOOP_MS;
-
-      ctx.clearRect(0, 0, W, H);
-
-      let gatherT, scatterT;
-      if (t < 0.19) {
-        // scatter -> gather (~1s)
-        gatherT = t / 0.19;
-        scatterT = 0;
-      } else if (t < 0.77) {
-        // hold full image (~3s)
-        gatherT = 1;
-        scatterT = 0;
-      } else {
-        // scatter out (~1s)
-        gatherT = 1;
-        scatterT = (t - 0.77) / 0.23;
-      }
-
-      for (const p of pixels) {
-        const pg = Math.min(1, Math.max(0, (gatherT - p.delay * 0.4) / 0.6));
-        const ps = Math.min(1, Math.max(0, (scatterT - p.delay * 0.4) / 0.6));
-        const ge = ease(pg);
-        const se = ease(ps);
-
-        const x = p.sx + (p.tx - p.sx) * ge + (Math.random() * 40 - 20) * (1 - ge) * 0.3;
-        const y = p.sy + (p.ty - p.sy) * ge + (Math.random() * 40 - 20) * (1 - ge) * 0.3;
-
-        // scatter out goes to new random pos
-        const fx = x + (Math.random() * W - x) * se;
-        const fy = y + (Math.random() * H - y) * se;
-
-        const alpha = ge * (1 - se * 0.9);
-        ctx.fillStyle = `rgba(${p.r},${p.g},${p.b},${alpha})`;
-        ctx.fillRect(fx, fy, PIXEL_SIZE, PIXEL_SIZE);
-      }
-
-      animFrame = requestAnimationFrame(loop);
-    }
-
-    img.onload = () => {
-      setup();
-      requestAnimationFrame(loop);
-    };
-
-    window.addEventListener('resize', () => {
-      cancelAnimationFrame(animFrame);
-      setup();
-    });
   </script>
 </body>
 </html>
