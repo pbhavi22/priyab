@@ -19,11 +19,11 @@
       --body-serif: 'Lora', Georgia, serif;
       --sans:  'Inter', sans-serif;
     }
-    html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
+    html { scroll-behavior: smooth; width: 100%; }
     body {
       background: var(--ink); color: var(--paper);
       font-family: var(--body-serif); font-size: 16px; line-height: 1.7;
-      overflow-x: hidden; width: 100%;
+      overflow-x: clip; width: 100%;
       overscroll-behavior: none; -webkit-overflow-scrolling: touch;
     }
     body::before {
@@ -70,7 +70,8 @@
     .section-subtitle { font-family: var(--sans); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.3); margin-top: -36px; margin-bottom: 48px; }
 
     /* photo section */
-    .photo-section { padding: 96px 48px; max-width: 680px; margin: 0 auto; position: relative; }
+    .photo-section { padding: 96px 48px; position: relative; }
+    .photo-scroll { max-width: 680px; margin: 0 auto; }
     .photo-scroll { display: flex; flex-direction: column; gap: 16px; }
     .photo-scroll img { width: 100%; display: block; border-radius: 4px; opacity: 0.9; transition: opacity 0.3s; }
     .photo-scroll img:hover { opacity: 1; }
@@ -185,11 +186,13 @@
       <img src="c10.JPG" alt=""/>
       <img src="c11.jpg" alt=""/>
       <img src="c13.jpg" alt=""/>
+      <img src="c14.JPEG" alt=""/>
       <img src="c15.png" alt=""/>
       <img src="c16.jpg" alt=""/>
       <img src="c18.PNG" alt=""/>
       <img src="c19.jpg" alt=""/>
       <img src="c21.jpg" alt=""/>
+      <img src="c22.PNG" alt=""/>
       <img src="c23.JPG" alt=""/>
     </div>
   </div>
