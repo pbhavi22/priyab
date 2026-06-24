@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
   <title>Body | Priya Bhavikatti</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +19,7 @@
       --body-serif: 'Lora', Georgia, serif;
       --sans:  'Inter', sans-serif;
     }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body {
       background: var(--paper);
       color: var(--ink);
@@ -81,12 +81,6 @@
       background-size: 22px 22px;
       pointer-events: none;
     }
-    .hero-label {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--rose); margin-bottom: 20px; font-weight: 500;
-      font-family: var(--sans);
-      position: relative; z-index: 2;
-    }
     .hero-title {
       font-family: var(--serif);
       font-size: clamp(60px, 8vw, 108px);
@@ -121,13 +115,6 @@
       font-style: italic; color: rgba(245,240,232,0.25);
     }
     .content-section { padding: 96px 48px; max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--rose); margin-bottom: 16px; font-weight: 500;
-      font-family: var(--sans);
-      display: flex; align-items: center; gap: 12px;
-    }
-    .section-label::after { content: ''; flex: 0 0 32px; height: 1px; background: var(--rose); }
     .section-title {
       font-family: var(--serif);
       font-size: clamp(36px, 4vw, 52px);
@@ -150,20 +137,8 @@
     .chip.filled { color: var(--ink); border-bottom: 1px solid var(--ink); font-weight: 500; }
     .divider { height: 1px; background: rgba(26,17,8,0.1); margin: 0 48px; }
     .dark-section { background: var(--ink); color: var(--paper); padding: 88px 48px; }
-    .dark-section .section-label { color: var(--rose); }
     .dark-section .body-text { color: rgba(245,240,232,0.7); }
     .dark-section .section-title { color: var(--paper); }
-    .stat-row { display: flex; gap: 56px; margin-top: 48px; flex-wrap: wrap; }
-    .stat { display: flex; flex-direction: column; gap: 4px; }
-    .stat-num { font-family: var(--serif); font-size: 42px; font-weight: 300; font-style: italic; color: var(--rose); line-height: 1; }
-    .stat-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-family: var(--sans); color: rgba(245,240,232,0.45); }
-    .page-footer-nav { background: var(--ink); padding: 56px 48px; display: flex; justify-content: space-between; align-items: center; }
-    .footer-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; color: var(--paper); text-decoration: none; }
-    .footer-logo em { font-style: italic; color: var(--rose); }
-    .next-page { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-decoration: none; }
-    .next-page-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: var(--sans); color: rgba(245,240,232,0.4); }
-    .next-page-word { font-family: var(--serif); font-size: 32px; font-weight: 300; font-style: italic; color: var(--paper); transition: color 0.2s; }
-    .next-page:hover .next-page-word { color: var(--rose); }
     .riso-layer { position: relative; overflow: hidden; }
     .riso-layer::after {
       content: ''; position: absolute; inset: 0; pointer-events: none;
@@ -193,6 +168,18 @@
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: none; }
 
+    .page-footer-nav { background: var(--ink); padding: 48px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+    .footer-left { display: flex; flex-direction: column; gap: 16px; }
+    .footer-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; color: var(--paper); text-decoration: none; }
+    .footer-logo em { font-style: italic; color: var(--rose); }
+    .footer-social { display: flex; gap: 24px; align-items: center; }
+    .footer-social a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.35); text-decoration: none; transition: color 0.2s; font-family: var(--sans); }
+    .footer-social a:hover { color: var(--rose); }
+    .next-page { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-decoration: none; }
+    .next-page-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: var(--sans); color: rgba(245,240,232,0.4); }
+    .next-page-word { font-family: var(--serif); font-size: 32px; font-weight: 300; font-style: italic; color: var(--paper); transition: color 0.2s; }
+    .next-page:hover .next-page-word { color: var(--rose); }
+
     @media (max-width: 800px) {
       nav { padding: 24px; }
       .nav-pages { gap: 20px; }
@@ -210,6 +197,7 @@
       .chips { justify-content: flex-start; flex-direction: column; align-items: flex-start; gap: 8px; }
       .chip { width: 200px; }
       .intro-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+      .footer-social { gap: 16px; flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -311,10 +299,17 @@
   </div>
 
   <div class="page-footer-nav">
-    <a class="footer-logo" href="index.html">priya <em>b.</em></a>
+    <div class="footer-left">
+      <a class="footer-logo" href="index.html">priya <em>b.</em></a>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/in/priya-bhavikatti-836a47202/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/photosbypriyab/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.youtube.com/@priyabhavikatti222" target="_blank" rel="noopener">YouTube</a>
+      </div>
+    </div>
     <a class="next-page" href="mind.html">
       <span class="next-page-label">Next</span>
-      <span class="next-page-word">Mind  →</span>
+      <span class="next-page-word">Mind →</span>
     </a>
   </div>
 
