@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
   <title>Mind | Priya Bhavikatti</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +19,7 @@
       --body-serif: 'Lora', Georgia, serif;
       --sans:  'Inter', sans-serif;
     }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body {
       background: var(--paper); color: var(--ink);
       font-family: var(--body-serif); font-size: 16px; line-height: 1.7; overflow-x: hidden;
@@ -107,9 +107,13 @@
     .cta-btn.secondary { border: 1px solid rgba(26,17,8,0.25); color: var(--ink); }
     .cta-btn.secondary:hover { border-color: var(--ink); }
 
-    .page-footer-nav { background: var(--ink); padding: 56px 48px; display: flex; justify-content: space-between; align-items: center; }
+    .page-footer-nav { background: var(--ink); padding: 48px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+    .footer-left { display: flex; flex-direction: column; gap: 16px; }
     .footer-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; color: var(--paper); text-decoration: none; }
     .footer-logo em { font-style: italic; color: var(--rose); }
+    .footer-social { display: flex; gap: 24px; align-items: center; }
+    .footer-social a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.35); text-decoration: none; transition: color 0.2s; font-family: var(--sans); }
+    .footer-social a:hover { color: var(--rose); }
     .next-page { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-decoration: none; }
     .next-page-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.4); font-family: var(--sans); }
     .next-page-word { font-family: var(--serif); font-size: 32px; font-weight: 300; font-style: italic; color: var(--paper); transition: color 0.2s; }
@@ -134,6 +138,7 @@
       .edu-details { align-items: flex-start; }
       .cta-section { padding: 64px 24px; }
       .page-footer-nav { padding: 40px 24px; }
+      .footer-social { gap: 16px; flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -299,7 +304,14 @@
   </div>
 
   <div class="page-footer-nav">
-    <a class="footer-logo" href="index.html">priya <em>b.</em></a>
+    <div class="footer-left">
+      <a class="footer-logo" href="index.html">priya <em>b.</em></a>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/in/priya-bhavikatti-836a47202/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/photosbypriyab/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.youtube.com/@priyabhavikatti222" target="_blank" rel="noopener">YouTube</a>
+      </div>
+    </div>
     <a class="next-page" href="soul.html">
       <span class="next-page-label">Next</span>
       <span class="next-page-word">Soul →</span>
