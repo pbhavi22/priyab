@@ -19,17 +19,11 @@
       --body-serif: 'Lora', Georgia, serif;
       --sans:  'Inter', sans-serif;
     }
-    html {
-      scroll-behavior: smooth;
-      width: 100%;
-      overflow-x: hidden;
-    }
+    html { scroll-behavior: smooth; width: 100%; overflow-x: hidden; }
     body {
       background: var(--ink); color: var(--paper);
       font-family: var(--body-serif); font-size: 16px; line-height: 1.7;
-      overflow-x: hidden;
-      width: 100%;
-      overscroll-behavior-x: none;
+      overflow-x: hidden; width: 100%; overscroll-behavior-x: none;
     }
     body::before {
       content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
@@ -56,11 +50,7 @@
     @keyframes orbDrift { from { transform: translate(0,0) scale(1); } to { transform: translate(40px, 30px) scale(1.08); } }
 
     .riso-strip-dark { width: 100%; height: 64px; position: relative; overflow: hidden; background: var(--ink); }
-    .riso-strip-dark::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(232,164,156,0.25) 1.5px, transparent 1.5px), radial-gradient(circle, rgba(138,171,138,0.15) 1px, transparent 1px);
-      background-size: 14px 14px, 22px 22px; background-position: 0 0, 7px 7px;
-    }
+    .riso-strip-dark::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(232,164,156,0.25) 1.5px, transparent 1.5px), radial-gradient(circle, rgba(138,171,138,0.15) 1px, transparent 1px); background-size: 14px 14px, 22px 22px; background-position: 0 0, 7px 7px; }
     .riso-strip-dark::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, var(--ink) 0%, transparent 30%, transparent 70%, var(--ink) 100%); }
     .riso-blob { position: absolute; border-radius: 50%; pointer-events: none; mix-blend-mode: screen; filter: blur(50px); }
     .riso-corner { position: absolute; width: 48px; height: 48px; pointer-events: none; }
@@ -76,15 +66,8 @@
     .section-subtitle { font-family: var(--sans); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.3); margin-top: -36px; margin-bottom: 48px; }
 
     .photo-section { padding: 96px 48px; position: relative; }
-    .photo-scroll {
-      columns: 3; column-gap: 12px;
-      max-width: 1100px; margin: 0 auto;
-    }
-    .photo-scroll img {
-      width: 100%; display: block; border-radius: 4px;
-      opacity: 0.9; transition: opacity 0.3s;
-      margin-bottom: 12px; break-inside: avoid;
-    }
+    .photo-scroll { columns: 3; column-gap: 12px; max-width: 1100px; margin: 0 auto; }
+    .photo-scroll img { width: 100%; display: block; border-radius: 4px; opacity: 0.9; transition: opacity 0.3s; margin-bottom: 12px; break-inside: avoid; }
     .photo-scroll img:hover { opacity: 1; }
 
     .video-section { padding: 88px 48px; background: #080808; border-top: 1px solid rgba(245,240,232,0.06); position: relative; overflow: hidden; }
@@ -115,9 +98,13 @@
     .ig-banner-img:hover { opacity: 1; }
     .ig-banner-img img { width: 100%; display: block; border-radius: 6px; }
 
-    .page-footer-nav { padding: 56px 48px; border-top: 1px solid rgba(245,240,232,0.06); display: flex; justify-content: space-between; align-items: center; }
+    .page-footer-nav { padding: 48px 48px; border-top: 1px solid rgba(245,240,232,0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+    .footer-left { display: flex; flex-direction: column; gap: 16px; }
     .footer-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; color: var(--paper); text-decoration: none; }
     .footer-logo em { font-style: italic; color: var(--rose); }
+    .footer-social { display: flex; gap: 24px; align-items: center; }
+    .footer-social a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.35); text-decoration: none; transition: color 0.2s; font-family: var(--sans); }
+    .footer-social a:hover { color: var(--rose); }
     .back-link { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.35); text-decoration: none; transition: color 0.2s; font-family: var(--sans); }
     .back-link:hover { color: var(--paper); }
 
@@ -137,6 +124,7 @@
       .instagram-section { padding: 64px 24px; }
       .ig-banner-grid { grid-template-columns: 1fr; gap: 32px; }
       .page-footer-nav { padding: 40px 24px; }
+      .footer-social { gap: 16px; flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -151,12 +139,10 @@
     </ul>
   </nav>
 
-  <!-- hero -->
   <div class="page-hero" style="display:grid; grid-template-columns:1fr 1fr; padding:0; height:100vh; overflow:hidden;">
     <div class="hero-orb hero-orb-1"></div>
     <div class="hero-orb hero-orb-2"></div>
     <div class="riso-blob" style="width:300px;height:300px;background:rgba(232,164,156,0.06);bottom:100px;right:10%;"></div>
-
     <div style="display:flex; flex-direction:column; justify-content:flex-end; padding:120px 56px 80px; position:relative; z-index:2;">
       <div style="position:absolute; inset:0; pointer-events:none; background-image: radial-gradient(circle, rgba(232,164,156,0.22) 1px, transparent 1px), radial-gradient(circle, rgba(138,171,138,0.14) 1px, transparent 1px); background-size: 18px 18px, 31px 31px; background-position: 0 0, 9px 9px; mix-blend-mode: screen;"></div>
       <div style="position:absolute; top:-60px; left:-40px; width:280px; height:280px; border-radius:50%; background:rgba(232,164,156,0.08); filter:blur(50px); pointer-events:none; mix-blend-mode:screen;"></div>
@@ -167,7 +153,6 @@
       <h1 class="hero-title">My<br><em>art</em></h1>
       <p class="hero-desc">Photography, video, design, code.</p>
     </div>
-
     <div style="position:relative; overflow:hidden; height:100%; display:flex; align-items:center; justify-content:center; padding: 40px; background:var(--ink);">
       <img src="lovebook.gif" alt="" style="max-height:100%; max-width:100%; object-fit:contain; display:block;"/>
       <div style="position:absolute;inset:0;background:linear-gradient(to right, rgba(13,13,13,0.5) 0%, transparent 40%); pointer-events:none;"></div>
@@ -176,111 +161,57 @@
 
   <div class="riso-strip-dark"></div>
 
-  <!-- photography -->
   <div class="photo-section">
     <div class="riso-blob" style="width:300px;height:200px;background:rgba(232,164,156,0.07);top:-40px;right:-40px;"></div>
-    <div>
-      <h2 class="section-title">Through<br><em>the lens</em></h2>
-    </div>
+    <div><h2 class="section-title">Through<br><em>the lens</em></h2></div>
     <div class="photo-scroll">
-      <img src="connections.jpg" alt=""/>
-      <img src="c1.jpg" alt=""/>
-      <img src="c2.jpg" alt=""/>
-      <img src="c3.PNG" alt=""/>
-      <img src="c4.JPG" alt=""/>
-      <img src="c5.jpg" alt=""/>
-      <img src="c8.JPG" alt=""/>
-      <img src="c9.JPG" alt=""/>
-      <img src="c10.JPG" alt=""/>
-      <img src="c11.jpg" alt=""/>
-      <img src="c13.jpg" alt=""/>
-      <img src="c14.JPEG" alt=""/>
-      <img src="c15.png" alt=""/>
-      <img src="c16.jpg" alt=""/>
-      <img src="c18.PNG" alt=""/>
-      <img src="c19.jpg" alt=""/>
-      <img src="c21.jpg" alt=""/>
-      <img src="c6.jpg" alt=""/>
-      <img src="c24.jpg" alt=""/>
-      <img src="c25.JPG" alt=""/>
-      <img src="c23.JPG" alt=""/>
+      <img src="connections.jpg" alt=""/><img src="c1.jpg" alt=""/><img src="c2.jpg" alt=""/>
+      <img src="c3.PNG" alt=""/><img src="c4.JPG" alt=""/><img src="c5.jpg" alt=""/>
+      <img src="c8.JPG" alt=""/><img src="c9.JPG" alt=""/><img src="c10.JPG" alt=""/>
+      <img src="c11.jpg" alt=""/><img src="c13.jpg" alt=""/><img src="c14.JPEG" alt=""/>
+      <img src="c15.png" alt=""/><img src="c16.jpg" alt=""/><img src="c18.PNG" alt=""/>
+      <img src="c19.jpg" alt=""/><img src="c21.jpg" alt=""/><img src="c6.jpg" alt=""/>
+      <img src="c24.jpg" alt=""/><img src="c25.JPG" alt=""/><img src="c23.JPG" alt=""/>
     </div>
   </div>
 
   <div class="riso-strip-dark"></div>
 
-  <!-- video -->
   <div class="video-section">
     <div class="riso-blob" style="width:400px;height:300px;background:rgba(138,171,138,0.06);top:-80px;right:-80px;"></div>
     <div class="riso-corner riso-corner-tl" style="border-color:rgba(138,171,138,0.2);"></div>
     <div class="video-inner">
-      <div>
-        <h2 class="section-title" style="color:var(--sage);">Video<em style="color:var(--paper);">graphy</em></h2>
-      </div>
-      <div class="video-grid reveal">
-        <div class="video-card">
-          <div class="video-thumb">
-            <iframe src="https://www.youtube.com/embed/eoQWUCb2tsM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-        <div class="video-card">
-          <div class="video-thumb">
-            <iframe src="https://www.youtube.com/embed/bJMydByxnsM?start=236" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-        <div class="video-card">
-          <div class="video-thumb">
-            <iframe src="https://www.youtube.com/embed/Zwaubllbek0?start=28" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-        <div class="video-card">
-          <div class="video-thumb">
-            <iframe src="https://www.youtube.com/embed/bT8eJChYLho?start=271" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-        <div class="video-card">
-          <div class="video-thumb">
-            <iframe src="https://www.youtube.com/embed/tjq_Qv1K_hA?start=277" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-        <div class="video-card">
-          <div class="video-thumb">
-            <iframe src="https://www.youtube.com/embed/cD8vGZ8ughs?start=118" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
+      <div><h2 class="section-title" style="color:var(--sage);">Video<em style="color:var(--paper);">graphy</em></h2></div>
+      <div class="video-grid">
+        <div class="video-card"><div class="video-thumb"><iframe src="https://www.youtube.com/embed/eoQWUCb2tsM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+        <div class="video-card"><div class="video-thumb"><iframe src="https://www.youtube.com/embed/bJMydByxnsM?start=236" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+        <div class="video-card"><div class="video-thumb"><iframe src="https://www.youtube.com/embed/Zwaubllbek0?start=28" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+        <div class="video-card"><div class="video-thumb"><iframe src="https://www.youtube.com/embed/bT8eJChYLho?start=271" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+        <div class="video-card"><div class="video-thumb"><iframe src="https://www.youtube.com/embed/tjq_Qv1K_hA?start=277" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
+        <div class="video-card"><div class="video-thumb"><iframe src="https://www.youtube.com/embed/cD8vGZ8ughs?start=118" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
       </div>
     </div>
   </div>
 
   <div class="riso-strip-dark"></div>
 
-  <!-- coding projects -->
   <div class="projects-section">
     <div class="riso-blob" style="width:260px;height:260px;background:rgba(232,164,156,0.06);top:0;right:5%;"></div>
     <div>
       <h2 class="section-title">Creative<br><em>projects</em></h2>
       <p class="section-subtitle">from design-coding class</p>
     </div>
-    <div class="projects-list reveal">
+    <div class="projects-list">
       <a class="project-row" href="https://editor.p5js.org/pbhavi22/sketches/ZhhcV_GuX" target="_blank" rel="noopener">
-        <div>
-          <div class="project-name">She Was a Fairy...</div>
-          <div class="project-type">p5.js · Generative art</div>
-        </div>
+        <div><div class="project-name">She Was a Fairy...</div><div class="project-type">p5.js · Generative art</div></div>
         <span class="project-arrow">→</span>
       </a>
       <a class="project-row" href="https://editor.p5js.org/pbhavi22/sketches/C7khTRiLq" target="_blank" rel="noopener">
-        <div>
-          <div class="project-name">What Time Is It?</div>
-          <div class="project-type">p5.js · Time and rhythm</div>
-        </div>
+        <div><div class="project-name">What Time Is It?</div><div class="project-type">p5.js · Time and rhythm</div></div>
         <span class="project-arrow">→</span>
       </a>
       <a class="project-row" href="https://codepen.io/Priya-Bhavikatti/pen/xbOLGrM" target="_blank" rel="noopener">
-        <div>
-          <div class="project-name">Still Life</div>
-          <div class="project-type">Coded composition · CodePen</div>
-        </div>
+        <div><div class="project-name">Still Life</div><div class="project-type">Coded composition · CodePen</div></div>
         <span class="project-arrow">→</span>
       </a>
     </div>
@@ -288,16 +219,13 @@
 
   <div class="riso-strip-dark"></div>
 
-  <!-- instagram -->
   <div class="instagram-section">
     <div class="riso-blob" style="width:350px;height:250px;background:rgba(232,164,156,0.07);top:-60px;left:-60px;"></div>
     <div class="riso-corner riso-corner-br" style="border-color:rgba(232,164,156,0.2);"></div>
-    <div class="instagram-inner reveal">
+    <div class="instagram-inner">
       <div class="ig-banner-grid">
         <div>
-          <a class="ig-cta" href="https://www.instagram.com/photosbypriyab/" target="_blank" rel="noopener">
-            photosbypriyab →
-          </a>
+          <a class="ig-cta" href="https://www.instagram.com/photosbypriyab/" target="_blank" rel="noopener">photosbypriyab →</a>
           <p class="ig-handle">@photosbypriyab on Instagram</p>
         </div>
         <a class="ig-banner-img" href="https://www.instagram.com/photosbypriyab/" target="_blank" rel="noopener">
@@ -308,7 +236,14 @@
   </div>
 
   <div class="page-footer-nav">
-    <a class="footer-logo" href="index.html">priya <em>b.</em></a>
+    <div class="footer-left">
+      <a class="footer-logo" href="index.html">priya <em>b.</em></a>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/in/priya-bhavikatti-836a47202/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/photosbypriyab/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.youtube.com/@priyabhavikatti222" target="_blank" rel="noopener">YouTube</a>
+      </div>
+    </div>
     <a class="back-link" href="index.html">Back to home</a>
   </div>
 
