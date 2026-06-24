@@ -38,9 +38,10 @@
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: 45% center;
-      opacity: 0.92;
+      opacity: 0;
       filter: saturate(0.72) contrast(1.05) brightness(1.05) sepia(0.15);
       will-change: transform;
+      transition: opacity 0.8s ease;
     }
 
     /* retro film: scanlines */
@@ -154,7 +155,7 @@
 <body>
 
   <div id="stage">
-    <video id="bg-video" autoplay muted loop playsinline>
+    <video id="bg-video" autoplay muted loop playsinline preload="auto">
       <source src="Untitled_Artwork.mp4" type="video/mp4">
     </video>
     <div id="film-overlay"></div>
@@ -184,6 +185,23 @@
       <span class="section-link-label">My art</span>
     </a>
   </div>
+
+  <script>
+    const video = document.getElementById('bg-video');
+
+    // Force the browser to start loading immediately
+    video.load();
+
+    // Show video only once it can play smoothly without buffering
+    video.addEventListener('canplaythrough', () => {
+      video.style.opacity = '0.92';
+    }, { once: true });
+
+    // Fallback: show it after 3s regardless
+    setTimeout(() => {
+      video.style.opacity = '0.92';
+    }, 3000);
+  </script>
 
 </body>
 </html>
